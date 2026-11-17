@@ -96,7 +96,7 @@ nav.tabs button:not([aria-current="page"]):hover{border-color:rgba(255,255,255,.
 
 /* modal */
 .overlay{position:fixed;inset:0;background:rgba(20,30,40,.55);display:grid;place-items:center;padding:16px;z-index:50}
-.modal{background:var(--card);border-radius:22px;max-width:560px;width:100%;max-height:92vh;overflow:auto;padding:22px;position:relative}
+.modal{background:var(--card);border-radius:22px;max-width:680px;width:100%;max-height:92vh;overflow:auto;padding:22px;position:relative}
 .modal .x{position:absolute;top:10px;right:12px;border:0;background:var(--paper);border-radius:50%;width:40px;height:40px;font-size:1.3rem}
 .bigg{font-size:5.5rem;font-weight:700;line-height:1;text-align:center;margin:6px 0 4px}
 .example{display:flex;align-items:center;justify-content:center;gap:14px;margin:8px 0 14px}
@@ -283,7 +283,7 @@ img.pic.imgpic{width:96px;height:96px;object-fit:cover;border-radius:12px}
 <body>
 <header class="top">
   <div class="topin">
-    <div class="brand">🔤 Sounds and Words <small>English for Spanish speakers</small></div>
+    <div class="brand">🔤 Sounds and Words <small>English for EAL pupils</small></div>
     <nav class="tabs" aria-label="Sections">
       <button data-act="route" data-arg="sounds">Sounds</button>
       <button data-act="route" data-arg="blending">Blending</button>
@@ -367,6 +367,99 @@ const SOUNDS = [
  {id:'ure',g:'ure',set:3,word:'sure it\'s pure',pic:'💧',tip:'"yoo-uh" as in "pure" and "cure".',es:'Suena "iu-a".'}
 ];
 const SOUND_BY_ID = Object.fromEntries(SOUNDS.map(s=>[s.id,s]));
+/* ---------------- LANGUAGES ---------------- */
+/* German meaning for each built-in word, keyed by English|Spanish so words with two meanings get the right one */
+const DE={"a|un / una":"ein / eine","afraid|asustado / asustada":"ängstlich","after|después":"nach / danach","after that|después de eso":"danach","almost|casi":"fast","alone|solo / sola":"allein","also|también":"auch","and|y":"und","angry|enfadado / enfadada":"wütend","ant|la hormiga":"die Ameise","apple|la manzana":"der Apfel","arm|el brazo":"der Arm","at|en":"an / bei","baby|el bebé":"das Baby","bad|malo / mala":"schlecht","badger|el tejón":"der Dachs","bag|el bolso":"die Tasche","ball|la pelota":"der Ball","banana|el plátano":"die Banane","band|el grupo de música":"die Band","bank|el banco":"die Bank","bat|el murciélago / el bate":"die Fledermaus / der Schläger","bat|el murciélago":"die Fledermaus","bath|la bañera":"die Badewanne","bay|la bahía":"die Bucht","be|ser / estar":"sein","Be quiet|Silencio":"Sei leise","beard|la barba":"der Bart","beautiful|bonito / bonita":"schön","because|porque":"weil","bed|la cama":"das Bett","bee|la abeja":"die Biene","before|antes":"vorher / bevor","beg|pedir":"betteln","bell|la campana":"die Glocke","belly|la barriga":"der Bauch","big|grande":"groß","bike|la bicicleta":"das Fahrrad","bird|el pájaro":"der Vogel","birthday|el cumpleaños":"der Geburtstag","bit|un poco":"ein bisschen","bite|morder":"beißen","black|negro":"schwarz","blame|culpar":"beschuldigen","bleed|sangrar":"bluten","blow|soplar":"blasen / pusten","blue|azul":"blau","boast|presumir":"angeben","boat|el barco":"das Boot","bog|el pantano":"der Sumpf","bone|el hueso":"der Knochen","book|el libro":"das Buch","boot|la bota":"der Stiefel","bored|aburrido / aburrida":"gelangweilt","bow|el lazo":"die Schleife","box|la caja":"die Schachtel / die Kiste","boxes|las cajas":"die Schachteln / die Kisten","boy|el niño":"der Junge","boys|los niños":"die Jungen","brain|el cerebro":"das Gehirn","bread|el pan":"das Brot","bright|brillante":"hell","broke|rompió":"zerbrach","broom|la escoba":"der Besen","brown|marrón":"braun","brush|el pincel / el cepillo":"der Pinsel / die Bürste","brush|el cepillo":"die Bürste","brushes|los pinceles / cepillos":"die Pinsel / die Bürsten","bug|el bicho":"der Käfer","bumping|chocando":"stoßend","bunk|la litera":"das Etagenbett","burger|la hamburguesa":"der Hamburger","bus|el autobús":"der Bus","buses|los autobuses":"die Busse","bushes|los arbustos":"die Büsche","but|pero":"aber","buzz|zumbar":"summen","cake|el pastel":"der Kuchen","came|vino / llegó":"kam","Can I go to the toilet?|¿Puedo ir al baño?":"Darf ich auf die Toilette gehen?","Can I have a drink?|¿Puedo beber agua?":"Darf ich etwas trinken?","Can you help me?|¿Me puedes ayudar?":"Kannst du mir helfen?","cap|la gorra":"die Mütze / die Kappe","car|el coche":"das Auto","carrot|la zanahoria":"die Karotte","case|la maleta":"der Koffer","cash|el dinero":"das Bargeld","cat|el gato":"die Katze","catch|atrapar / coger":"fangen","cats|los gatos":"die Katzen","chain|la cadena":"die Kette","chair|la silla":"der Stuhl","chat|charlar":"plaudern","cheeky|descarado / descarada":"frech","cheese|el queso":"der Käse","chew|masticar":"kauen","chick|el pollito":"das Küken","chicken|el pollo":"das Hähnchen","chief|el jefe":"der Chef / der Häuptling","chimp|el chimpancé":"der Schimpanse","chin|la barbilla":"das Kinn","chip|la patata frita":"die Pommes (eine)","chips|las patatas fritas":"die Pommes","choke|atragantarse":"sich verschlucken","chop|cortar / picar":"hacken / schneiden","church|la iglesia":"die Kirche","class|la clase":"die Klasse","classes|las clases":"die Klassen","clay|la arcilla":"der Ton","clean|limpio / limpia":"sauber","clean|limpio / limpiar":"sauber / putzen","cliff|el acantilado":"die Klippe","clock|el reloj":"die Uhr","cloth|el trapo / la tela":"das Tuch / der Stoff","cloud|la nube":"die Wolke","clown|el payaso":"der Clown","clue|la pista":"der Hinweis","coast|la costa":"die Küste","coat|el abrigo":"der Mantel","coin|la moneda":"die Münze","cold|frío / fría":"kalt","cold|tengo frío":"mir ist kalt","cold|frío":"kalt","colder|más frío":"kälter","coldest|el más frío":"am kältesten","computer|el ordenador":"der Computer","cook|cocinar":"kochen","coot|la focha (un pájaro)":"das Blässhuhn (ein Vogel)","corn|el maíz":"der Mais","cot|la cuna":"das Kinderbett","cow|la vaca":"die Kuh","crab|el cangrejo":"die Krabbe","crash|el choque":"der Unfall / der Zusammenstoß","crayon|la cera":"der Wachsmalstift","crocodile|el cocodrilo":"das Krokodil","cross|la cruz / cruzar":"das Kreuz / überqueren","cry|llorar":"weinen","crying|llorando":"weinend","cube|el cubo":"der Würfel","cuff|el puño (de la camisa)":"die Manschette","cup|la taza":"die Tasse","cut|cortar":"schneiden","cutting|cortando":"schneidend","dad|el papá":"der Papa","dance|bailar":"tanzen","day|el día":"der Tag","deep|profundo":"tief","deeper|más profundo":"tiefer","deepest|el más profundo":"am tiefsten","dew|el rocío":"der Tau","dirty|sucio / sucia":"schmutzig","dish|el plato":"der Teller / die Schüssel","ditch|la zanja":"der Graben","dive|tirarse al agua":"tauchen / springen","do|hacer":"machen / tun","doctor|el médico / la médica":"der Arzt / die Ärztin","dog|el perro":"der Hund","dogs|los perros":"die Hunde","dolphin|el delfín":"der Delfin","door|la puerta":"die Tür","dress|el vestido":"das Kleid","dresses|los vestidos":"die Kleider","drink|beber":"trinken","dripping|goteando":"tropfend","drum|el tambor":"die Trommel","dry|seco / seca":"trocken","drying|secando":"trocknend","duck|el pato":"die Ente","ear|la oreja":"das Ohr","eat|comer":"essen","egg|el huevo":"das Ei","eight|ocho":"acht","eighteen|dieciocho":"achtzehn","elephant|el elefante":"der Elefant","eleven|once":"elf","empty|vacío / vacía":"leer","eye|el ojo":"das Auge","face|la cara":"das Gesicht","family|la familia":"die Familie","fan|el abanico":"der Fächer","farm|la granja":"der Bauernhof","fast|rápido / rápida":"schnell","feed|dar de comer":"füttern","feet|los pies":"die Füße","fell|se cayó":"fiel hin","few|pocos / pocas":"wenige","fifteen|quince":"fünfzehn","fight|pelear":"kämpfen / streiten","fighting|peleando":"kämpfend","fill|llenar":"füllen","fin|la aleta":"die Flosse","finally|finalmente":"schließlich","fine|bien":"gut","finger|el dedo":"der Finger","fire|el fuego":"das Feuer","first|primero":"zuerst / erstens","fish|el pez":"der Fisch","five|cinco":"fünf","fizz|burbujear":"sprudeln","fizzy|con gas":"sprudelnd / mit Kohlensäure","flag|la bandera":"die Fahne","flake|el trocito":"das Stückchen / die Flocke","flame|la llama":"die Flamme","flash|el destello":"der Blitz","flat|plano":"flach","flow|fluir":"fließen","flower|la flor":"die Blume","fluff|la pelusa":"die Fussel","fly|volar":"fliegen","flying|volando":"fliegend","food|la comida":"das Essen","foot|el pie":"der Fuß","for example|por ejemplo":"zum Beispiel","fork|el tenedor":"die Gabel","four|cuatro":"vier","fourteen|catorce":"vierzehn","fox|el zorro":"der Fuchs","foxes|los zorros":"die Füchse","fresh|fresco":"frisch","Friday|viernes":"Freitag","friend|el amigo / la amiga":"der Freund / die Freundin","friends|los amigos":"die Freunde","frog|la rana":"der Frosch","frying|friendo":"bratend","full|lleno / llena":"voll","fun|divertido":"lustig / Spaß","funny|gracioso / graciosa":"lustig","game|el juego":"das Spiel","gate|la puerta (de la valla)":"das Tor","get|conseguir / coger":"bekommen / holen","gift|el regalo":"das Geschenk","girl|la niña":"das Mädchen","girls|las niñas":"die Mädchen","give|dar":"geben","glasses|las gafas / los vasos":"die Brille / die Gläser","gloves|los guantes":"die Handschuhe","glue|el pegamento":"der Kleber","go|ir":"gehen","goat|la cabra":"die Ziege","goes|va":"geht","gold|el oro":"das Gold","good|bueno / buena":"gut","Good morning|Buenos días":"Guten Morgen","Goodbye|Adiós":"Tschüss / Auf Wiedersehen","got|consiguió / tiene":"bekam / hat","grandad|el abuelo":"der Opa","grandma|la abuela":"die Oma","grass|la hierba":"das Gras","green|verde":"grün","grow|crecer":"wachsen","hair|el pelo":"die Haare","hand|la mano":"die Hand","happy|contento / contenta":"fröhlich","hard|duro / dura":"hart","has|tiene":"hat","hat|el sombrero":"der Hut","hatch|salir del huevo / la trampilla":"schlüpfen / die Luke","hay|el heno":"das Heu","he|él":"er","heavy|pesado / pesada":"schwer","Hello|Hola":"Hallo","help|la ayuda":"die Hilfe","hen|la gallina":"das Huhn","her (her bag)|su (de ella)":"ihr / ihre (ihre Tasche)","her (look at her)|la / a ella":"sie / ihr (schau sie an)","high|alto":"hoch","hill|la colina":"der Hügel","him|lo / a él":"ihn / ihm","his|su (de él)":"sein / seine","hit|golpear":"schlagen","home|la casa / el hogar":"das Zuhause","honey|la miel":"der Honig","hoot|ulular (el búho)":"rufen (wie eine Eule)","horse|el caballo":"das Pferd","host|el anfitrión":"der Gastgeber","hot|caliente":"heiß","hot|tengo calor":"mir ist heiß","house|la casa":"das Haus","however|sin embargo":"jedoch","huff|resoplar":"schnauben","hungry|tengo hambre":"ich habe Hunger","hutch|la conejera":"der Hasenstall","I|yo":"ich","I don't understand|No entiendo":"Ich verstehe das nicht","I feel sick|Me encuentro mal":"Mir ist schlecht","I have finished|He terminado":"Ich bin fertig","I think|creo que":"ich denke","ice cream|el helado":"das Eis","if|si":"wenn / falls","in conclusion|en conclusión":"zum Schluss","in my opinion|en mi opinión":"meiner Meinung nach","introduction|la introducción":"die Einleitung","is|es / está":"ist","it|eso (una cosa o un animal)":"es (ein Ding oder ein Tier)","its|su (de una cosa o un animal)":"sein / ihr (von einem Ding oder Tier)","jazz|el jazz":"der Jazz","jelly|la gelatina":"der Wackelpudding","jumping|saltando":"springend","June|junio":"Juni","junk|los trastos":"der Kram","kangaroo|el canguro":"das Känguru","key|la llave":"der Schlüssel","kick|dar una patada":"treten / kicken","kicked|dio una patada":"trat / kickte","kicker|el que da patadas":"der Kicker (wer tritt)","kicking|dando patadas":"tretend / kickend","kind|amable":"freundlich / nett","king|el rey":"der König","kit|el equipo":"die Ausrüstung","kite|la cometa":"der Drachen","kitten|el gatito":"das Kätzchen","lake|el lago":"der See","lamp|la lámpara":"die Lampe","land|la tierra":"das Land","large|grande":"groß","last|por último":"zuletzt","leaf|la hoja":"das Blatt","leg|la pierna":"das Bein","let|dejar":"lassen","lick|lamer":"lecken","licked|lamió":"leckte","licker|el que lame":"wer leckt","licking|lamiendo":"leckend","light|ligero / ligera":"leicht","light|la luz":"das Licht","light|ligero":"leicht","lighting|encendiendo":"anzündend","like|gustar":"mögen","Line up|Ponerse en fila":"Stellt euch auf","lion|el león":"der Löwe","lip|el labio":"die Lippe","listen|escuchar":"zuhören","live|vivir":"leben / wohnen","lizard|la lagartija":"die Eidechse","load|la carga / cargar":"die Ladung / laden","lock|el candado":"das Schloss","log|el tronco":"der Baumstamm","long|largo / larga":"lang","long|largo":"lang","longer|más largo":"länger","longest|el más largo":"am längsten","look|mirar":"schauen","lorry|el camión":"der Lastwagen","loud|ruidoso / ruidosa":"laut","luck|la suerte":"das Glück","lunch|el almuerzo":"das Mittagessen","maid|la criada":"das Dienstmädchen","mail|el correo":"die Post","man|el hombre":"der Mann","map|el mapa":"die Landkarte","match|el partido":"das Spiel","match|el partido / la cerilla":"das Spiel / das Streichholz","me|me / a mí":"mich / mir","meat|la carne":"das Fleisch","meet|conocer / quedar":"treffen","mess|el desorden":"die Unordnung","might|quizás / podría":"vielleicht / könnte","milk|la leche":"die Milch","mill|el molino":"die Mühle","Monday|lunes":"Montag","monkey|el mono":"der Affe","moo|mugir":"muhen","moon|la luna":"der Mond","most|la mayoría":"die meisten","moth|la polilla":"die Motte","mouse|el ratón":"die Maus","mouth|la boca":"der Mund","much|mucho":"viel","mum|la mamá":"die Mama","my|mi":"mein / meine","nail|la uña / el clavo":"der Fingernagel / der Nagel","neck|el cuello":"der Hals","nest|el nido":"das Nest","net|la red":"das Netz","new|nuevo / nueva":"neu","next|a continuación":"als Nächstes","night|la noche":"die Nacht","nine|nueve":"neun","nineteen|diecinueve":"neunzehn","No|No":"Nein","no|no":"nein / kein","nose|la nariz":"die Nase","not|no":"nicht","notebook|el cuaderno":"das Heft","octopus|el pulpo":"der Tintenfisch","of|de":"von","off|apagado / fuera":"aus / weg","old|viejo / vieja":"alt","one|uno":"eins","one day|un día":"eines Tages","or|o":"oder","orange|la naranja":"die Orange","orange|naranja":"orange","our|nuestro / nuestra":"unser / unsere","owl|el búho":"die Eule","paid|pagó":"bezahlte","pain|el dolor":"der Schmerz","paint|pintar":"malen","paint|la pintura":"die Farbe","paintbrush|el pincel":"der Pinsel","paper|el papel":"das Papier","path|el camino":"der Weg","paw|la pata":"die Pfote","pea|el guisante":"die Erbse","peach|el melocotón":"der Pfirsich","peck|picotear":"picken","pen|el bolígrafo":"der Kugelschreiber","pencil|el lápiz":"der Bleistift","phone|el teléfono":"das Telefon","pick|recoger":"pflücken","picked|recogió":"pflückte","picking|recogiendo":"pflückend","pie|la tarta":"der Kuchen (gefüllt)","pig|el cerdo":"das Schwein","pill|la pastilla":"die Tablette","pin|el alfiler":"die Stecknadel","pine|el pino":"die Kiefer","pink|rosa":"rosa","pip|la pepita":"der Kern","pipe|la tubería":"das Rohr","pitch|el campo (de fútbol)":"das Spielfeld","pizza|la pizza":"die Pizza","plain|sencillo / la llanura":"einfach / die Ebene","plant|la planta":"die Pflanze","plate|el plato":"der Teller","play|jugar":"spielen","Please|Por favor":"Bitte","plug|el enchufe":"der Stecker","police officer|el policía / la policía":"der Polizist / die Polizistin","porch|el porche":"die Veranda","post|el correo":"die Post","pot|la olla / la maceta":"der Topf / der Blumentopf","press|apretar / pulsar":"drücken","puff|el soplo":"der Hauch / der Puster","puffs|los soplos":"die Puster","purple|morado":"lila","quick|rápido":"schnell","quicker|más rápido":"schneller","quickest|el más rápido":"am schnellsten","quiet|silencioso / silenciosa":"leise","quiz|el concurso":"das Quiz","rabbit|el conejo":"das Kaninchen","raid|el asalto":"der Überfall","rail|la barandilla / el riel":"das Geländer / die Schiene","rain|la lluvia":"der Regen","rainbow|el arcoíris":"der Regenbogen","rake|el rastrillo":"der Rechen","rat|la rata":"die Ratte","ray|el rayo":"der Strahl","read|leer":"lesen","red|rojo":"rot","resting|descansando":"ausruhend","rice|el arroz":"der Reis","rich|rico":"reich","ring|el anillo":"der Ring","rip|romper":"zerreißen","ripe|maduro / madura":"reif","road|la carretera":"die Straße","roast|asar":"braten","rock|la roca / mecer":"der Felsen / schaukeln","roof|el tejado":"das Dach","room|la habitación":"das Zimmer","root|la raíz":"die Wurzel","rose|la rosa":"die Rose","rubbing|frotando":"reibend","ruler|la regla":"das Lineal","run|correr":"rennen","sack|el saco":"der Sack","sad|triste":"traurig","safe|seguro / segura":"sicher","said|dijo":"sagte","sail|navegar / la vela":"segeln / das Segel","same|igual":"gleich","sand|la arena":"der Sand","sandwich|el sándwich":"das Sandwich","sank|se hundió":"sank","Saturday|sábado":"Samstag","says|dice":"sagt","scared|asustado / asustada":"ängstlich","scarf|la bufanda":"der Schal","scary|que da miedo":"gruselig","school|la escuela":"die Schule","school bag|la mochila":"der Schulranzen","scissors|las tijeras":"die Schere","scoot|ir en patinete":"Roller fahren","scream|gritar":"schreien","screw|el tornillo":"die Schraube","sea|el mar":"das Meer","seats|los asientos":"die Sitze","second|segundo":"zweitens","see|ver":"sehen","seed|la semilla":"der Samen","seven|siete":"sieben","seventeen|diecisiete":"siebzehn","shark|el tiburón":"der Hai","she|ella":"sie","shed|el cobertizo":"der Schuppen","sheep|la oveja":"das Schaf","ship|el barco":"das Schiff","shirt|la camisa":"das Hemd","shoes|los zapatos":"die Schuhe","shoot|disparar / el brote":"schießen / der Trieb","shop|la tienda":"der Laden","shorts|los pantalones cortos":"die kurze Hose","show|mostrar / el espectáculo":"zeigen / die Show","shut|cerrar / cerrado":"zumachen / geschlossen","shy|tímido / tímida":"schüchtern","sick|enfermo / enferma":"krank","sing|cantar":"singen","sink|el lavabo / hundirse":"das Waschbecken / sinken","sink|el lavabo":"das Waschbecken","sit|sentarse":"sitzen","sit down|sentarse":"sich hinsetzen","site|la obra":"die Baustelle","sitting|sentado / sentándose":"sitzend","six|seis":"sechs","sixteen|dieciséis":"sechzehn","sleep|dormir":"schlafen","slow|lento / lenta":"langsam","slow|lento":"langsam","small|pequeño / pequeña":"klein","small|pequeño":"klein","smaller|más pequeño":"kleiner","smallest|el más pequeño":"am kleinsten","smell|oler":"riechen","smoke|el humo":"der Rauch","snail|el caracol":"die Schnecke","snake|la serpiente":"die Schlange","snow|la nieve":"der Schnee","snowman|el muñeco de nieve":"der Schneemann","so|así que":"also","so|así que / tan":"also / so","soap|el jabón":"die Seife","sock|el calcetín":"die Socke","socks|los calcetines":"die Socken","sofa|el sofá":"das Sofa","soft|suave":"weich","song|la canción":"das Lied","soon|pronto":"bald","Spain|España":"Spanien","spoke|habló":"sprach","spoon|la cuchara":"der Löffel","square|el cuadrado":"das Quadrat","stand up|levantarse":"aufstehen","star|la estrella":"der Stern","stew|el guiso":"der Eintopf","stone|la piedra":"der Stein","stoop|agacharse":"sich bücken","stop|¡alto! / parar":"Stopp! / anhalten","storm|la tormenta":"der Sturm / das Gewitter","straw|la pajita":"der Strohhalm","strawberry|la fresa":"die Erdbeere","stray|callejero":"streunend","strong|fuerte":"stark","such|tan / tal":"so / solch","suck|chupar":"lutschen","suddenly|de repente":"plötzlich","sun|el sol":"die Sonne","Sunday|domingo":"Sonntag","surprised|sorprendido / sorprendida":"überrascht","swim|nadar":"schwimmen","T-shirt|la camiseta":"das T-Shirt","table|la mesa":"der Tisch","tail|la cola":"der Schwanz","talk|hablar":"sprechen","talked|habló":"sprach","talker|el hablador / la habladora":"wer viel redet","talking|hablando":"sprechend","tall|alto / alta":"groß","tall|alto":"groß","taller|más alto":"größer","tallest|el más alto":"am größten","tank|el tanque":"der Panzer / der Tank","tea|el té":"der Tee","teach|enseñar":"unterrichten","teacher|el maestro / la maestra":"der Lehrer / die Lehrerin","tell|decir / contar":"sagen / erzählen","ten|diez":"zehn","tent|la tienda de campaña":"das Zelt","testing|probando":"testend","thank|dar las gracias":"danken","Thank you|Gracias":"Danke","the|el / la / los / las":"der / die / das","their|su (de ellos)":"ihr / ihre (von ihnen)","them|los / las / a ellos":"sie / ihnen","then|luego":"dann","then|luego / entonces":"dann","these|estos / estas":"diese","they|ellos / ellas":"sie (mehrere)","thin|delgado / fino":"dünn","think|pensar":"denken","third|tercero":"drittens","thirteen|trece":"dreizehn","three|tres":"drei","throw|lanzar":"werfen","Thursday|jueves":"Donnerstag","tick-tock|tictac":"tick-tack","tie|la corbata":"die Krawatte","tired|cansado / cansada":"müde","to|a / para":"zu / nach","toad|el sapo":"die Kröte","toast|la tostada":"der Toast","today|hoy":"heute","toes|los dedos del pie":"die Zehen","toilet|el váter":"die Toilette","tongue|la lengua":"die Zunge","tooth|el diente":"der Zahn","torch|la linterna":"die Taschenlampe","toy|el juguete":"das Spielzeug","train|el tren":"der Zug","trainers|las zapatillas":"die Turnschuhe","tray|la bandeja":"das Tablett","tree|el árbol":"der Baum","trousers|los pantalones":"die Hose","true|verdad":"wahr","Tuesday|martes":"Dienstag","tune|la melodía":"die Melodie","TV|la tele":"der Fernseher","twelve|doce":"zwölf","twenty|veinte":"zwanzig","two|dos":"zwei","ugly|feo / fea":"hässlich","umbrella|el paraguas":"der Regenschirm","us|nos / a nosotros":"uns","van|la furgoneta":"der Lieferwagen","walk|caminar":"gehen / laufen","walked|caminó":"ging","walking|caminando":"gehend","was|era / estaba":"war","wash|lavar":"waschen","watch|mirar / el reloj":"zuschauen / die Armbanduhr","water|el agua":"das Wasser","wave|saludar con la mano":"winken","we|nosotros / nosotras":"wir","weak|débil":"schwach","web|la telaraña":"das Spinnennetz","Wednesday|miércoles":"Mittwoch","weed|la mala hierba":"das Unkraut","wet|mojado / mojada":"nass","when|cuando":"wenn / als","Where is…?|¿Dónde está…?":"Wo ist …?","which|¿cuál?":"welche / welcher?","while|mientras":"während","white|blanco":"weiß","why|¿por qué?":"warum?","win|ganar":"gewinnen","wind|el viento":"der Wind","window|la ventana":"das Fenster","windows|las ventanas":"die Fenster","wing|el ala":"der Flügel","wink|guiñar el ojo":"zwinkern","winter|el invierno":"der Winter","wish|el deseo / desear":"der Wunsch / wünschen","wishes|los deseos":"die Wünsche","worried|preocupado / preocupada":"besorgt","write|escribir":"schreiben","yell|gritar":"brüllen","yellow|amarillo":"gelb","Yes|Sí":"Ja","you|tú":"du","your|tu":"dein / deine","zoo|el zoo":"der Zoo","zoom|ir muy rápido":"sausen"};
+const TOPIC_DE={"school": "Das Klassenzimmer", "phrases": "Nützliche Sätze", "writing": "Wörter zum Schreiben", "adjectives": "Die Adjektive", "pronouns": "Die Pronomen", "body": "Der Körper", "family": "Familie und Menschen", "food": "Essen und Trinken", "animals": "Die Tiere", "clothes": "Die Kleidung", "colours": "Die Farben", "numbers": "Die Zahlen", "days": "Die Wochentage", "home": "Zu Hause", "actions": "Die Verben", "feelings": "Die Gefühle", "weather": "Das Wetter"};
+/* pronunciation tips for German speakers: [tip for the teacher, hint in German for the pupil] */
+const SOUND_DE={
+ m:['Same as German m. Lips closed, hum: mmm.','Wie das deutsche m: mmm.'],
+ a:['Short a as in "cat": mouth wide open, between German a and ä. German speakers often say e instead, so "bad" sounds like "bed".','Ein kurzes a, fast wie ä. Mund weit auf: „cat“.'],
+ s:['Always a sharp hiss, like German ss in "Wasser", even at the start of a word. German speakers often buzz it ("zun" for "sun").','Immer scharf wie ss in „Wasser“, auch am Anfang: „sun“, nicht „zun“.'],
+ d:['Same as German d at the start. At the end of a word it stays soft in English: German speakers often harden it ("bet" for "bed").','Auch am Ende ein weiches d: „bed“, nicht „bet“.'],
+ t:['Same as German t, with a small puff of air.','Wie das deutsche t.'],
+ i:['Short i as in "pig", like i in German "Kind". Make sure it stays short, not "ie".','Wie das kurze i in „Kind“.'],
+ n:['Same as German n: nnn.','Wie das deutsche n: nnn.'],
+ p:['Same as German p, with a puff of air.','Wie das deutsche p.'],
+ g:['Hard g as in German "gut". At the end of a word it stays soft in English ("dog", not "dock").','Wie g in „gut“. Auch am Ende weich: „dog“, nicht „dock“.'],
+ o:['Short o as in "dog", like o in German "Gott".','Wie das kurze o in „Gott“.'],
+ c:['Hard sound like k. Never the "ts" sound of German c in "Cent".','Wie k in „Katze“.'],
+ k:['Same as German k.','Wie das deutsche k.'],
+ u:['Short u as in "sun": a short, relaxed "a", close to a in German "Kamm". Not like German u: watch for "sunn" for "sun".','Klingt wie ein kurzes a, nicht wie u: „sun“ klingt fast wie „sann“.'],
+ b:['Same as German b at the start. At the end of a word it stays soft in English ("cab", not "cap").','Wie das deutsche b, auch am Wortende weich.'],
+ f:['Same as German f: fff.','Wie das deutsche f: fff.'],
+ e:['Short e as in "bed", like e in German "Bett".','Wie das kurze e in „Bett“.'],
+ l:['Like German l at the start of a word. At the end ("ball") the English l is darker, with the back of the tongue raised.','Wie das deutsche l.'],
+ h:['Same as German h in "Haus".','Wie das h in „Haus“.'],
+ sh:['Same as German "sch" in "Schule".','Wie „sch“ in „Schule“.'],
+ r:['English r: tongue curls back and touches nothing. No throat r as in German. At the end of a word it is silent in British English.','Die Zunge rollt nach hinten und berührt nichts. Nicht im Hals sprechen.'],
+ j:['Like German "dsch" in "Dschungel". Never the German j sound (that is English y).','Wie „dsch“ in „Dschungel“, nicht wie das deutsche j.'],
+ v:['Top teeth on the bottom lip, then buzz: the sound of German w in "Wasser". German speakers often say f, because German v sounds like f ("Vogel").','Wie das deutsche w in „Wasser“: vvv.'],
+ y:['Same sound as German j in "ja".','Wie das deutsche j in „ja“.'],
+ w:['Round the lips as for u, then open. Not the German w: watch for "vet" for "wet".','Lippen rund wie bei u, dann öffnen. Nicht wie das deutsche w!'],
+ th:['Not in German. The tongue peeps out between the teeth. Watch for s, z or f instead ("sink" for "think").','Die Zunge kommt ein bisschen zwischen die Zähne.'],
+ z:['Buzz like a bee, like German s in "Sonne". Never "ts" like German z in "Zebra".','Summen wie eine Biene: zzz, wie s in „Sonne“, nicht „ts“.'],
+ ch:['Like German "tsch" in "tschüss".','Wie „tsch“ in „tschüss“.'],
+ qu:['Says "kw" with round lips. Softer than German "kv" in "Quelle".','Klingt wie „kw“, mit runden Lippen.'],
+ x:['Says "ks", like x in German "Hexe" or "Taxi".','Klingt wie „ks“, wie in „Hexe“.'],
+ ng:['Like ng in German "singen". No g at the end.','Wie „ng“ in „singen“, ohne g am Ende.'],
+ nk:['Like nk in German "Bank".','Wie „nk“ in „Bank“.'],
+ ay:['Like "ej" in "hey": e sliding to i. German has no long a like this, so it may come out as a plain long e.','Wie „ej“ in „hey“.'],
+ ee:['A long i, like "ie" in German "Biene".','Ein langes i, wie „ie“ in „Biene“.'],
+ igh:['Like "ei" in German "Eis". Careful: in German "ei" is spelled with e, in English this sound has many spellings.','Wie „ei“ in „Eis“.'],
+ ow1:['o sliding into u: "ou". German has no such glide, so it may come out as a plain long o.','Ein o, das zu u gleitet: „ou“.'],
+ oo1:['A long u, as in German "Schule".','Ein langes u, wie in „Schule“.'],
+ oo2:['A short u, close to u in German "Mutter".','Ein kurzes u, wie in „Mutter“.'],
+ ar:['A long a, as in German "Vater". The r is silent in British English.','Ein langes a, wie in „Vater“. Kein r.'],
+ or:['A long, round o, like o in German "Sport" but longer. The r is silent.','Ein langes, rundes o. Kein r.'],
+ air:['Like a long German ä, as in "Bär". The r is silent.','Ein langes ä, wie in „Bär“. Kein r.'],
+ ir:['Close to German ö, but with relaxed, unrounded lips. The r is silent.','Fast wie ö, aber mit lockeren Lippen. Kein r.'],
+ ou:['Same as German "au" in "Haus".','Wie „au“ in „Haus“.'],
+ oy:['Same as German "eu" in "heute".','Wie „eu“ in „heute“.'],
+ ea:['Same sound as ee: a long i, like German "ie".','Ein langes i, wie „ie“.'],
+ oi:['Same as oy: like German "eu" in "heute".','Wie „eu“ in „heute“.'],
+ 'a-e':['Same sound as ay ("ej"). The e at the end is silent but changes the a.','Klingt „ej“. Das e am Ende sagt man nicht.'],
+ 'i-e':['Same sound as igh, like German "ei".','Klingt wie „ei“. Das e am Ende sagt man nicht.'],
+ 'o-e':['Same sound as ow in "snow" ("ou").','Klingt „ou“. Das e am Ende sagt man nicht.'],
+ 'u-e':['"ju" as in "cube" (like German "Juli"), or a long u as in "flute".','Klingt „ju“. Das e am Ende sagt man nicht.'],
+ aw:['Same sound as or.','Wie „or“: ein langes, rundes o.'],
+ are:['Same sound as air.','Wie „air“: ein langes ä.'],
+ ur:['Same sound as ir.','Wie „ir“.'],
+ er:['At the end of a word: a weak "a", like the ending of German "Lehrer". The r is silent.','Am Ende wie in „Lehrer“: ein schwaches a. Kein r.'],
+ ow2:['Same as German "au" in "Haus". Careful: ow can also say "ou" as in "snow".','Wie „au“ in „Haus“.'],
+ ai:['Same sound as ay ("ej").','Klingt „ej“.'],
+ oa:['Same sound as ow in "snow" ("ou").','Klingt „ou“.'],
+ ew:['A long u ("screw") or "ju" ("new").','Ein langes u oder „ju“.'],
+ ire:['"ai-a", like German "Eier".','Wie „Eier“: „ei-a“.'],
+ ear:['"i-a", like German "hier".','Wie „hier“: „i-a“.'],
+ ure:['"ju-a", as in "pure".','Klingt „ju-a“.']
+};
+
+const EN_CHEERS=['Well done!','Great!','Yes!','Brilliant!','Super!'];
+const EN_TRYS=['Try again.','Nearly!','Have another go.'];
+const LANGS={
+  es:{name:'Spanish',key:'es',hello:'¡Hola',tips:true,tipTitle:'Tip for Spanish speakers',hintTitle:'Pista en español',
+      askEn:'¿Cómo se dice en inglés?',askBack:'¿Cómo se dice en español?',finished:'¡Terminado!',listen:'Escucha y toca.',read:'Lee y toca.',pairs:'Busca las parejas.',welldone:'¡Muy bien!',
+      cheers:['¡Muy bien!','¡Genial!','¡Sí!','¡Excelente!','¡Súper!'],trys:['¡Otra vez!','¡Casi!','¡Inténtalo!'],myList:'Mi lista',example:'el gato'},
+  de:{name:'German',key:'de',hello:'Hallo',tips:true,tipTitle:'Tip for German speakers',hintTitle:'Tipp auf Deutsch',
+      askEn:'Wie heißt das auf Englisch?',askBack:'Wie heißt das auf Deutsch?',finished:'Fertig!',listen:'Hör zu und tippe.',read:'Lies und tippe.',pairs:'Finde die Paare.',welldone:'Super gemacht!',
+      cheers:['Super gemacht!','Toll!','Ja!','Prima!','Klasse!'],trys:['Noch einmal!','Fast!','Versuch es nochmal!'],myList:'Meine Liste',example:'die Katze'},
+  other:{name:'Other language',key:'tr',hello:'Hello',tips:false,tipTitle:'',hintTitle:'',askEn:'',askBack:'',finished:'',listen:'',read:'',pairs:'',welldone:'',
+      cheers:null,trys:null,myList:'My list',example:''}
+};
+function curLang(){const p=(typeof fb!=='undefined'&&fb.user)?currentPupilObj():null;return p?(LANGS[p.lang]?p.lang:'es'):(LANGS[state.settings.exploreLang]?state.settings.exploreLang:'es');}
+function L(){const code=curLang();const o=Object.assign({},LANGS[code]);
+  if(code==='other'){const p=(typeof fb!=='undefined'&&fb.user)?currentPupilObj():null;o.name=(p&&(p.langName||'').trim())||'home language';}
+  return o;}
+function mKey(){return L().key;}
+function meaning(w){return (w&&w[mKey()])||'';}
+function blendMeaning(w){return w[{es:2,de:3,tr:4}[mKey()]]||'';}
+function topicSub(tp){if(tp.custom)return L().myList;if(tp.nelson)return 'Nelson 1A';const c=curLang();return c==='es'?tp.es:c==='de'?(TOPIC_DE[tp.id]||''):'';}
+function cheer(){const i=Math.floor(Math.random()*EN_CHEERS.length);const l=L();return EN_CHEERS[i]+(l.cheers?' '+l.cheers[i]:'');}
+function tryAgain(){const i=Math.floor(Math.random()*EN_TRYS.length);const l=L();return EN_TRYS[i]+(l.trys?' '+l.trys[i]:'');}
+function withL(en,k){const v=L()[k];return en+(v?' '+v:'');}
+function langLabel(p){const c=LANGS[p.lang]?p.lang:'es';return c==='other'?((p.langName||'').trim()||'Other language'):LANGS[c].name;}
+
 
 const LEVELS = [
  {id:'l1',name:'Set 1: short words',sub:'cat, dog, sun',words:[
@@ -405,6 +498,7 @@ const LEVELS = [
   ['b-ear-d','🧔','la barba']]}
 ];
 
+LEVELS.forEach(l=>l.words.forEach(w=>{w[3]=DE[w[0].replace(/[-*]/g,'')+'|'+w[2]]||'';}));
 const TOPICS = [
  {id:'school',name:'Classroom',es:'La clase',icon:'🏫',words:[
   ['pencil','el lápiz','✏️'],['pen','el bolígrafo','🖊️'],['book','el libro','📖'],['notebook','el cuaderno','📓'],['scissors','las tijeras','✂️'],
@@ -487,7 +581,7 @@ const TOPICS = [
  {id:'weather',name:'Weather',es:'El tiempo',icon:'🌦️',words:[
   ['sun','el sol','☀️'],['rain','la lluvia','🌧️'],['snow','la nieve','❄️'],['wind','el viento','💨'],['cloud','la nube','☁️'],
   ['storm','la tormenta','⛈️'],['rainbow','el arcoíris','🌈'],['umbrella','el paraguas','☂️']]}
-].map(t=>({...t,words:t.words.map(([en,es,pic])=>({en,es,pic}))}));
+].map(t=>({...t,words:t.words.map(([en,es,pic])=>({en,es,pic,de:DE[en+'|'+es]||''}))}));
 
 
 /* ---------------- ASSESSMENT DATA (Phase 2 and Phase 3 sheets) ---------------- */
@@ -572,7 +666,7 @@ const NELSON_RAW=[
    ['school','la escuela','🏫','','t'],['to','a / para','','','t'],['do','hacer','','','t']]}
 ];
 const NELSON=NELSON_RAW.map(x=>({id:'n'+x.u,unit:x.u,name:'Unit '+x.u+': '+x.focus,es:'Nelson 1A',icon:x.focus,nelson:true,
-  words:x.words.map(([en,es,pic,snd,f=''])=>({en,es,pic,snd,key:f.includes('k'),tricky:f.includes('t')}))}));
+  words:x.words.map(([en,es,pic,snd,f=''])=>({en,es,pic,snd,de:DE[en+'|'+es]||'',key:f.includes('k'),tricky:f.includes('t')}))}));
 
 /* ---------------- STATE ---------------- */
 const store = {
@@ -613,8 +707,6 @@ const shuffle = a => {a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.flo
 const pick = a => a[Math.floor(Math.random()*a.length)];
 let toastT;
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),1800);}
-const CHEERS=['Well done! ¡Muy bien!','Great! ¡Genial!','Yes! ¡Sí!','Brilliant! ¡Excelente!','Super! ¡Súper!'];
-const TRYS=['Try again. ¡Otra vez!','Nearly! ¡Casi!','Have another go. ¡Inténtalo!'];
 
 function picHTML(p,cls='pic'){
   if(!p) return `<span class="${cls} nopic">📝</span>`;
@@ -677,12 +769,12 @@ function topicById(id){const t=allTopics().find(t=>t.id===id);if(t&&t.nelson&&ui
 function nelsonLevel(){
   const NE=NELSON.map(applyEdits);
   const units=ui.nelsonUnit==='all'||!ui.nelsonUnit?NE:NE.filter(t=>String(t.unit)===String(ui.nelsonUnit));
-  const words=units.flatMap(t=>t.words.filter(w=>w.snd&&(!ui.keyOnly||w.key)).map(w=>[w.snd,w.pic,w.es]));
+  const words=units.flatMap(t=>t.words.filter(w=>w.snd&&(!ui.keyOnly||w.key)).map(w=>[w.snd,w.pic,w.es||'',w.de||'',w.tr||'']));
   return {id:'nelson',name:'Nelson 1A',sub:'key words by unit',words};
 }
 function allLevels(){
   const mine=[];
-  state.custom.forEach(c=>c.words.forEach(w=>{if(w.snd&&w.snd.includes('-'))mine.push([w.snd,w.pic,w.es]);}));
+  state.custom.forEach(c=>c.words.forEach(w=>{if(w.snd&&w.snd.includes('-'))mine.push([w.snd,w.pic,w.es||'',w.de||'',w.tr||'']);}));
   const base=LEVELS.concat([nelsonLevel()]);
   return mine.length ? base.concat([{id:'mine',name:'My words',sub:'from your own lists',words:mine}]) : base;
 }
@@ -709,8 +801,9 @@ function render(){
 /* ---------------- SOUNDS ---------------- */
 function renderSounds(){
   const cp=currentPupilObj();const name=(fb.user&&cp&&(cp.name||'').trim())?`, ${esc(cp.name.trim())}`:'';
-  let h=`<div class="pagehead"><div><h1>¡Hola${name}! Speed sounds</h1>
-    <p>Tap a sound to see a picture word and a tip comparing it with Spanish.</p></div>
+  const lg=L();
+  let h=`<div class="pagehead"><div><h1>${esc(lg.hello)}${name}! Speed sounds</h1>
+    <p>Tap a sound to see its picture word${lg.tips?' and a tip comparing it with '+esc(lg.name):''}.</p></div>
     <div class="seg" role="group" aria-label="Sound activity">
       <button class="${ui.soundsMode==='chart'?'on':''}" data-act="smode" data-arg="chart">Sound chart</button>
       <button class="${ui.soundsMode==='speed'?'on':''}" data-act="smode" data-arg="speed">Speed sounds quiz</button>
@@ -736,8 +829,8 @@ function soundModal(id){
   const s=SOUND_BY_ID[id]; const st=state.sounds[id]||'';
   showModal(`<div class="bigg">${esc(s.g)}</div>
    <div class="example">${picHTML(s.pic)}<span class="w">${esc(s.word)}</span><button class="btn" data-act="say" data-arg="${esc(s.word)}">🔊 Listen</button></div>
-   <div class="tipbox"><h3>Tip for Spanish speakers</h3><p>${esc(s.tip)}</p></div>
-   <div class="tipbox"><h3 class="es">Pista en español</h3><p class="es">${esc(s.es)}</p></div>
+   ${(()=>{const lg=L();if(!lg.tips)return '';const t=curLang()==='de'?SOUND_DE[id]:[s.tip,s.es];
+     return `<div class="tipbox"><h3>${esc(lg.tipTitle)}</h3><p>${esc(t[0])}</p></div><div class="tipbox"><h3 class="es">${esc(lg.hintTitle)}</h3><p class="es">${esc(t[1])}</p></div>`;})()}
    <div class="row center" style="margin-top:14px">
      <button class="btn ${st==='known'?'good':'alt'}" data-act="setsound" data-arg="${id}|known">✓ Knows it</button>
      <button class="btn ${st==='practise'?'coral':'alt'}" data-act="setsound" data-arg="${id}|practise">! Needs practice</button>
@@ -761,7 +854,7 @@ function speedHTML(){
   if(sp.i>=sp.deck.length){
     const missed=sp.deck.filter(id=>sp.res[id]===false);
     const got=sp.deck.length-missed.length;
-    return `<div class="flash cheer"><h2>Finished! ¡Terminado!</h2>
+    return `<div class="flash cheer"><h2>${withL('Finished!','finished')}</h2>
       <p style="font-size:1.4rem">${got} out of ${sp.deck.length} sounds</p>
       ${missed.length?`<p>Practise these:</p><div class="reslist">${missed.map(id=>`<span>${esc(SOUND_BY_ID[id].g)}</span>`).join('')}</div>`:'<p>Every sound right! 🌟</p>'}
       <div class="row center"><button class="btn" data-act="spagain">Go again</button>${missed.length?'<button class="btn coral" data-act="spmissed">Practise the missed ones</button>':''}<button class="btn alt" data-act="spclose">Change sets</button></div></div>`;
@@ -806,7 +899,7 @@ function renderBlending(){
   if(!bs.words.length){app.innerHTML=h+`<div class="wordstage"><p class="empty">No words for this activity at this level.</p></div>`;return;}
   const n=bs.words.length;
   if(bs.stage==='end'){
-    app.innerHTML=h+`<div class="wordstage cheer"><div class="reveal"><span class="pic">🌟</span><h2 style="font-size:2rem">Finished! ¡Terminado!</h2><p style="font-size:1.3rem;margin:0">${n} words. Well done! ¡Muy bien!</p></div>
+    app.innerHTML=h+`<div class="wordstage cheer"><div class="reveal"><span class="pic">🌟</span><h2 style="font-size:2rem">Finished! ¡Terminado!</h2><p style="font-size:1.3rem;margin:0">${n} words. ${withL('Well done!','welldone')}</p></div>
       <div class="row center" style="margin-top:14px"><button class="btn big" data-act="breview">📝 Teacher review</button><button class="btn big alt" data-act="bnewset">New set of words</button></div>
       ${bs.saved?'<p class="counter">Review saved. You can see it under Progress.</p>':''}</div>`;
     return;
@@ -830,7 +923,7 @@ function renderBlending(){
     const done=bs.revealed;
     h+=bar+`<div class="wordstage"><div class="counter">Word ${bs.i+1} of ${n}</div>
       <div class="sbrow">${soundButtonsHTML(ts)}</div>
-      <div class="reveal">${done?`<div class="cheer">${picHTML(w[1])}</div><span class="w">${esc(word)}</span>${state.settings.spanish?`<span class="es">${esc(w[2])}</span>`:''}`:'<span class="counter">Say each sound, then blend them into the word</span>'}</div>
+      <div class="reveal">${done?`<div class="cheer">${picHTML(w[1])}</div><span class="w">${esc(word)}</span>${state.settings.spanish&&blendMeaning(w)?`<span class="es">${esc(blendMeaning(w))}</span>`:''}`:'<span class="counter">Say each sound, then blend them into the word</span>'}</div>
       <div class="row center">
         ${done?`<button class="btn alt" data-act="say" data-arg="${esc(word)}">🔊 Hear it</button><button class="btn big good" data-act="bnext">${last?'Finish ✓':'Next ▶'}</button>`
         :`<button class="btn coral big" data-act="blend">Blend it! ✨</button>`}
@@ -844,10 +937,10 @@ function renderBlending(){
     const sp=bs.spell;
     h+=bar+`<div class="wordstage"><div class="counter">Word ${bs.i+1} of ${n}</div>
       <div class="reveal" style="min-height:110px">${picHTML(w[1])}${sp.checked&&sp.ok?`<span class="w">${esc(word)}</span>`:''}</div>
-      <div class="row center"><button class="btn" data-act="say" data-arg="${esc(word)}">🔊 Hear the word</button>${state.settings.spanish?`<span class="es">${esc(w[2])}</span>`:''}</div>
+      <div class="row center"><button class="btn" data-act="say" data-arg="${esc(word)}">🔊 Hear the word</button>${state.settings.spanish&&blendMeaning(w)?`<span class="es">${esc(blendMeaning(w))}</span>`:''}</div>
       <div class="slots">${ts.map((t,i)=>{const v=sp.slots[i];let c=v?'filled':'';if(sp.checked&&v)c+=(v===t?' right':' wrong');return `<div class="slot ${c}">${v?esc(v):''}</div>`;}).join('')}</div>
       <div class="tiles">${sp.tiles.map(t=>`<button class="tile sound" data-act="stile" data-arg="${esc(t)}" ${sp.slots.length>=ts.length?'disabled':''}>${esc(t)}</button>`).join('')}</div>
-      <div class="feedback ${sp.checked?(sp.ok?'ok':'no'):''}">${sp.checked?(sp.ok?pick(CHEERS):pick(TRYS)):''}</div>
+      <div class="feedback ${sp.checked?(sp.ok?'ok':'no'):''}">${sp.checked?(sp.ok?cheer():tryAgain()):''}</div>
       <div class="row center">
         <button class="btn alt" data-act="sundo" ${!sp.slots.length?'disabled':''}>⌫ Undo</button>
         <button class="btn alt" data-act="sclear">Clear</button>
@@ -865,10 +958,10 @@ function renderVocab(){
   const t=ui.topic?topicById(ui.topic):null;
   if(t&&t.nelson)t.icon=t.icon;
   if(!t){
-    let h=`<div class="pagehead"><div><h1>Vocabulary</h1><p>Pick a topic. Each word has a picture, the English word and the Spanish meaning. Three stars ★★★ means she knows it.</p></div>
-      <label class="row" style="gap:8px"><input type="checkbox" id="showes" data-act="toggles" ${state.settings.spanish?'checked':''}> Show Spanish</label></div>
+    let h=`<div class="pagehead"><div><h1>Vocabulary</h1><p>Pick a topic. Each word has a picture, the English word and its meaning in ${esc(L().name)}. Three stars ★★★ means the pupil knows it.</p></div>
+      <label class="row" style="gap:8px"><input type="checkbox" id="showes" data-act="toggles" ${state.settings.spanish?'checked':''}> Show ${esc(L().name)}</label></div>
       <div class="tgrid">`;
-    const tile=tp=>`<button class="topic ${tp.custom?'custom':''} ${tp.nelson?'nelson':''}" data-act="topic" data-arg="${esc(tp.id)}"><span class="ic">${esc(tp.icon)}</span><b>${esc(tp.name)}</b><span class="es">${esc(tp.es)}</span><span class="meta">${tp.words.length} words${tp.nelson?` · 🔑 ${tp.words.filter(w=>w.key).length}`:''} · ${topicStars(tp)} learned</span></button>`;
+    const tile=tp=>`<button class="topic ${tp.custom?'custom':''} ${tp.nelson?'nelson':''}" data-act="topic" data-arg="${esc(tp.id)}"><span class="ic">${esc(tp.icon)}</span><b>${esc(tp.name)}</b><span class="es">${esc(topicSub(tp))}</span><span class="meta">${tp.words.length} words${tp.nelson?` · 🔑 ${tp.words.filter(w=>w.key).length}`:''} · ${topicStars(tp)} learned</span></button>`;
     TOPICS.map(applyEdits).forEach(tp=>h+=tile(tp));
     h+=`</div><div class="setlabel" style="margin-top:28px"><h2>Nelson Spelling Pupil Book 1A</h2><span class="chip">key words and tricky words</span></div><div class="tgrid">`;
     NELSON.map(applyEdits).forEach(tp=>h+=tile(tp));
@@ -879,7 +972,7 @@ function renderVocab(){
   }
   const modes=[['learn','Picture dictionary'],['flash','Flashcards'],['listen','Listen and find'],['read','Read and find'],['spell','Spell it'],['pairs','Pairs game']];
   let h=`<div class="pagehead"><div><button class="mini" data-act="topics">◀ All topics</button>
-     <h1 style="margin-top:8px">${t.nelson?'':t.icon+' '}${esc(t.name)} <span class="es" style="font-size:1.1rem">${esc(t.es)}</span></h1></div>
+     <h1 style="margin-top:8px">${t.nelson?'':t.icon+' '}${esc(t.name)} <span class="es" style="font-size:1.1rem">${esc(topicSub(t))}</span></h1></div>
      <div class="row">${t.custom?`<button class="btn alt" data-act="editlist" data-arg="${esc(t.id)}">✎ Edit list</button>`:`<button class="btn alt" data-act="edittopic" data-arg="${esc(t.id)}">✎ Edit words</button>`}
      ${t.nelson?`<label class="row" style="gap:8px;background:var(--card);border:1px solid var(--line);padding:8px 12px;border-radius:12px"><input type="checkbox" id="keyonly" ${ui.keyOnly?'checked':''}> 🔑 Key words only</label>`:''}</div></div>
      <div class="seg" role="group" aria-label="Vocabulary activity" style="margin-bottom:16px">${modes.map(([m,l])=>`<button class="${ui.vmode===m?'on':''}" data-act="vmode" data-arg="${m}">${l}</button>`).join('')}</div>`;
@@ -893,7 +986,7 @@ function renderVocab(){
 }
 function learnHTML(t){
   return `<div class="vgrid">${t.words.map((w,i)=>{const n=state.stars[starKey(t.id,w)]||0;
-    return `<div class="vcard ${w.key?'key':''}"><div class="row center" style="gap:4px;min-height:${t.nelson?'1.4em':'0'}">${w.key?'<span class="keyw" title="Key word">🔑 key word</span>':''}${w.tricky?'<span class="tricky">tricky word</span>':''}</div>${picHTML(w.pic)}<span class="en">${esc(w.en)}</span>${state.settings.spanish?`<span class="es">${esc(w.es)}</span>`:''}
+    return `<div class="vcard ${w.key?'key':''}"><div class="row center" style="gap:4px;min-height:${t.nelson?'1.4em':'0'}">${w.key?'<span class="keyw" title="Key word">🔑 key word</span>':''}${w.tricky?'<span class="tricky">tricky word</span>':''}</div>${picHTML(w.pic)}<span class="en">${esc(w.en)}</span>${state.settings.spanish&&meaning(w)?`<span class="es">${esc(meaning(w))}</span>`:''}
       <button class="stars" data-act="star" data-arg="${i}" title="Tap to change: ${n} of 3 stars" style="border:0;background:transparent;font-size:1.1rem;padding:0 4px">${stars(n)}</button>
       <div class="row center"><button class="mini" data-act="say" data-arg="${esc(w.en)}" aria-label="Say in English">🔊 Listen</button><button class="mini" data-act="star" data-arg="${i}" aria-label="Add a star (0 to 3)">⭐ +1</button></div></div>`;}).join('')}</div>`;
 }
@@ -901,17 +994,17 @@ function flashHTML(t){
   if(!ui.flash||ui.flash.tid!==t.id) ui.flash={tid:t.id,order:shuffle([...t.words.keys()]),i:0,show:false};
   const f=ui.flash; const w=t.words[f.order[f.i%f.order.length]];
   const toEn=ui.flashDir!=='es';
-  const dir=`<div class="seg" role="group" aria-label="Flashcard direction" style="margin-bottom:12px"><button class="${toEn?'on':''}" data-act="fdir" data-arg="en">Spanish → English</button><button class="${!toEn?'on':''}" data-act="fdir" data-arg="es">English → Spanish</button></div>`;
-  const shown = toEn ? `<div class="es" style="font-size:1.8rem">${esc(w.es)}</div>` : `<div class="en">${esc(w.en)}</div><div class="row center"><button class="mini" data-act="say" data-arg="${esc(w.en)}">🔊 Listen</button></div>`;
-  const answer = toEn ? `<div class="en">${f.show?esc(w.en):''}</div>` : `<div class="es" style="font-size:1.8rem;min-height:1.4em">${f.show?esc(w.es):''}</div>`;
-  const ask = toEn ? 'What is it in English? ¿Cómo se dice en inglés?' : 'What is it in Spanish? ¿Cómo se dice en español?';
+  const dir=`<div class="seg" role="group" aria-label="Flashcard direction" style="margin-bottom:12px"><button class="${toEn?'on':''}" data-act="fdir" data-arg="en">${esc(L().name)} → English</button><button class="${!toEn?'on':''}" data-act="fdir" data-arg="es">English → ${esc(L().name)}</button></div>`;
+  const shown = toEn ? `<div class="es" style="font-size:1.8rem">${meaning(w)?esc(meaning(w)):'<span class="counter">No translation yet. Add one with ✎ Edit words.</span>'}</div>` : `<div class="en">${esc(w.en)}</div><div class="row center"><button class="mini" data-act="say" data-arg="${esc(w.en)}">🔊 Listen</button></div>`;
+  const answer = toEn ? `<div class="en">${f.show?esc(w.en):''}</div>` : `<div class="es" style="font-size:1.8rem;min-height:1.4em">${f.show?(esc(meaning(w))||'<span class="counter">No translation yet</span>'):''}</div>`;
+  const ask = toEn ? withL('What is it in English?','askEn') : withL('What is it in '+L().name+'?','askBack');
   return `<div style="text-align:center">${dir}</div><div class="flashcard"><div class="counter">${f.i%f.order.length+1} / ${f.order.length}${w.key?' · 🔑':''}</div>
     ${picHTML(w.pic)}
     ${shown}
     ${answer}
     <p class="counter">${f.show?'Did she know it?':ask}</p>
     <div class="row center">${f.show?`<button class="btn alt" data-act="say" data-arg="${esc(w.en)}">🔊 Hear it</button><button class="btn bad" data-act="fans" data-arg="0">✗ Not yet</button><button class="btn good" data-act="fans" data-arg="1">✓ Knew it</button>`
-      :`<button class="btn big coral" data-act="fshow">${toEn?'Show the English word':'Show the Spanish word'}</button>`}</div></div>`;
+      :`<button class="btn big coral" data-act="fshow">${toEn?'Show the English word':'Show the '+esc(L().name)+' word'}</button>`}</div></div>`;
 }
 function addStar(t,w,delta){const k=starKey(t.id,w);state.stars[k]=Math.max(0,Math.min(3,(state.stars[k]||0)+delta));save();}
 
@@ -930,19 +1023,19 @@ function quizHTML(t){
   }
   const q=ui.quiz;
   if(q.i>=q.qs.length){
-    return `<div class="qwrap cheer"><h2>Finished! ¡Terminado!</h2><p class="qprompt">${q.score} / ${q.qs.length}</p><p>${q.score===q.qs.length?'Perfect! 🌟':'Every right answer adds a star to that word.'}</p>
+    return `<div class="qwrap cheer"><h2>${withL('Finished!','finished')}</h2><p class="qprompt">${q.score} / ${q.qs.length}</p><p>${q.score===q.qs.length?'Perfect! 🌟':'Every right answer adds a star to that word.'}</p>
       <div class="row center"><button class="btn" data-act="qagain">Play again</button></div></div>`;
   }
   const cur=q.qs[q.i]; const allPics=cur.opts.every(o=>o.pic);
-  const face=o=> (allPics ? picHTML(o.pic) : '') + (allPics&&q.answered!=null ? `<span class="lbl" style="font-size:1rem">${esc(o.en)}</span>` : '') + (!allPics ? `<span class="lbl">${esc(mode==='listen'?o.en:o.es)}</span>`:'');
+  const face=o=> (allPics ? picHTML(o.pic) : '') + (allPics&&q.answered!=null ? `<span class="lbl" style="font-size:1rem">${esc(o.en)}</span>` : '') + (!allPics ? `<span class="lbl">${esc(mode==='listen'?o.en:(meaning(o)||o.en))}</span>`:'');
   const prompt = mode==='listen'
-    ? `<p class="counter">Listen and tap the right one. Escucha y toca.</p><button class="btn big" data-act="say" data-arg="${esc(cur.w.en)}">🔊 Listen again</button>`
-    : `<p class="counter">Read the word and tap the picture. Lee y toca.</p><div class="qprompt">${esc(cur.w.en)}</div>`;
+    ? `<p class="counter">${withL('Listen and tap the right one.','listen')}</p><button class="btn big" data-act="say" data-arg="${esc(cur.w.en)}">🔊 Listen again</button>`
+    : `<p class="counter">${withL('Read the word and tap the picture.','read')}</p><div class="qprompt">${esc(cur.w.en)}</div>`;
   return `<div class="progressbar"><i style="width:${Math.round(q.i/q.qs.length*100)}%"></i></div>
    <div class="qwrap"><div class="counter">${q.i+1} / ${q.qs.length}</div>${prompt}
    <div class="qgrid">${cur.opts.map((o,i)=>{let c='';if(q.answered!=null){if(o.en===cur.w.en)c='right';else if(i===q.answered)c='wrong';}
      return `<button class="qopt ${c}" data-act="qans" data-arg="${i}" ${q.answered!=null?'disabled':''}>${face(o)}</button>`;}).join('')}</div>
-   <div class="feedback ${q.answered!=null?(cur.opts[q.answered].en===cur.w.en?'ok':'no'):''}">${q.answered!=null?(cur.opts[q.answered].en===cur.w.en?pick(CHEERS):`It's "${esc(cur.w.en)}" (${esc(cur.w.es)})`):''}</div>
+   <div class="feedback ${q.answered!=null?(cur.opts[q.answered].en===cur.w.en?'ok':'no'):''}">${q.answered!=null?(cur.opts[q.answered].en===cur.w.en?cheer():`It's "${esc(cur.w.en)}"${meaning(cur.w)?' ('+esc(meaning(cur.w))+')':''}`):''}</div>
    ${q.answered!=null?'<div class="row center"><button class="btn big" data-act="qnext">Next ▶</button></div>':''}</div>`;
 }
 function spellable(t){return t.words.filter(w=>/^[A-Za-z]{2,10}$/.test(w.en));}
@@ -954,11 +1047,11 @@ function lspellHTML(t){
   if(!s.tiles) newLetters(list);
   const target=w.en.toLowerCase();
   return `<div class="qwrap"><div class="counter">${s.i%s.order.length+1} / ${s.order.length}</div>
-    <div class="reveal" style="min-height:110px">${picHTML(w.pic)}${state.settings.spanish?`<span class="es">${esc(w.es)}</span>`:''}</div>
+    <div class="reveal" style="min-height:110px">${picHTML(w.pic)}${state.settings.spanish&&meaning(w)?`<span class="es">${esc(meaning(w))}</span>`:''}</div>
     <div class="row center"><button class="btn" data-act="say" data-arg="${esc(w.en)}">🔊 Hear the word</button><button class="mini" data-act="lhint">💡 First letter</button></div>
     <div class="slots">${[...target].map((ch,i)=>{const v=s.slots[i];let c=v!=null?'filled':'';if(s.checked&&v!=null)c+=(s.tiles[v]===ch?' right':' wrong');return `<div class="slot ${c}" style="min-width:56px;height:70px;font-size:2.2rem">${v!=null?esc(s.tiles[v]):''}</div>`;}).join('')}</div>
     <div class="tiles">${s.tiles.map((ch,i)=>`<button class="tile" data-act="ltile" data-arg="${i}" ${s.slots.includes(i)||s.slots.length>=target.length?'disabled':''}>${esc(ch)}</button>`).join('')}</div>
-    <div class="feedback ${s.checked?(s.ok?'ok':'no'):''}">${s.checked?(s.ok?pick(CHEERS):pick(TRYS)):''}</div>
+    <div class="feedback ${s.checked?(s.ok?'ok':'no'):''}">${s.checked?(s.ok?cheer():tryAgain()):''}</div>
     <div class="row center"><button class="btn alt" data-act="lundo" ${!s.slots.length?'disabled':''}>⌫ Undo</button><button class="btn alt" data-act="lclear">Clear</button>${s.checked&&s.ok?'<button class="btn good" data-act="lnext">Next ▶</button>':''}<button class="mini" data-act="lnext">Skip ▶</button></div></div>`;
 }
 function newLetters(list){
@@ -975,9 +1068,9 @@ function pairsHTML(t){
   const p=ui.pairs;
   if(p.cards.length<4) return `<p class="empty">This list doesn't have enough pictures for the pairs game. Try another activity.</p>`;
   if(p.done.length===p.cards.length){
-    return `<div class="qwrap cheer"><h2>All pairs found! ¡Muy bien!</h2><p>${p.tries} tries</p><div class="row center"><button class="btn" data-act="pagain">Play again</button></div></div>`;
+    return `<div class="qwrap cheer"><h2>${withL('All pairs found!','welldone')}</h2><p>${p.tries} tries</p><div class="row center"><button class="btn" data-act="pagain">Play again</button></div></div>`;
   }
-  return `<p class="counter" style="text-align:center">Find the picture and its word. Busca las parejas.</p>
+  return `<p class="counter" style="text-align:center">${withL('Find the picture and its word.','pairs')}</p>
     <div class="mgrid">${p.cards.map((c,i)=>{const isOpen=p.open.includes(i)||p.done.includes(i);
       const inner= !isOpen ? '?' : (c.type==='pic'?picHTML(c.w.pic):`<span class="lbl">${esc(c.w.en)}</span>`);
       return `<button class="mcard ${p.done.includes(i)?'done':isOpen?'open':''}" data-act="pcard" data-arg="${i}" aria-label="card ${i+1}">${inner}</button>`;}).join('')}</div>`;
@@ -996,7 +1089,7 @@ function renderEditor(){
    <div class="panel" id="wordform"><h2>${ui.editWord!=null?'Edit word':'Add a word'}</h2>
      <div class="form">
        <label class="field">English word<input id="wen" placeholder="cat" value="${esc(ew.en||'')}"></label>
-       <label class="field">Spanish meaning<input id="wes" placeholder="el gato" value="${esc(ew.es||'')}"></label>
+       <label class="field">${esc(L().name)} meaning<input id="wes" placeholder="${esc(L().example)}" value="${esc(meaning(ew))}"></label>
        <label class="field">Emoji picture (optional)<input id="wpic" placeholder="🐱" value="${esc(ew.pic&&!ew.pic.startsWith('data:')?ew.pic:'')}"></label>
        <label class="field">${ew.pic&&ew.pic.startsWith('data:')?'Replace the photo (optional)':'Or a photo (optional)'}<input id="wimg" type="file" accept="image/*"></label>
        <label class="field">Sound buttons (optional)<input id="wsnd" placeholder="c-a-t   or   sh-ee-p" value="${esc(ew.snd||'')}"></label>
@@ -1007,11 +1100,11 @@ function renderEditor(){
      </div>
      <p class="counter" style="margin-bottom:0">Sound buttons: split the word into sounds with dashes. Words with sound buttons also appear in Blending under "My words". For a-e type words write c-a*-k-*e.</p></div>
    <div class="panel"><h2>Add many words at once</h2>
-     <p class="counter" style="margin-top:0">One word per line: English, Spanish, emoji, sound buttons. Only the English word is needed.</p>
+     <p class="counter" style="margin-top:0">One word per line: English, ${esc(L().name)}, emoji, sound buttons. Only the English word is needed.</p>
      <label class="field" for="bulk">Word list<textarea id="bulk" placeholder="ship, el barco, 🚢, sh-i-p&#10;shop, la tienda, 🏪, sh-o-p&#10;fish, el pez, 🐟, f-i-sh"></textarea></label>
      <div class="row" style="margin-top:8px"><button class="btn" data-act="bulkadd">Add these words</button></div></div>
    <div class="panel"><h2>Words in this list (${c.words.length})</h2>
-     <div class="wlist">${c.words.length?c.words.map((w,i)=>`<div class="witem">${picHTML(w.pic)}<div class="t"><b>${esc(w.en)}</b> <small>${esc(w.es||'')}${w.snd?' · '+esc(w.snd):''}</small></div><button class="mini" data-act="editword" data-arg="${i}">✎ Edit</button><button class="mini" data-act="delword" data-arg="${i}">Remove</button></div>`).join(''):'<p class="empty">No words yet.</p>'}</div></div>
+     <div class="wlist">${c.words.length?c.words.map((w,i)=>`<div class="witem">${picHTML(w.pic)}<div class="t"><b>${esc(w.en)}</b> <small>${esc(meaning(w))}${w.snd?' · '+esc(w.snd):''}</small></div><button class="mini" data-act="editword" data-arg="${i}">✎ Edit</button><button class="mini" data-act="delword" data-arg="${i}">Remove</button></div>`).join(''):'<p class="empty">No words yet.</p>'}</div></div>
    <div class="row">${confirming?`<span>Delete the whole list?</span><button class="btn bad" data-act="dellistyes">Yes, delete</button><button class="btn alt" data-act="cancelconfirm">Cancel</button>`:`<button class="btn alt" data-act="dellist">Delete this list</button>`}</div>`;
 }
 
@@ -1032,7 +1125,7 @@ function renderTopicEditor(){
    <div class="panel" id="wordform"><h2>${ui.editWordT!=null?'Edit word':'Add a word'}</h2>
      <div class="form">
        <label class="field">English word<input id="ten" value="${esc(ew.en||'')}" placeholder="e.g. giraffe"></label>
-       <label class="field">Spanish meaning<input id="tes" value="${esc(ew.es||'')}" placeholder="e.g. la jirafa"></label>
+       <label class="field">${esc(L().name)} meaning<input id="tes" value="${esc(meaning(ew))}" placeholder="${esc(L().example)}"></label>
        <label class="field">Emoji picture (optional)<input id="tpic" value="${esc(ew.pic&&!ew.pic.startsWith('data:')?ew.pic:'')}" placeholder="🦒"></label>
        <label class="field">${ew.pic&&ew.pic.startsWith('data:')?'Replace the photo (optional)':'Or a photo (optional)'}<input id="timg" type="file" accept="image/*"></label>
        <label class="field">Sound buttons (optional)<input id="tsnd" value="${esc(ew.snd||'')}" placeholder="g-i-r-a-ff-e"></label>
@@ -1041,9 +1134,9 @@ function renderTopicEditor(){
      </div>
      <p class="counter" style="margin-bottom:0">Sound buttons are only needed if you want the word in Blending: split it into sounds with dashes, for example sh-i-p, or c-a*-k-*e for split vowels.</p></div>
    <div class="panel"><h2>Words in this ${isN?'unit':'topic'} (${t.words.length})</h2>
-     <div class="wlist">${t.words.map((w,i)=>`<div class="witem">${picHTML(w.pic)}<div class="t"><b>${esc(w.en)}</b> <small>${esc(w.es||'')}${w.key?' · 🔑':''}${w.tricky?' · tricky':''}${w.added?` · <b style="color:var(--teal)">${base.words.some(x=>x.en.toLowerCase()===w.en.toLowerCase())?'changed':'added'} by you</b>`:''}</small></div>
+     <div class="wlist">${t.words.map((w,i)=>`<div class="witem">${picHTML(w.pic)}<div class="t"><b>${esc(w.en)}</b> <small>${esc(meaning(w))}${w.key?' · 🔑':''}${w.tricky?' · tricky':''}${w.added?` · <b style="color:var(--teal)">${base.words.some(x=>x.en.toLowerCase()===w.en.toLowerCase())?'changed':'added'} by you</b>`:''}</small></div>
        <button class="mini" data-act="tedit" data-arg="${i}">✎ Edit</button><button class="mini" data-act="tremove" data-arg="${i}">Remove</button></div>`).join('')}</div></div>
-   ${shownRemoved.length?`<div class="panel"><h2>Removed words (${shownRemoved.length})</h2><div class="wlist">${e.removed.map((en,i)=>{if(!shownRemoved.includes(en))return '';const w=base.words.find(x=>x.en===en)||{en};return `<div class="witem">${picHTML(w.pic)}<div class="t"><b>${esc(w.en)}</b> <small>${esc(w.es||'')}</small></div><button class="mini" data-act="tputback" data-arg="${i}">↩ Put back</button></div>`;}).join('')}</div></div>`:''}
+   ${shownRemoved.length?`<div class="panel"><h2>Removed words (${shownRemoved.length})</h2><div class="wlist">${e.removed.map((en,i)=>{if(!shownRemoved.includes(en))return '';const w=base.words.find(x=>x.en===en)||{en};return `<div class="witem">${picHTML(w.pic)}<div class="t"><b>${esc(w.en)}</b> <small>${esc(meaning(w))}</small></div><button class="mini" data-act="tputback" data-arg="${i}">↩ Put back</button></div>`;}).join('')}</div></div>`:''}
    ${(e.added.length||e.removed.length)?`<div class="row">${ui.confirm==='treset'?`<span>Undo all your changes to this ${isN?'unit':'topic'}?</span><button class="btn bad" data-act="tresetyes">Yes, reset</button><button class="btn alt" data-act="cancelconfirm">Cancel</button>`:`<button class="btn alt" data-act="treset">Reset to the original list</button>`}</div>`:''}`;
 }
 function fileToThumb(file){return new Promise((res,rej)=>{const fr=new FileReader();fr.onload=()=>{const img=new Image();img.onload=()=>{const max=240,sc=Math.min(1,max/Math.max(img.width,img.height));const c=document.createElement('canvas');c.width=Math.round(img.width*sc);c.height=Math.round(img.height*sc);c.getContext('2d').drawImage(img,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',0.8));};img.onerror=rej;img.src=fr.result;};fr.onerror=rej;fr.readAsDataURL(file);});}
@@ -1256,12 +1349,12 @@ function updateAuthBtn(){
     if(bar){
       const opts=state.pupils.map(p=>`<option value="${p.id}" ${p.id===state.currentPupil?'selected':''}>${esc(pupilName(p))}</option>`).join('');
       bar.className='modebar pupilbar';
-      bar.innerHTML=`<div class="in"><label for="pupilsel"><b>Working with:</b></label><select id="pupilsel">${opts}</select><button data-act="pupils">👥 Manage pupils</button></div>`;
+      bar.innerHTML=`<div class="in"><label for="pupilsel"><b>Working with:</b></label><select id="pupilsel">${opts}</select><span class="counter" style="color:var(--ink)">Home language: <b>${esc(langLabel(currentPupilObj()||{}))}</b></span><button data-act="pupils">👥 Manage pupils</button></div>`;
     }
   } else {
     if(bar)bar.className='modebar';
     b.textContent='🧭 Explore · not saved'; b.classList.remove('in'); b.title='Explore mode: nothing is saved to an account';
-    if(bar)bar.innerHTML=`<div class="in"><span><b>Explore mode.</b> Try anything. Progress is not saved to a pupil's account.</span><button data-act="account">🔒 Log in to a pupil's account</button></div>`;
+    if(bar)bar.innerHTML=`<div class="in"><span><b>Explore mode.</b> Try anything. Progress is not saved to a pupil's account.</span><label for="explang">Language:</label><select id="explang">${langOptions(LANGS[state.settings.exploreLang]&&state.settings.exploreLang!=='other'?state.settings.exploreLang:'es').replace(/<option value="other"[^>]*>[^<]*<\/option>/,'')}</select><button data-act="account">🔒 Log in to a pupil's account</button></div>`;
   }
 }
 function docRef(){return firebase.firestore().collection('progress').doc(fb.user.uid);}
@@ -1347,17 +1440,23 @@ function loginModal(err,mode){
     ${create?'':`<div class="row"><button class="mini" data-act="forgotpw">Forgot password?</button></div><p class="counter">Anything done on this computer while logged out is replaced by the account's saved progress.</p>`}`);
   const e=document.getElementById('lemail');e&&e.focus();
 }
+function langOptions(sel){return [['es','Spanish'],['de','German'],['other','Other language']].map(([v,n])=>`<option value="${v}" ${sel===v?'selected':''}>${n}</option>`).join('');}
 function pupilsModal(){
   const c=ui.confirm||'';
   showModal(`<h2>Pupils</h2><p class="counter" style="margin-top:4px">Each pupil has their own progress: sounds, stars, blending, assessments, writing, their own word lists and their own changes to topics. Nothing is shared between pupils.</p>
     <div class="wlist" style="margin:12px 0">${state.pupils.map(p=>`<div class="witem" style="flex-wrap:wrap">
       <span style="font-size:1.4rem">${p.id===state.currentPupil?'👉':'👤'}</span>
-      <input id="pn-${p.id}" value="${esc(p.name||'')}" placeholder="${esc(pupilName(p))}" aria-label="Name" style="flex:1;min-width:140px;font:inherit;border:2px solid var(--line);border-radius:8px;padding:6px 8px">
-      <button class="mini" data-act="prename" data-arg="${p.id}">Save name</button>
+      <input id="pn-${p.id}" value="${esc(p.name||'')}" placeholder="${esc(pupilName(p))}" aria-label="Name" style="flex:1;min-width:120px;font:inherit;border:2px solid var(--line);border-radius:8px;padding:6px 8px">
+      <select id="pl-${p.id}" aria-label="Home language" style="font:inherit;border:2px solid var(--line);border-radius:8px;padding:5px 6px">${langOptions(LANGS[p.lang]?p.lang:'es')}</select>
+      ${p.lang==='other'?`<input id="plo-${p.id}" value="${esc(p.langName||'')}" placeholder="Which language?" aria-label="Which language" style="width:130px;font:inherit;border:2px solid var(--line);border-radius:8px;padding:6px 8px">`:''}
+      <button class="mini" data-act="prename" data-arg="${p.id}">Save</button>
       ${p.id===state.currentPupil?'<span class="counter">working with</span>':`<button class="mini" data-act="pswitch" data-arg="${p.id}">Switch to</button>`}
       ${state.pupils.length>1?(c==='pdel'+p.id?`<button class="mini" style="background:var(--bad);color:#fff" data-act="pdelyes" data-arg="${p.id}">Delete ${esc(pupilName(p))} and all their progress?</button><button class="mini" data-act="pdelno">Cancel</button>`:`<button class="mini" data-act="pdel" data-arg="${p.id}">Delete</button>`):''}
     </div>`).join('')}</div>
-    <form id="addpupil" class="form" style="grid-template-columns:1fr auto"><label class="field" for="newpupil">Add a pupil<input id="newpupil" placeholder="First name" required></label><button class="btn" type="submit">＋ Add pupil</button></form>`);
+    <form id="addpupil" class="form" style="grid-template-columns:1fr 170px auto"><label class="field" for="newpupil">Add a pupil<input id="newpupil" placeholder="First name" required></label>
+      <label class="field" for="newlang">Home language<select id="newlang">${langOptions('es')}</select></label><button class="btn" type="submit">＋ Add pupil</button>
+      <label class="field" for="newlangname" style="grid-column:1/-1">If "Other language": which one? (translations start empty, and no pronunciation tips are shown)<input id="newlangname" placeholder="e.g. Portuguese"></label></form>
+    <p class="counter">Spanish and German come with all translations and pronunciation tips. For other languages you can type translations yourself with ✎ Edit words.</p>`);
 }
 function accountModal(){
   showModal(`<h2>Account</h2><p>Logged in as <b>${esc(fb.user.email||'')}</b>. Working with <b>${esc(pupilName(currentPupilObj()))}</b>.</p>
@@ -1371,7 +1470,8 @@ function accountModal(){
 document.addEventListener('submit',async e=>{
   if(e.target.id==='addpupil'){e.preventDefault();const n=document.getElementById('newpupil').value.trim();if(!n)return;
     if(state.currentPupil)state.pupilStore[state.currentPupil]=snapshotPupil();
-    const id=newPupilId();state.pupils.push({id,name:n});state.pupilStore[id]=blankPupil();fb.dirty.add(id);
+    const lang=(document.getElementById('newlang')||{}).value||'es';const langName=lang==='other'?((document.getElementById('newlangname')||{}).value||'').trim():'';
+    const id=newPupilId();state.pupils.push({id,name:n,lang,langName});state.pupilStore[id]=blankPupil();fb.dirty.add(id);
     switchPupil(id);save();render();pupilsModal();toast('Added '+n+'. You are now working with '+n+'.');return;}
   if(e.target.id!=='loginform')return;
   e.preventDefault();
@@ -1566,13 +1666,14 @@ const A = {
     const editing=ui.editWord!=null&&c.words[ui.editWord];
     if(editing&&!pic){const old=c.words[ui.editWord].pic;const del=document.getElementById('wdelimg');if(old&&old.startsWith('data:')&&!(del&&del.checked))pic=old;}
     const f=document.getElementById('wimg').files[0];if(f){try{pic=await fileToThumb(f);}catch(e){toast('That photo could not be read');}}
-    if(editing){c.words[ui.editWord]={en,es,pic,snd};ui.editWord=null;toast('Saved "'+en+'"');}
-    else{c.words.push({en,es,pic,snd});toast('Added "'+en+'"');}
+    const nw=Object.assign({},editing?c.words[ui.editWord]:{},{en,pic,snd});nw[mKey()]=es;
+    if(editing){c.words[ui.editWord]=nw;ui.editWord=null;toast('Saved "'+en+'"');}
+    else{c.words.push(nw);toast('Added "'+en+'"');}
     save();renderEditor();const n=document.getElementById('wen');n&&n.focus();},
   editword:a=>{ui.editWord=+a;renderEditor();const f=document.getElementById('wordform');f&&f.scrollIntoView({block:'start'});const n=document.getElementById('wen');n&&n.focus();},
   canceledit:()=>{ui.editWord=null;renderEditor();},
   bulkadd:()=>{const c=state.custom.find(x=>x.id===ui.editing);const lines=document.getElementById('bulk').value.split('\n').map(l=>l.trim()).filter(Boolean);let n=0;
-    lines.forEach(l=>{const [en,es='',pic='',snd='']=l.split(/[,;\t]/).map(x=>x.trim());if(en){c.words.push({en,es,pic,snd:snd.replace(/\s+/g,'')});n++;}});save();toast(n+' words added');renderEditor();},
+    lines.forEach(l=>{const [en,es='',pic='',snd='']=l.split(/[,;\t]/).map(x=>x.trim());if(en){const nw={en,pic,snd:snd.replace(/\s+/g,'')};nw[mKey()]=es;c.words.push(nw);n++;}});save();toast(n+' words added');renderEditor();},
   delword:a=>{const c=state.custom.find(x=>x.id===ui.editing);c.words.splice(+a,1);ui.editWord=null;save();renderEditor();},
   dellist:()=>{ui.confirm='dellist';renderEditor();},
   dellistyes:()=>{state.custom=state.custom.filter(x=>x.id!==ui.editing);ui.editing=null;ui.topic=null;ui.confirm=null;save();renderVocab();},
@@ -1599,7 +1700,7 @@ const A = {
     if(cur.some(w=>w.en.toLowerCase()===en.toLowerCase()&&w!==old)){toast('"'+en+'" is already in this list');return;}
     if(old&&!pic&&old.pic&&old.pic.startsWith('data:'))pic=old.pic;
     const f=document.getElementById('timg').files[0];if(f){try{pic=await fileToThumb(f);}catch(e){toast('That photo could not be read');}}
-    const w={en,es,pic,snd};if(kEl)w.key=kEl.checked;if(tEl)w.tricky=tEl.checked;
+    const w={en,pic,snd};['es','de','tr'].forEach(k=>{if(old&&old[k])w[k]=old[k];});w[mKey()]=es;if(kEl)w.key=kEl.checked;if(tEl)w.tricky=tEl.checked;
     if(old)removeTopicWord(id,old.en);
     topicEdit(id).added.push(w);
     ui.editWordT=null;save();toast(old?'Saved "'+en+'"':'Added "'+en+'"');renderTopicEditor();const n=document.getElementById('ten');n&&n.focus();},
@@ -1617,7 +1718,7 @@ const A = {
     catch(e){if(errEl)errEl.textContent=niceErr(e);}},
   cloudsave:()=>{clearTimeout(fb.timer);cloudSave();},
   pupils:()=>{if(!fb.user){loginModal('','login');return;}ui.confirm=null;pupilsModal();},
-  prename:a=>{const p=state.pupils.find(x=>x.id===a);const v=document.getElementById('pn-'+a).value.trim();p.name=v;save();render();pupilsModal();toast('Name saved');},
+  prename:a=>{const p=state.pupils.find(x=>x.id===a);const v=document.getElementById('pn-'+a).value.trim();p.name=v;const ls=document.getElementById('pl-'+a);if(ls)p.lang=ls.value;const lo=document.getElementById('plo-'+a);if(lo)p.langName=lo.value.trim();save();render();pupilsModal();toast('Saved');},
   pswitch:a=>{switchPupil(a);render();closeModal();toast('Now working with '+pupilName(currentPupilObj()));},
   pdel:a=>{ui.confirm='pdel'+a;pupilsModal();},
   pdelno:()=>{ui.confirm=null;pupilsModal();},
@@ -1668,6 +1769,8 @@ document.addEventListener('click',e=>{
 document.addEventListener('change',e=>{
   const el=e.target;
   if(el.id==='bkfile'&&el.files[0]){const fr=new FileReader();fr.onload=()=>{try{const d=JSON.parse(fr.result);if(d.app!=='sounds-and-words')throw new Error();ui.pendingImport=d;ui.confirm='restore';renderProgress();}catch(e){toast('That file is not a Sounds and Words backup');}};fr.readAsText(el.files[0]);return;}
+  if(el.id&&el.id.startsWith('pl-')&&!el.id.startsWith('pl--')){const p=state.pupils.find(x=>x.id===el.id.slice(3));if(p){p.lang=el.value;save();render();pupilsModal();toast(pupilName(p)+': '+langLabel(p));}return;}
+  if(el.id==='explang'){state.settings.exploreLang=el.value;persist();render();return;}
   if(el.id==='pupilsel'){switchPupil(el.value);render();toast('Now working with '+pupilName(currentPupilObj()));return;}
   if(el.id==='keyonly'){ui.keyOnly=el.checked;ui.quiz=ui.flash=ui.pairs=ui.lspell=null;ui.bs=null;render();return;}
   if(el.id==='nunit'){ui.nelsonUnit=el.value;ui.bs=null;renderBlending();return;} if(el.matches('input[type=checkbox][data-act]')){const fn=A[el.dataset.act];fn&&fn(el.dataset.arg,el);}
