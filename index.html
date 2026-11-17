@@ -266,6 +266,36 @@ img.pic.imgpic{width:96px;height:96px;object-fit:cover;border-radius:12px}
 .field input.titlebox,.titlebox{width:100%;font-family:var(--display);font-weight:600;font-size:1.5rem;border:2px solid var(--line);border-radius:14px;padding:10px 14px;background:#fff;color:var(--ink)}
 .readtext{font-size:1.25rem;line-height:1.7;white-space:pre-wrap;background:var(--card);border-radius:16px;padding:18px;border:1px solid var(--line)}
 
+/* printing an assessment: only the assessment, as it looks on screen */
+.printhead,.printonly{display:none}
+@media print{
+  @page{size:A4;margin:12mm}
+  html,body{background:#fff !important}
+  header.top,.modebar,.toast,.overlay,.noprint,nav,button{display:none !important}
+  .wrap{max-width:none;padding:0}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .printhead{display:block;border-bottom:3px solid var(--ink);padding-bottom:8px;margin-bottom:14px}
+  .printhead h1{font-size:1.6rem}
+  .printmeta{display:flex;gap:40px;margin-top:6px;font-size:1.05rem}
+  .blankline{display:inline-block;width:220px;border-bottom:1px solid var(--ink)}
+  .printonly{display:block}
+  #aobs,label[for="aobs"]{display:none !important}
+  .stats{grid-template-columns:repeat(5,1fr);gap:8px}
+  .stat{padding:8px 10px}
+  .stat .n{font-size:1.4rem}
+  .sheets{grid-template-columns:1fr 1fr;gap:10px}
+  .panel{border:1px solid #bbb;padding:8px 10px;margin-bottom:8px;break-inside:avoid}
+  .panel.tablewrap{overflow:visible;break-inside:auto}
+  .panel h2{font-size:1rem;margin-bottom:4px;break-after:avoid}
+  .sheet{font-size:.78rem}
+  .sheet th,.sheet td{padding:1px 5px;line-height:1.25}
+  .sheet td.g{font-size:.9rem}
+  .sheet td.c{width:60px}
+  thead{display:table-header-group}
+  tr{break-inside:avoid}
+  .counter{display:none}
+}
+
 .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-family:var(--display);z-index:60;opacity:0;transition:opacity .2s;pointer-events:none}
 .toast.show{opacity:1}
 .cheer{animation:pop .4s ease}
@@ -283,7 +313,7 @@ img.pic.imgpic{width:96px;height:96px;object-fit:cover;border-radius:12px}
 <body>
 <header class="top">
   <div class="topin">
-    <div class="brand">🔤 Sounds and Words <small>English for EAL pupils</small></div>
+    <div class="brand">🔤 Sounds and Words </div>
     <nav class="tabs" aria-label="Sections">
       <button data-act="route" data-arg="sounds">Sounds</button>
       <button data-act="route" data-arg="blending">Blending</button>
@@ -438,6 +468,8 @@ const SOUND_DE={
 const EN_CHEERS=['Well done!','Great!','Yes!','Brilliant!','Super!'];
 const EN_TRYS=['Try again.','Nearly!','Have another go.'];
 const LANGS={
+  en:{name:'English',key:null,hello:'Hello',tips:false,tipTitle:'',hintTitle:'',askEn:'',askBack:'',finished:'',listen:'',read:'',pairs:'',welldone:'',
+      cheers:null,trys:null,myList:'My list',example:'',englishOnly:true},
   es:{name:'Spanish',key:'es',hello:'¡Hola',tips:true,tipTitle:'Tip for Spanish speakers',hintTitle:'Pista en español',
       askEn:'¿Cómo se dice en inglés?',askBack:'¿Cómo se dice en español?',finished:'¡Terminado!',listen:'Escucha y toca.',read:'Lee y toca.',pairs:'Busca las parejas.',welldone:'¡Muy bien!',
       cheers:['¡Muy bien!','¡Genial!','¡Sí!','¡Excelente!','¡Súper!'],trys:['¡Otra vez!','¡Casi!','¡Inténtalo!'],myList:'Mi lista',example:'el gato'},
@@ -447,13 +479,14 @@ const LANGS={
   other:{name:'Other language',key:'tr',hello:'Hello',tips:false,tipTitle:'',hintTitle:'',askEn:'',askBack:'',finished:'',listen:'',read:'',pairs:'',welldone:'',
       cheers:null,trys:null,myList:'My list',example:''}
 };
-function curLang(){const p=(typeof fb!=='undefined'&&fb.user)?currentPupilObj():null;return p?(LANGS[p.lang]?p.lang:'es'):(LANGS[state.settings.exploreLang]?state.settings.exploreLang:'es');}
+/* pupils saved before languages existed have no language set: they were Spanish speakers */
+function curLang(){const p=(typeof fb!=='undefined'&&fb.user)?currentPupilObj():null;if(p)return LANGS[p.lang]?p.lang:'es';const e=state.settings.exploreLang;return (LANGS[e]&&e!=='other')?e:'en';}
 function L(){const code=curLang();const o=Object.assign({},LANGS[code]);
   if(code==='other'){const p=(typeof fb!=='undefined'&&fb.user)?currentPupilObj():null;o.name=(p&&(p.langName||'').trim())||'home language';}
   return o;}
 function mKey(){return L().key;}
-function meaning(w){return (w&&w[mKey()])||'';}
-function blendMeaning(w){return w[{es:2,de:3,tr:4}[mKey()]]||'';}
+function meaning(w){const k=mKey();return (k&&w&&w[k])||'';}
+function blendMeaning(w){const i={es:2,de:3,tr:4}[mKey()];return i?(w[i]||''):'';}
 function topicSub(tp){if(tp.custom)return L().myList;if(tp.nelson)return 'Nelson 1A';const c=curLang();return c==='es'?tp.es:c==='de'?(TOPIC_DE[tp.id]||''):'';}
 function cheer(){const i=Math.floor(Math.random()*EN_CHEERS.length);const l=L();return EN_CHEERS[i]+(l.cheers?' '+l.cheers[i]:'');}
 function tryAgain(){const i=Math.floor(Math.random()*EN_TRYS.length);const l=L();return EN_TRYS[i]+(l.trys?' '+l.trys[i]:'');}
@@ -958,8 +991,8 @@ function renderVocab(){
   const t=ui.topic?topicById(ui.topic):null;
   if(t&&t.nelson)t.icon=t.icon;
   if(!t){
-    let h=`<div class="pagehead"><div><h1>Vocabulary</h1><p>Pick a topic. Each word has a picture, the English word and its meaning in ${esc(L().name)}. Three stars ★★★ means the pupil knows it.</p></div>
-      <label class="row" style="gap:8px"><input type="checkbox" id="showes" data-act="toggles" ${state.settings.spanish?'checked':''}> Show ${esc(L().name)}</label></div>
+    let h=`<div class="pagehead"><div><h1>Vocabulary</h1><p>Pick a topic. Each word has a picture and the English word${mKey()?', with its meaning in '+esc(L().name):''}. Three stars ★★★ means the pupil knows it.</p></div>
+      ${mKey()?`<label class="row" style="gap:8px"><input type="checkbox" id="showes" data-act="toggles" ${state.settings.spanish?'checked':''}> Show ${esc(L().name)}</label>`:''}</div>
       <div class="tgrid">`;
     const tile=tp=>`<button class="topic ${tp.custom?'custom':''} ${tp.nelson?'nelson':''}" data-act="topic" data-arg="${esc(tp.id)}"><span class="ic">${esc(tp.icon)}</span><b>${esc(tp.name)}</b><span class="es">${esc(topicSub(tp))}</span><span class="meta">${tp.words.length} words${tp.nelson?` · 🔑 ${tp.words.filter(w=>w.key).length}`:''} · ${topicStars(tp)} learned</span></button>`;
     TOPICS.map(applyEdits).forEach(tp=>h+=tile(tp));
@@ -993,18 +1026,19 @@ function learnHTML(t){
 function flashHTML(t){
   if(!ui.flash||ui.flash.tid!==t.id) ui.flash={tid:t.id,order:shuffle([...t.words.keys()]),i:0,show:false};
   const f=ui.flash; const w=t.words[f.order[f.i%f.order.length]];
-  const toEn=ui.flashDir!=='es';
+  const enOnly=!mKey();
+  const toEn=enOnly||ui.flashDir!=='es';
   const dir=`<div class="seg" role="group" aria-label="Flashcard direction" style="margin-bottom:12px"><button class="${toEn?'on':''}" data-act="fdir" data-arg="en">${esc(L().name)} → English</button><button class="${!toEn?'on':''}" data-act="fdir" data-arg="es">English → ${esc(L().name)}</button></div>`;
-  const shown = toEn ? `<div class="es" style="font-size:1.8rem">${meaning(w)?esc(meaning(w)):'<span class="counter">No translation yet. Add one with ✎ Edit words.</span>'}</div>` : `<div class="en">${esc(w.en)}</div><div class="row center"><button class="mini" data-act="say" data-arg="${esc(w.en)}">🔊 Listen</button></div>`;
+  const shown = enOnly ? '' : toEn ? `<div class="es" style="font-size:1.8rem">${meaning(w)?esc(meaning(w)):'<span class="counter">No translation yet. Add one with ✎ Edit words.</span>'}</div>` : `<div class="en">${esc(w.en)}</div><div class="row center"><button class="mini" data-act="say" data-arg="${esc(w.en)}">🔊 Listen</button></div>`;
   const answer = toEn ? `<div class="en">${f.show?esc(w.en):''}</div>` : `<div class="es" style="font-size:1.8rem;min-height:1.4em">${f.show?(esc(meaning(w))||'<span class="counter">No translation yet</span>'):''}</div>`;
-  const ask = toEn ? withL('What is it in English?','askEn') : withL('What is it in '+L().name+'?','askBack');
-  return `<div style="text-align:center">${dir}</div><div class="flashcard"><div class="counter">${f.i%f.order.length+1} / ${f.order.length}${w.key?' · 🔑':''}</div>
+  const ask = enOnly ? 'What is it?' : toEn ? withL('What is it in English?','askEn') : withL('What is it in '+L().name+'?','askBack');
+  return `<div style="text-align:center">${enOnly?'':dir}</div><div class="flashcard"><div class="counter">${f.i%f.order.length+1} / ${f.order.length}${w.key?' · 🔑':''}</div>
     ${picHTML(w.pic)}
     ${shown}
     ${answer}
-    <p class="counter">${f.show?'Did she know it?':ask}</p>
+    <p class="counter">${f.show?'Did they know it?':ask}</p>
     <div class="row center">${f.show?`<button class="btn alt" data-act="say" data-arg="${esc(w.en)}">🔊 Hear it</button><button class="btn bad" data-act="fans" data-arg="0">✗ Not yet</button><button class="btn good" data-act="fans" data-arg="1">✓ Knew it</button>`
-      :`<button class="btn big coral" data-act="fshow">${toEn?'Show the English word':'Show the '+esc(L().name)+' word'}</button>`}</div></div>`;
+      :`<button class="btn big coral" data-act="fshow">${enOnly?'Show the word':toEn?'Show the English word':'Show the '+esc(L().name)+' word'}</button>`}</div></div>`;
 }
 function addStar(t,w,delta){const k=starKey(t.id,w);state.stars[k]=Math.max(0,Math.min(3,(state.stars[k]||0)+delta));save();}
 
@@ -1089,7 +1123,7 @@ function renderEditor(){
    <div class="panel" id="wordform"><h2>${ui.editWord!=null?'Edit word':'Add a word'}</h2>
      <div class="form">
        <label class="field">English word<input id="wen" placeholder="cat" value="${esc(ew.en||'')}"></label>
-       <label class="field">${esc(L().name)} meaning<input id="wes" placeholder="${esc(L().example)}" value="${esc(meaning(ew))}"></label>
+       ${mKey()?`<label class="field">${esc(L().name)} meaning<input id="wes" placeholder="${esc(L().example)}" value="${esc(meaning(ew))}"></label>`:''}
        <label class="field">Emoji picture (optional)<input id="wpic" placeholder="🐱" value="${esc(ew.pic&&!ew.pic.startsWith('data:')?ew.pic:'')}"></label>
        <label class="field">${ew.pic&&ew.pic.startsWith('data:')?'Replace the photo (optional)':'Or a photo (optional)'}<input id="wimg" type="file" accept="image/*"></label>
        <label class="field">Sound buttons (optional)<input id="wsnd" placeholder="c-a-t   or   sh-ee-p" value="${esc(ew.snd||'')}"></label>
@@ -1100,8 +1134,8 @@ function renderEditor(){
      </div>
      <p class="counter" style="margin-bottom:0">Sound buttons: split the word into sounds with dashes. Words with sound buttons also appear in Blending under "My words". For a-e type words write c-a*-k-*e.</p></div>
    <div class="panel"><h2>Add many words at once</h2>
-     <p class="counter" style="margin-top:0">One word per line: English, ${esc(L().name)}, emoji, sound buttons. Only the English word is needed.</p>
-     <label class="field" for="bulk">Word list<textarea id="bulk" placeholder="ship, el barco, 🚢, sh-i-p&#10;shop, la tienda, 🏪, sh-o-p&#10;fish, el pez, 🐟, f-i-sh"></textarea></label>
+     <p class="counter" style="margin-top:0">One word per line: ${mKey()?'English, '+esc(L().name)+', emoji, sound buttons':'English, emoji, sound buttons'}. Only the English word is needed.</p>
+     <label class="field" for="bulk">Word list<textarea id="bulk" placeholder="${mKey()?'ship, el barco, 🚢, sh-i-p&#10;shop, la tienda, 🏪, sh-o-p':'ship, 🚢, sh-i-p&#10;shop, 🏪, sh-o-p'}"></textarea></label>
      <div class="row" style="margin-top:8px"><button class="btn" data-act="bulkadd">Add these words</button></div></div>
    <div class="panel"><h2>Words in this list (${c.words.length})</h2>
      <div class="wlist">${c.words.length?c.words.map((w,i)=>`<div class="witem">${picHTML(w.pic)}<div class="t"><b>${esc(w.en)}</b> <small>${esc(meaning(w))}${w.snd?' · '+esc(w.snd):''}</small></div><button class="mini" data-act="editword" data-arg="${i}">✎ Edit</button><button class="mini" data-act="delword" data-arg="${i}">Remove</button></div>`).join(''):'<p class="empty">No words yet.</p>'}</div></div>
@@ -1125,7 +1159,7 @@ function renderTopicEditor(){
    <div class="panel" id="wordform"><h2>${ui.editWordT!=null?'Edit word':'Add a word'}</h2>
      <div class="form">
        <label class="field">English word<input id="ten" value="${esc(ew.en||'')}" placeholder="e.g. giraffe"></label>
-       <label class="field">${esc(L().name)} meaning<input id="tes" value="${esc(meaning(ew))}" placeholder="${esc(L().example)}"></label>
+       ${mKey()?`<label class="field">${esc(L().name)} meaning<input id="tes" value="${esc(meaning(ew))}" placeholder="${esc(L().example)}"></label>`:''}
        <label class="field">Emoji picture (optional)<input id="tpic" value="${esc(ew.pic&&!ew.pic.startsWith('data:')?ew.pic:'')}" placeholder="🦒"></label>
        <label class="field">${ew.pic&&ew.pic.startsWith('data:')?'Replace the photo (optional)':'Or a photo (optional)'}<input id="timg" type="file" accept="image/*"></label>
        <label class="field">Sound buttons (optional)<input id="tsnd" value="${esc(ew.snd||'')}" placeholder="g-i-r-a-ff-e"></label>
@@ -1179,9 +1213,9 @@ function renderAssess(){
     app.innerHTML=h;return;
   }
   const d=ASSESS[a.phase];
-  let h=`<div class="pagehead"><div><h1>${d.name} assessment</h1><p>${today(a.date)}. Tap any chip to jump to that card.</p></div>
+  let h=`<div class="pagehead noprint"><div><h1>${d.name} assessment</h1><p>${today(a.date)}. Tap any chip to jump to that card.</p></div>
     <div class="row">${ui.confirm==='aquit'?`<span>Throw this assessment away?</span><button class="btn bad" data-act="aquityes">Yes</button><button class="btn alt" data-act="cancelconfirm">No</button>`:`<button class="btn alt" data-act="aquit">Cancel assessment</button>`}</div></div>
-    <div class="seg" role="group" aria-label="Assessment section" style="margin-bottom:12px">${SECTIONS.map(([k,l])=>`<button class="${a.sec===k?'on':''}" data-act="asec" data-arg="${k}">${l}</button>`).join('')}</div>`;
+    <div class="seg noprint" role="group" aria-label="Assessment section" style="margin-bottom:12px">${SECTIONS.map(([k,l])=>`<button class="${a.sec===k?'on':''}" data-act="asec" data-arg="${k}">${l}</button>`).join('')}</div>`;
   if(a.sec==='summary'){app.innerHTML=h+summaryHTML(a,true);return;}
   const items=aItems(a.phase,a.sec);
   if(a.i>=items.length)a.i=items.length-1;
@@ -1220,7 +1254,10 @@ function renderAssess(){
 const mark=v=>v===true?'<span class="yes">✓</span>':v===false?'<span class="nope">✗</span>':'';
 function summaryHTML(a,editable){
   const d=ASSESS[a.phase];const s=scoreOf(a);
-  let h=`<div class="stats">
+  const who=a.pupil||((fb.user&&currentPupilObj())?pupilName(currentPupilObj()):'');
+  let h=`<div class="printhead"><h1>Phonics assessment: ${esc(d.name)}</h1>
+    <div class="printmeta"><span><b>Pupil:</b> ${who?esc(who):'<span class="blankline"></span>'}</span><span><b>Date:</b> ${today(a.date)}</span></div></div>
+    <div class="stats">
     <div class="stat"><div class="n">${s.rec}/${s.gTotal}</div><div class="l">graphemes recognised</div></div>
     <div class="stat"><div class="n">${s.wri}/${s.gTotal}</div><div class="l">graphemes written</div></div>
     <div class="stat"><div class="n">${s.blend}/${s.bTotal}</div><div class="l">words blended</div></div>
@@ -1228,22 +1265,24 @@ function summaryHTML(a,editable){
     <div class="stat"><div class="n">${s.tricky}/${s.tTotal}</div><div class="l">tricky words</div></div></div>
     <div class="sheets">`;
   d.graphemes.forEach(g=>{h+=`<div class="panel tablewrap"><h2>${esc(g.title)}</h2><table class="sheet"><thead><tr><th></th><th>Recognise</th><th>Write</th><th>Notes</th></tr></thead><tbody>${g.items.map(k=>{const v=a.g[k]||{};return `<tr><td class="g">${esc(k)}</td><td class="c">${mark(v.r)}</td><td class="c">${mark(v.w)}</td><td>${esc(v.said||'')}</td></tr>`;}).join('')}</tbody></table></div>`;});
-  const wtable=(title,keys,obj,sounds)=>`<div class="panel tablewrap"><h2>${title}</h2><table class="sheet"><thead><tr><th>Word</th>${sounds?'<th>Sounds</th>':''}<th>Correct</th><th>What she said or wrote</th></tr></thead><tbody>${keys.map((k,i)=>{const v=obj[k]||{};return `<tr><td class="g">${esc(k)}</td>${sounds?`<td>${esc(sounds[i])}</td>`:''}<td class="c">${mark(v.ok)}</td><td>${esc(v.said||'')}</td></tr>`;}).join('')}</tbody></table></div>`;
+  const wtable=(title,keys,obj,sounds)=>`<div class="panel tablewrap"><h2>${title}</h2><table class="sheet"><thead><tr><th>Word</th>${sounds?'<th>Sounds</th>':''}<th>Correct</th><th>What the pupil said or wrote</th></tr></thead><tbody>${keys.map((k,i)=>{const v=obj[k]||{};return `<tr><td class="g">${esc(k)}</td>${sounds?`<td>${esc(sounds[i])}</td>`:''}<td class="c">${mark(v.ok)}</td><td>${esc(v.said||'')}</td></tr>`;}).join('')}</tbody></table></div>`;
   h+=wtable('Blending',aItems(a.phase,'blending'),a.b,d.blending)+wtable('Segmenting',d.segmenting,a.s)+wtable('Tricky words',d.tricky,a.t)+`</div>`;
   if(editable){
     h+=`<div class="panel"><h2>Observations</h2><label class="field" for="aobs">Notes (for example: confuses b and v, drops h, says "ee" for i)<textarea id="aobs" style="font-family:var(--phonics);font-size:1rem">${esc(a.obs)}</textarea></label>
+      <p class="printonly" id="aobsprint" style="white-space:pre-wrap">${esc(a.obs)||'None written.'}</p>
       <p class="counter">Saving also updates the Sounds tab: graphemes she recognised are marked "knows it", missed ones "needs practice".</p>
-      <div class="row"><button class="btn big good" data-act="asave">Save assessment</button><button class="btn alt" data-act="acopy">Copy results as text</button></div></div>`;
+      <div class="row noprint"><button class="btn big good" data-act="asave">Save assessment</button><button class="btn alt" data-act="aprint">🖨 Print</button><button class="btn alt" data-act="acopy">Copy results as text</button></div></div>`;
   } else {
     h+=`<div class="panel"><h2>Observations</h2><p>${a.obs?esc(a.obs).replace(/\n/g,'<br>'):'<span class="empty">None written.</span>'}</p>
-      <div class="row"><button class="btn alt" data-act="acopy">Copy results as text</button></div></div>`;
+      <div class="row noprint"><button class="btn" data-act="aprint">🖨 Print</button><button class="btn alt" data-act="acopy">Copy results as text</button></div></div>`;
   }
   return h;
 }
 function renderAssessView(){
   const a=state.assessments.find(x=>x.id===ui.viewAssess);
   if(!a){ui.viewAssess=null;renderAssess();return;}
-  app.innerHTML=`<div class="pagehead"><div><button class="mini" data-act="aback">◀ All assessments</button><h1 style="margin-top:8px">${ASSESS[a.phase].name} · ${today(a.date)}</h1></div></div>`+summaryHTML(a,false);
+  app.innerHTML=`<div class="pagehead noprint"><div><button class="mini" data-act="aback">◀ All assessments</button><h1 style="margin-top:8px">${ASSESS[a.phase].name} · ${today(a.date)}</h1></div>
+    <button class="btn" data-act="aprint">🖨 Print</button></div>`+summaryHTML(a,false);
 }
 function assessText(a){
   const d=ASSESS[a.phase];const t=v=>v===true?'yes':v===false?'no':'-';
@@ -1291,7 +1330,8 @@ function switchPupil(id){
 function ensurePupil(){
   if(state.pupils.length)return;
   const id=newPupilId();
-  state.pupils=[{id,name:(state.settings&&state.settings.name)||''}];
+  const el=state.settings&&state.settings.exploreLang;
+  state.pupils=[{id,name:(state.settings&&state.settings.name)||'',lang:(LANGS[el]&&el!=='other')?el:'en'}];
   state.pupilStore[id]=snapshotPupil();state.currentPupil=id;fb.fullSave=true;
 }
 /* a whole backup or account: version 2 holds several pupils */
@@ -1310,7 +1350,7 @@ function upgradeData(d){
   const hasProgress=PUPIL_KEYS.some(k=>d[k]&&(Array.isArray(d[k])?d[k].length:Object.keys(d[k]).length));
   if(hasProgress||(d.settings&&d.settings.name)){
     const id=newPupilId();const pd=blankPupil();PUPIL_KEYS.forEach(k=>{if(k in d)pd[k]=d[k];});
-    out.pupils=[{id,name:(d.settings&&d.settings.name)||''}];out.pupilStore[id]=pd;out.currentPupil=id;
+    out.pupils=[{id,name:(d.settings&&d.settings.name)||'',lang:'es'}];out.pupilStore[id]=pd;out.currentPupil=id;
   }
   return out;
 }
@@ -1354,7 +1394,7 @@ function updateAuthBtn(){
   } else {
     if(bar)bar.className='modebar';
     b.textContent='🧭 Explore · not saved'; b.classList.remove('in'); b.title='Explore mode: nothing is saved to an account';
-    if(bar)bar.innerHTML=`<div class="in"><span><b>Explore mode.</b> Try anything. Progress is not saved to a pupil's account.</span><label for="explang">Language:</label><select id="explang">${langOptions(LANGS[state.settings.exploreLang]&&state.settings.exploreLang!=='other'?state.settings.exploreLang:'es').replace(/<option value="other"[^>]*>[^<]*<\/option>/,'')}</select><button data-act="account">🔒 Log in to a pupil's account</button></div>`;
+    if(bar)bar.innerHTML=`<div class="in"><span><b>Explore mode.</b> Try anything. Progress is not saved to a pupil's account.</span><label for="explang">Language:</label><select id="explang">${langOptions(curLang()).replace(/<option value="other"[^>]*>[^<]*<\/option>/,'').replace('English (no translations)','English')}</select><button data-act="account">🔒 Log in to a pupil's account</button></div>`;
   }
 }
 function docRef(){return firebase.firestore().collection('progress').doc(fb.user.uid);}
@@ -1440,7 +1480,7 @@ function loginModal(err,mode){
     ${create?'':`<div class="row"><button class="mini" data-act="forgotpw">Forgot password?</button></div><p class="counter">Anything done on this computer while logged out is replaced by the account's saved progress.</p>`}`);
   const e=document.getElementById('lemail');e&&e.focus();
 }
-function langOptions(sel){return [['es','Spanish'],['de','German'],['other','Other language']].map(([v,n])=>`<option value="${v}" ${sel===v?'selected':''}>${n}</option>`).join('');}
+function langOptions(sel){return [['en','English (no translations)'],['es','Spanish'],['de','German'],['other','Other language']].map(([v,n])=>`<option value="${v}" ${sel===v?'selected':''}>${n}</option>`).join('');}
 function pupilsModal(){
   const c=ui.confirm||'';
   showModal(`<h2>Pupils</h2><p class="counter" style="margin-top:4px">Each pupil has their own progress: sounds, stars, blending, assessments, writing, their own word lists and their own changes to topics. Nothing is shared between pupils.</p>
@@ -1454,9 +1494,9 @@ function pupilsModal(){
       ${state.pupils.length>1?(c==='pdel'+p.id?`<button class="mini" style="background:var(--bad);color:#fff" data-act="pdelyes" data-arg="${p.id}">Delete ${esc(pupilName(p))} and all their progress?</button><button class="mini" data-act="pdelno">Cancel</button>`:`<button class="mini" data-act="pdel" data-arg="${p.id}">Delete</button>`):''}
     </div>`).join('')}</div>
     <form id="addpupil" class="form" style="grid-template-columns:1fr 170px auto"><label class="field" for="newpupil">Add a pupil<input id="newpupil" placeholder="First name" required></label>
-      <label class="field" for="newlang">Home language<select id="newlang">${langOptions('es')}</select></label><button class="btn" type="submit">＋ Add pupil</button>
+      <label class="field" for="newlang">Home language<select id="newlang">${langOptions('en')}</select></label><button class="btn" type="submit">＋ Add pupil</button>
       <label class="field" for="newlangname" style="grid-column:1/-1">If "Other language": which one? (translations start empty, and no pronunciation tips are shown)<input id="newlangname" placeholder="e.g. Portuguese"></label></form>
-    <p class="counter">Spanish and German come with all translations and pronunciation tips. For other languages you can type translations yourself with ✎ Edit words.</p>`);
+    <p class="counter">English shows just the English words, for whole-class use. Spanish and German come with all translations and pronunciation tips. For other languages you can type translations yourself with ✎ Edit words.</p>`);
 }
 function accountModal(){
   showModal(`<h2>Account</h2><p>Logged in as <b>${esc(fb.user.email||'')}</b>. Working with <b>${esc(pupilName(currentPupilObj()))}</b>.</p>
@@ -1470,7 +1510,7 @@ function accountModal(){
 document.addEventListener('submit',async e=>{
   if(e.target.id==='addpupil'){e.preventDefault();const n=document.getElementById('newpupil').value.trim();if(!n)return;
     if(state.currentPupil)state.pupilStore[state.currentPupil]=snapshotPupil();
-    const lang=(document.getElementById('newlang')||{}).value||'es';const langName=lang==='other'?((document.getElementById('newlangname')||{}).value||'').trim():'';
+    const lang=(document.getElementById('newlang')||{}).value||'en';const langName=lang==='other'?((document.getElementById('newlangname')||{}).value||'').trim():'';
     const id=newPupilId();state.pupils.push({id,name:n,lang,langName});state.pupilStore[id]=blankPupil();fb.dirty.add(id);
     switchPupil(id);save();render();pupilsModal();toast('Added '+n+'. You are now working with '+n+'.');return;}
   if(e.target.id!=='loginform')return;
@@ -1624,7 +1664,7 @@ const A = {
   level:a=>{ui.level=a;ui.bs=null;renderBlending();},
   sb:(a,el)=>{const sp=el.closest('.split');if(el.classList.contains('split-part')&&sp){const on=!el.classList.contains('lit');sp.querySelectorAll('.split-part').forEach(b=>b.classList.toggle('lit',on));}else el.classList.toggle('lit');},
   blend:()=>{const bs=ui.bs;bs.revealed=true;renderBlending();speak(tokWord(toks(bs.words[bs.i][0])));},
-  bnext:()=>{const bs=ui.bs;if(bs.i>=bs.words.length-1){bs.stage='end';}else{bs.i++;bs.revealed=false;bs.spell=null;}renderBlending();window.scrollTo(0,0);},
+  bnext:()=>{const bs=ui.bs;if(bs.i>=bs.words.length-1){bs.stage='end';}else{bs.i++;bs.revealed=false;bs.spell=null;}renderBlending();},
   bprev:()=>{const bs=ui.bs;if(bs.i>0){bs.i--;bs.revealed=false;bs.spell=null;}renderBlending();},
   bnewset:()=>{ui.bs=null;renderBlending();},
   breview:()=>{ui.bs.stage='review';renderBlending();},
@@ -1662,18 +1702,18 @@ const A = {
   closeedit:()=>{ui.editing=null;ui.quiz=ui.flash=ui.pairs=ui.lspell=null;renderVocab();},
   savename:()=>{const c=state.custom.find(x=>x.id===ui.editing);const v=document.getElementById('lname').value.trim();if(v){c.name=v;save();toast('Name saved');}},
   addword:async()=>{const c=state.custom.find(x=>x.id===ui.editing);const en=document.getElementById('wen').value.trim();if(!en){toast('Type the English word first');return;}
-    const es=document.getElementById('wes').value.trim();let pic=document.getElementById('wpic').value.trim();const snd=document.getElementById('wsnd').value.trim().replace(/\s+/g,'');
+    const es=(document.getElementById('wes')||{value:''}).value.trim();let pic=document.getElementById('wpic').value.trim();const snd=document.getElementById('wsnd').value.trim().replace(/\s+/g,'');
     const editing=ui.editWord!=null&&c.words[ui.editWord];
     if(editing&&!pic){const old=c.words[ui.editWord].pic;const del=document.getElementById('wdelimg');if(old&&old.startsWith('data:')&&!(del&&del.checked))pic=old;}
     const f=document.getElementById('wimg').files[0];if(f){try{pic=await fileToThumb(f);}catch(e){toast('That photo could not be read');}}
-    const nw=Object.assign({},editing?c.words[ui.editWord]:{},{en,pic,snd});nw[mKey()]=es;
+    const nw=Object.assign({},editing?c.words[ui.editWord]:{},{en,pic,snd});if(mKey())nw[mKey()]=es;
     if(editing){c.words[ui.editWord]=nw;ui.editWord=null;toast('Saved "'+en+'"');}
     else{c.words.push(nw);toast('Added "'+en+'"');}
     save();renderEditor();const n=document.getElementById('wen');n&&n.focus();},
   editword:a=>{ui.editWord=+a;renderEditor();const f=document.getElementById('wordform');f&&f.scrollIntoView({block:'start'});const n=document.getElementById('wen');n&&n.focus();},
   canceledit:()=>{ui.editWord=null;renderEditor();},
   bulkadd:()=>{const c=state.custom.find(x=>x.id===ui.editing);const lines=document.getElementById('bulk').value.split('\n').map(l=>l.trim()).filter(Boolean);let n=0;
-    lines.forEach(l=>{const [en,es='',pic='',snd='']=l.split(/[,;\t]/).map(x=>x.trim());if(en){const nw={en,pic,snd:snd.replace(/\s+/g,'')};nw[mKey()]=es;c.words.push(nw);n++;}});save();toast(n+' words added');renderEditor();},
+    lines.forEach(l=>{const parts=l.split(/[,;\t]/).map(x=>x.trim());if(!mKey())parts.splice(1,0,'');const [en,es='',pic='',snd='']=parts;if(en){const nw={en,pic,snd:snd.replace(/\s+/g,'')};if(mKey())nw[mKey()]=es;c.words.push(nw);n++;}});save();toast(n+' words added');renderEditor();},
   delword:a=>{const c=state.custom.find(x=>x.id===ui.editing);c.words.splice(+a,1);ui.editWord=null;save();renderEditor();},
   dellist:()=>{ui.confirm='dellist';renderEditor();},
   dellistyes:()=>{state.custom=state.custom.filter(x=>x.id!==ui.editing);ui.editing=null;ui.topic=null;ui.confirm=null;save();renderVocab();},
@@ -1694,13 +1734,13 @@ const A = {
   tremove:a=>{const t=applyEdits(baseTopic(ui.editTopic));const w=t.words[+a];removeTopicWord(ui.editTopic,w.en);if(ui.editWordT===w.en)ui.editWordT=null;save();toast('Removed "'+w.en+'"');renderTopicEditor();},
   tputback:a=>{const e=topicEdit(ui.editTopic);const en=e.removed.splice(+a,1)[0];tidyEdit(ui.editTopic);save();toast('Put back "'+en+'"');renderTopicEditor();},
   taddword:async()=>{const id=ui.editTopic;const en=document.getElementById('ten').value.trim();if(!en){toast('Type the English word first');return;}
-    const es=document.getElementById('tes').value.trim();let pic=document.getElementById('tpic').value.trim();const snd=document.getElementById('tsnd').value.trim().replace(/\s+/g,'');
+    const es=(document.getElementById('tes')||{value:''}).value.trim();let pic=document.getElementById('tpic').value.trim();const snd=document.getElementById('tsnd').value.trim().replace(/\s+/g,'');
     const kEl=document.getElementById('tkey'),tEl=document.getElementById('ttricky');
     const cur=applyEdits(baseTopic(id)).words;const old=ui.editWordT!=null?cur.find(w=>w.en===ui.editWordT):null;
     if(cur.some(w=>w.en.toLowerCase()===en.toLowerCase()&&w!==old)){toast('"'+en+'" is already in this list');return;}
     if(old&&!pic&&old.pic&&old.pic.startsWith('data:'))pic=old.pic;
     const f=document.getElementById('timg').files[0];if(f){try{pic=await fileToThumb(f);}catch(e){toast('That photo could not be read');}}
-    const w={en,pic,snd};['es','de','tr'].forEach(k=>{if(old&&old[k])w[k]=old[k];});w[mKey()]=es;if(kEl)w.key=kEl.checked;if(tEl)w.tricky=tEl.checked;
+    const w={en,pic,snd};['es','de','tr'].forEach(k=>{if(old&&old[k])w[k]=old[k];});if(mKey())w[mKey()]=es;if(kEl)w.key=kEl.checked;if(tEl)w.tricky=tEl.checked;
     if(old)removeTopicWord(id,old.en);
     topicEdit(id).added.push(w);
     ui.editWordT=null;save();toast(old?'Saved "'+en+'"':'Added "'+en+'"');renderTopicEditor();const n=document.getElementById('ten');n&&n.focus();},
@@ -1739,14 +1779,16 @@ const A = {
     else{const o=d[{blending:'b',segmenting:'s',tricky:'t'}[d.sec]];o[key]=o[key]||{};o[key].ok=o[key].ok===val?null:val;}
     save();renderAssess();},
   amove:a=>{const d=state.draft;const n=aItems(d.phase,d.sec).length;const ni=d.i+(+a);
-    if(ni>=n){const order=SECTIONS.map(x=>x[0]);d.sec=order[order.indexOf(d.sec)+1];d.i=0;}else d.i=Math.max(0,ni);save();renderAssess();window.scrollTo(0,0);},
+    if(ni>=n){const order=SECTIONS.map(x=>x[0]);d.sec=order[order.indexOf(d.sec)+1];d.i=0;}else d.i=Math.max(0,ni);save();renderAssess();},
   aquit:()=>{ui.confirm='aquit';renderAssess();},
   aquityes:()=>{state.draft=null;ui.confirm=null;save();renderAssess();},
   asave:()=>{const d=state.draft;const o=document.getElementById('aobs');if(o)d.obs=o.value;
     aItems(d.phase,'graphemes').forEach(k=>{const v=d.g[k];if(!v||v.r==null)return;const id=ASSESS_TO_SOUND[k]||k;if(SOUND_BY_ID[id])state.sounds[id]=v.r?'known':'practise';});
-    const rec={id:d.id,phase:d.phase,date:d.date,g:d.g,b:d.b,s:d.s,t:d.t,obs:d.obs};
+    const rec={id:d.id,phase:d.phase,date:d.date,g:d.g,b:d.b,s:d.s,t:d.t,obs:d.obs,pupil:(fb.user&&currentPupilObj())?pupilName(currentPupilObj()):''};
     state.assessments.push(rec);state.draft=null;save();toast('Assessment saved');ui.viewAssess=rec.id;renderAssess();},
   aview:a=>{ui.viewAssess=a;renderAssess();},
+  aprint:()=>{const o=document.getElementById('aobs');if(o&&state.draft){state.draft.obs=o.value;save();const pp=document.getElementById('aobsprint');if(pp)pp.textContent=o.value||'None written.';}
+    try{window.print();}catch(e){toast('Printing is blocked here. Open the app from your GitHub link to print.');}},
   aback:()=>{ui.viewAssess=null;renderAssess();},
   adel:a=>{ui.confirm='adel'+a;renderAssess();},
   adelyes:a=>{state.assessments=state.assessments.filter(x=>x.id!==a);ui.confirm=null;save();renderAssess();},
@@ -1764,10 +1806,17 @@ document.addEventListener('click',e=>{
   const el=e.target.closest('[data-act]');
   if(!el){ if(e.target.id==='overlay')closeModal(); return; }
   if(el.tagName==='INPUT'&&el.type==='checkbox'){return;}
-  const fn=A[el.dataset.act]; if(fn){fn(el.dataset.arg,el);}
+  const act=el.dataset.act, fn=A[act]; if(!fn)return;
+  /* keep the page exactly where it is after a button press; only moving to another screen starts at the top */
+  const y=window.scrollY;
+  fn(el.dataset.arg,el);
+  if(NEW_SCREEN.has(act)){window.scrollTo(0,0);}
+  else{const keep=()=>{if(Math.abs(window.scrollY-y)>1)window.scrollTo(0,y);};keep();requestAnimationFrame(keep);}
 });
+const NEW_SCREEN=new Set(['route','topic','topics','wview','wnew','wedit','wback','wdone','edittopic','closetopicedit','editlist','closeedit','newlist','aview','aback','astart']);
 document.addEventListener('change',e=>{
   const el=e.target;
+  if(el.tagName==='SELECT'||el.type==='checkbox'){const y=window.scrollY;requestAnimationFrame(()=>window.scrollTo(0,y));}
   if(el.id==='bkfile'&&el.files[0]){const fr=new FileReader();fr.onload=()=>{try{const d=JSON.parse(fr.result);if(d.app!=='sounds-and-words')throw new Error();ui.pendingImport=d;ui.confirm='restore';renderProgress();}catch(e){toast('That file is not a Sounds and Words backup');}};fr.readAsText(el.files[0]);return;}
   if(el.id&&el.id.startsWith('pl-')&&!el.id.startsWith('pl--')){const p=state.pupils.find(x=>x.id===el.id.slice(3));if(p){p.lang=el.value;save();render();pupilsModal();toast(pupilName(p)+': '+langLabel(p));}return;}
   if(el.id==='explang'){state.settings.exploreLang=el.value;persist();render();return;}
