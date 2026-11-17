@@ -50,6 +50,8 @@ nav.tabs button[aria-current="page"]{background:var(--sun);color:var(--ink)}
 .authbtn.in{background:var(--teal);border-color:var(--teal)}
 .modebar{background:var(--sun);color:var(--ink)}
 .modebar:empty{display:none}
+.modebar.pupilbar{background:#d7efe9}
+.modebar select{font:inherit;font-family:var(--display);font-weight:600;border:2px solid var(--teal);border-radius:10px;padding:4px 8px;background:#fff;color:var(--ink)}
 .modebar .in{max-width:1080px;margin:0 auto;padding:7px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:.95rem}
 .modebar button{border:0;background:var(--ink);color:#fff;border-radius:999px;padding:5px 14px;font-family:var(--display);font-weight:500}
 nav.tabs button:not([aria-current="page"]):hover{border-color:rgba(255,255,255,.35)}
@@ -586,12 +588,17 @@ const state = {
   blendSessions: store.get('blendSessions',[]),
   topicEdits: store.get('topicEdits',{}),
   writing: store.get('writing',[]),
+  pupils: store.get('pupils',[]),
+  currentPupil: store.get('currentPupil',''),
+  pupilStore: store.get('pupilStore',{}),
   draft: store.get('draft',null),
   updatedAt: store.get('updatedAt',0),
   settings: Object.assign({name:'',rate:0.85,spanish:true}, store.get('settings',{}))
 };
-function persist(){store.set('updatedAt',state.updatedAt||0);store.set('sounds',state.sounds);store.set('stars',state.stars);store.set('blends',state.blends);store.set('custom',state.custom);store.set('settings',state.settings);store.set('assessments',state.assessments);store.set('blendSessions',state.blendSessions);store.set('topicEdits',state.topicEdits);store.set('writing',state.writing);store.set('draft',state.draft);}
-function save(){state.updatedAt=Date.now();persist();scheduleSync();}
+function persist(){store.set('updatedAt',state.updatedAt||0);store.set('sounds',state.sounds);store.set('stars',state.stars);store.set('blends',state.blends);store.set('custom',state.custom);store.set('settings',state.settings);store.set('assessments',state.assessments);store.set('blendSessions',state.blendSessions);store.set('topicEdits',state.topicEdits);store.set('writing',state.writing);store.set('draft',state.draft);
+  if(state.currentPupil)state.pupilStore[state.currentPupil]=snapshotPupil();
+  store.set('pupils',state.pupils);store.set('currentPupil',state.currentPupil);store.set('pupilStore',state.pupilStore);}
+function save(){state.updatedAt=Date.now();if(typeof fb!=='undefined'&&fb.dirty&&state.currentPupil)fb.dirty.add(state.currentPupil);persist();scheduleSync();}
 
 const ui = {
   soundsMode:'chart', speed:null, speedSets:{1:true,2:false,3:false}, speedOnlyPractise:false,
@@ -701,7 +708,7 @@ function render(){
 
 /* ---------------- SOUNDS ---------------- */
 function renderSounds(){
-  const name=(fb.user&&state.settings.name)?`, ${esc(state.settings.name)}`:'';
+  const cp=currentPupilObj();const name=(fb.user&&cp&&(cp.name||'').trim())?`, ${esc(cp.name.trim())}`:'';
   let h=`<div class="pagehead"><div><h1>¡Hola${name}! Speed sounds</h1>
     <p>Tap a sound to see a picture word and a tip comparing it with Spanish.</p></div>
     <div class="seg" role="group" aria-label="Sound activity">
@@ -1166,18 +1173,63 @@ const FIREBASE_CONFIG = {
   messagingSenderId: "502501492322",
   appId: "1:502501492322:web:058b8aa792d6425830b33b"
 };
-const DATA_KEYS=['sounds','stars','blends','custom','assessments','blendSessions','settings','draft','topicEdits','writing'];
-const fb={ready:false,user:null,status:'',pending:false,busy:false,timer:null,justLoggedIn:false};
-function exportData(){const d={app:'sounds-and-words',version:1,updatedAt:state.updatedAt||Date.now()};DATA_KEYS.forEach(k=>d[k]=state[k]);return d;}
-function blankData(){return {app:'sounds-and-words',version:1,updatedAt:0,sounds:{},stars:{},blends:{},custom:[],assessments:[],blendSessions:[],topicEdits:{},writing:[],settings:{name:'',rate:0.85,spanish:true},draft:null};}
-function importData(d){
+/* everything is per pupil, including word lists and changes to topics; only voice settings are shared */
+const PUPIL_KEYS=['sounds','stars','blends','assessments','blendSessions','writing','draft','custom','topicEdits'];
+const SHARED_KEYS=['settings'];
+const fb={ready:false,user:null,status:'',pending:false,busy:false,timer:null,justLoggedIn:false,dirty:new Set(),deleted:new Set(),fullSave:false};
+function blankPupil(){return {sounds:{},stars:{},blends:{},assessments:[],blendSessions:[],writing:[],draft:null,custom:[],topicEdits:{}};}
+function snapshotPupil(){const o={};PUPIL_KEYS.forEach(k=>o[k]=state[k]);return JSON.parse(JSON.stringify(o));}
+function newPupilId(){return 'p'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function currentPupilObj(){return state.pupils.find(p=>p.id===state.currentPupil)||null;}
+function pupilName(p){if(!p)return '';const i=state.pupils.indexOf(p);return (p.name||'').trim()||('Pupil '+(i+1));}
+function loadPupil(id){
+  const d=Object.assign(blankPupil(),state.pupilStore[id]||{});
+  PUPIL_KEYS.forEach(k=>state[k]=d[k]);
+  ['sounds','stars','blends','topicEdits'].forEach(k=>{if(!state[k]||typeof state[k]!=='object'||Array.isArray(state[k]))state[k]={};});
+  ['assessments','blendSessions','writing','custom'].forEach(k=>{if(!Array.isArray(state[k]))state[k]=[];});
+  state.currentPupil=id;
+  ui.bs=ui.quiz=ui.flash=ui.pairs=ui.lspell=ui.speed=null;ui.viewAssess=null;ui.wEdit=ui.wView=null;ui.confirm=null;ui.topic=null;ui.editing=null;ui.editTopic=null;
+}
+function switchPupil(id){
+  if(id===state.currentPupil)return;
+  if(state.currentPupil)state.pupilStore[state.currentPupil]=snapshotPupil();
+  loadPupil(id);persist();scheduleSync();
+}
+function ensurePupil(){
+  if(state.pupils.length)return;
+  const id=newPupilId();
+  state.pupils=[{id,name:(state.settings&&state.settings.name)||''}];
+  state.pupilStore[id]=snapshotPupil();state.currentPupil=id;fb.fullSave=true;
+}
+/* a whole backup or account: version 2 holds several pupils */
+function exportData(){
+  if(state.currentPupil)state.pupilStore[state.currentPupil]=snapshotPupil();
+  const d={app:'sounds-and-words',version:2,updatedAt:state.updatedAt||Date.now(),pupils:state.pupils,currentPupil:state.currentPupil,pupilStore:state.currentPupil?state.pupilStore:{}};
+  SHARED_KEYS.forEach(k=>d[k]=state[k]);
+  if(!state.currentPupil)PUPIL_KEYS.forEach(k=>d[k]=state[k]); /* explore mode: one unnamed set of progress */
+  return d;
+}
+function upgradeData(d){
   if(!d||d.app!=='sounds-and-words')throw new Error('This is not a Sounds and Words backup.');
-  DATA_KEYS.forEach(k=>{if(k in d)state[k]=d[k];});
-  state.settings=Object.assign({name:'',rate:0.85,spanish:true},state.settings||{});
-  ['sounds','stars','blends','topicEdits'].forEach(k=>{if(!state[k]||typeof state[k]!=='object')state[k]={};});
-  ['custom','assessments','blendSessions','writing'].forEach(k=>{if(!Array.isArray(state[k]))state[k]=[];});
-  state.updatedAt=d.updatedAt||0; persist();
-  ui.bs=ui.quiz=ui.flash=ui.pairs=ui.lspell=ui.speed=null;ui.topic=null;ui.editing=null;ui.viewAssess=null;
+  if(d.version===2&&Array.isArray(d.pupils)&&d.pupils.length)return d;
+  const out={app:'sounds-and-words',version:2,updatedAt:d.updatedAt||0,pupils:[],currentPupil:'',pupilStore:{}};
+  SHARED_KEYS.forEach(k=>{if(k in d)out[k]=d[k];});
+  const hasProgress=PUPIL_KEYS.some(k=>d[k]&&(Array.isArray(d[k])?d[k].length:Object.keys(d[k]).length));
+  if(hasProgress||(d.settings&&d.settings.name)){
+    const id=newPupilId();const pd=blankPupil();PUPIL_KEYS.forEach(k=>{if(k in d)pd[k]=d[k];});
+    out.pupils=[{id,name:(d.settings&&d.settings.name)||''}];out.pupilStore[id]=pd;out.currentPupil=id;
+  }
+  return out;
+}
+function blankData(){return {app:'sounds-and-words',version:2,updatedAt:0,pupils:[],currentPupil:'',pupilStore:{},settings:{rate:0.85,spanish:true}};}
+function importData(d){
+  const v=upgradeData(d);
+  state.pupils=Array.isArray(v.pupils)?v.pupils:[];state.pupilStore=v.pupilStore||{};
+  state.settings=Object.assign({rate:0.85,spanish:true},v.settings||{});
+  const cur=state.pupils.find(p=>p.id===v.currentPupil)?v.currentPupil:(state.pupils[0]?state.pupils[0].id:'');
+  if(cur)loadPupil(cur);else{const bp=blankPupil();PUPIL_KEYS.forEach(k=>state[k]=bp[k]);state.currentPupil='';}
+  state.updatedAt=v.updatedAt||0;persist();
+  ui.bs=ui.quiz=ui.flash=ui.pairs=ui.lspell=ui.speed=null;ui.topic=null;ui.editing=null;ui.editTopic=null;ui.viewAssess=null;ui.wEdit=ui.wView=null;
 }
 function cloudConfigured(){return !!(FIREBASE_CONFIG.apiKey&&FIREBASE_CONFIG.projectId&&window.firebase);}
 function niceErr(e){
@@ -1193,7 +1245,7 @@ function niceErr(e){
   return (e&&e.message)||'Something went wrong.';
 }
 function setCloudStatus(t){fb.status=t;const el=document.getElementById('cloudstatus');if(el)el.textContent=t;updateAuthBtn();}
-function pupilLabel(){const n=(state.settings.name||'').trim();return n?n+"'s progress":'This account';}
+function pupilLabel(){const p=currentPupilObj();return p?pupilName(p)+"'s progress":'This account';}
 function updateAuthBtn(){
   const b=document.getElementById('authbtn'), bar=document.getElementById('modebar');
   if(!b)return;
@@ -1201,13 +1253,19 @@ function updateAuthBtn(){
     const saving=/Saving|Loading/.test(fb.status), problem=/not right|refused|No internet|wrong|Could not/.test(fb.status);
     b.textContent='👤 '+pupilLabel()+(saving?' · saving…':problem?' · not saved ⚠':' · saved ✓');
     b.classList.add('in'); b.title='Logged in as '+(fb.user.email||'');
-    if(bar)bar.innerHTML='';
+    if(bar){
+      const opts=state.pupils.map(p=>`<option value="${p.id}" ${p.id===state.currentPupil?'selected':''}>${esc(pupilName(p))}</option>`).join('');
+      bar.className='modebar pupilbar';
+      bar.innerHTML=`<div class="in"><label for="pupilsel"><b>Working with:</b></label><select id="pupilsel">${opts}</select><button data-act="pupils">👥 Manage pupils</button></div>`;
+    }
   } else {
+    if(bar)bar.className='modebar';
     b.textContent='🧭 Explore · not saved'; b.classList.remove('in'); b.title='Explore mode: nothing is saved to an account';
     if(bar)bar.innerHTML=`<div class="in"><span><b>Explore mode.</b> Try anything. Progress is not saved to a pupil's account.</span><button data-act="account">🔒 Log in to a pupil's account</button></div>`;
   }
 }
 function docRef(){return firebase.firestore().collection('progress').doc(fb.user.uid);}
+function pupilRef(id){return docRef().collection('pupils').doc(id);}
 function initCloud(){
   updateAuthBtn();
   if(!cloudConfigured())return;
@@ -1218,29 +1276,47 @@ function initCloud(){
     if(route==='progress')renderProgress();
   });
 }
-/* preferCloud: right after logging in, her saved progress replaces anything done on this computer while logged out */
+async function fetchCloud(){
+  const snap=await docRef().get();
+  if(!snap.exists)return null;
+  const main=JSON.parse(snap.data().json);
+  if(main.version!==2)return {legacy:true,data:main};
+  const ps=await docRef().collection('pupils').get();
+  const store={};ps.forEach(doc=>{try{store[doc.id]=JSON.parse(doc.data().json);}catch(e){}});
+  main.pupilStore=store;return {legacy:false,data:main};
+}
+/* preferCloud: right after logging in, the account's saved progress replaces anything done on this computer while logged out */
 async function cloudLoad(preferCloud){
   if(!fb.user||fb.busy)return;
-  fb.busy=true;setCloudStatus('Loading her progress…');
+  fb.busy=true;setCloudStatus('Loading progress…');
   try{
-    const snap=await docRef().get();
-    if(snap.exists){
-      const d=JSON.parse(snap.data().json);
-      const remoteT=d.updatedAt||0, localT=state.updatedAt||0;
+    const got=await fetchCloud();
+    if(got){
+      const d=got.data;const remoteT=d.updatedAt||0, localT=state.updatedAt||0;
+      if(got.legacy){importData(d);ensurePupil();fb.fullSave=true;render();fb.busy=false;await cloudSave();return;}
       if(preferCloud||remoteT>localT){if(remoteT!==localT||preferCloud){importData(d);render();}}
       else if(localT>remoteT){fb.busy=false;await cloudSave();return;}
-    } else {fb.busy=false;await cloudSave();return;}
-    setCloudStatus('Up to date. Saved in her account.');
+      if(!state.pupils.length){ensurePupil();render();fb.busy=false;await cloudSave();return;}
+    } else {ensurePupil();fb.fullSave=true;render();fb.busy=false;await cloudSave();return;}
+    setCloudStatus('Up to date. Saved in the account.');
   }catch(e){setCloudStatus(niceErr(e));}
   fb.busy=false;
 }
 async function cloudSave(){
   if(!fb.user)return;
   if(fb.busy){scheduleSync();return;}
+  if(!state.pupils.length)ensurePupil();
   fb.busy=true;setCloudStatus('Saving…');
   try{
-    await docRef().set({json:JSON.stringify(exportData()),updatedAt:state.updatedAt||Date.now(),savedAt:firebase.firestore.FieldValue.serverTimestamp()});
-    fb.pending=false;setCloudStatus('Saved in her account at '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}));
+    const d=exportData();
+    const ids=fb.fullSave?state.pupils.map(p=>p.id):[...fb.dirty,state.currentPupil].filter((x,i,a)=>x&&a.indexOf(x)===i&&state.pupils.some(p=>p.id===x));
+    /* pupils first, then the account: if a pupil write is refused, the account is left as it was */
+    for(const id of ids)await pupilRef(id).set({json:JSON.stringify(d.pupilStore[id]||blankPupil())});
+    for(const id of fb.deleted){try{await pupilRef(id).delete();}catch(e){}}
+    const main={app:d.app,version:2,updatedAt:d.updatedAt,pupils:d.pupils,currentPupil:d.currentPupil};SHARED_KEYS.forEach(k=>main[k]=d[k]);
+    await docRef().set({json:JSON.stringify(main),updatedAt:d.updatedAt,savedAt:firebase.firestore.FieldValue.serverTimestamp()});
+    fb.dirty.clear();fb.deleted.clear();fb.fullSave=false;
+    fb.pending=false;setCloudStatus('Saved in the account at '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}));
   }catch(e){setCloudStatus(niceErr(e));}
   fb.busy=false;
 }
@@ -1271,16 +1347,32 @@ function loginModal(err,mode){
     ${create?'':`<div class="row"><button class="mini" data-act="forgotpw">Forgot password?</button></div><p class="counter">Anything done on this computer while logged out is replaced by the account's saved progress.</p>`}`);
   const e=document.getElementById('lemail');e&&e.focus();
 }
+function pupilsModal(){
+  const c=ui.confirm||'';
+  showModal(`<h2>Pupils</h2><p class="counter" style="margin-top:4px">Each pupil has their own progress: sounds, stars, blending, assessments, writing, their own word lists and their own changes to topics. Nothing is shared between pupils.</p>
+    <div class="wlist" style="margin:12px 0">${state.pupils.map(p=>`<div class="witem" style="flex-wrap:wrap">
+      <span style="font-size:1.4rem">${p.id===state.currentPupil?'👉':'👤'}</span>
+      <input id="pn-${p.id}" value="${esc(p.name||'')}" placeholder="${esc(pupilName(p))}" aria-label="Name" style="flex:1;min-width:140px;font:inherit;border:2px solid var(--line);border-radius:8px;padding:6px 8px">
+      <button class="mini" data-act="prename" data-arg="${p.id}">Save name</button>
+      ${p.id===state.currentPupil?'<span class="counter">working with</span>':`<button class="mini" data-act="pswitch" data-arg="${p.id}">Switch to</button>`}
+      ${state.pupils.length>1?(c==='pdel'+p.id?`<button class="mini" style="background:var(--bad);color:#fff" data-act="pdelyes" data-arg="${p.id}">Delete ${esc(pupilName(p))} and all their progress?</button><button class="mini" data-act="pdelno">Cancel</button>`:`<button class="mini" data-act="pdel" data-arg="${p.id}">Delete</button>`):''}
+    </div>`).join('')}</div>
+    <form id="addpupil" class="form" style="grid-template-columns:1fr auto"><label class="field" for="newpupil">Add a pupil<input id="newpupil" placeholder="First name" required></label><button class="btn" type="submit">＋ Add pupil</button></form>`);
+}
 function accountModal(){
-  showModal(`<h2>${esc(pupilLabel())}</h2><p>Logged in as <b>${esc(fb.user.email||'')}</b></p>
-    <div class="form" style="margin:8px 0"><label class="field" for="acname">Pupil's first name<input id="acname" value="${esc(state.settings.name||'')}" placeholder="e.g. Lovelynn"></label><button class="btn alt" data-act="acname">Save name</button></div>
+  showModal(`<h2>Account</h2><p>Logged in as <b>${esc(fb.user.email||'')}</b>. Working with <b>${esc(pupilName(currentPupilObj()))}</b>.</p>
+    <div class="row" style="margin:8px 0"><button class="btn alt" data-act="pupils">👥 Manage pupils (${state.pupils.length})</button></div>
     <p class="counter" id="cloudstatus">${esc(fb.status)}</p>
     <div class="row" style="margin:10px 0"><button class="btn" data-act="cloudsave">Save now</button></div>
     <div class="tipbox"><h3>Log out</h3>
-      <p class="counter" style="margin:0">Her progress stays safe in her account. This computer goes back to Explore mode, with nothing of hers left on it.</p>
+      <p class="counter" style="margin:0">All pupils' progress stays safe in the account. This computer goes back to Explore mode, with nothing left on it.</p>
       <div class="row" style="margin-top:10px"><button class="btn bad" data-act="logout">Log out</button></div></div>`);
 }
 document.addEventListener('submit',async e=>{
+  if(e.target.id==='addpupil'){e.preventDefault();const n=document.getElementById('newpupil').value.trim();if(!n)return;
+    if(state.currentPupil)state.pupilStore[state.currentPupil]=snapshotPupil();
+    const id=newPupilId();state.pupils.push({id,name:n});state.pupilStore[id]=blankPupil();fb.dirty.add(id);
+    switchPupil(id);save();render();pupilsModal();toast('Added '+n+'. You are now working with '+n+'.');return;}
   if(e.target.id!=='loginform')return;
   e.preventDefault();
   const email=document.getElementById('lemail').value.trim(),pass=document.getElementById('lpass').value;
@@ -1369,7 +1461,7 @@ function renderProgress(){
   const read=Object.values(state.blends).filter(v=>v==='read').length;
   const blendPractise=Object.keys(state.blends).filter(k=>state.blends[k]==='practise');
   const c=ui.confirm;
-  let h=`<div class="pagehead"><div><h1>Progress</h1><p>Saved on this device and browser only. Tap a sound below to change its status.</p></div></div>
+  let h=`<div class="pagehead"><div><h1>Progress${fb.user&&currentPupilObj()?': '+esc(pupilName(currentPupilObj())):''}</h1><p>Saved on this device and browser only. Tap a sound below to change its status.</p></div></div>
    <div class="stats">
     <div class="stat"><div class="n">${known} / ${SOUNDS.length}</div><div class="l">sounds known</div><div class="bar"><i style="width:${known/SOUNDS.length*100}%"></i></div></div>
     <div class="stat"><div class="n">${practise.length}</div><div class="l">sounds to practise</div></div>
@@ -1387,7 +1479,7 @@ function renderProgress(){
    <div class="panel"><h2>Vocabulary by topic</h2>${allTopics().map(t=>{const s=topicStars(t);return `<div class="trow"><span>${t.icon}</span><span>${esc(t.name)}</span><div class="bar" style="margin:0"><i style="width:${t.words.length?s/t.words.length*100:0}%"></i></div><span class="n">${s}/${t.words.length}</span></div>`;}).join('')}</div>
    <div class="panel"><h2>Settings</h2>
      <div class="form">
-       ${fb.user?`<label class="field">Pupil's first name (shown at the top and in the greeting)<input id="sname" value="${esc(state.settings.name)}"></label>`:`<p class="counter" style="margin:0">The pupil's name is set after logging in to her account. Explore mode never shows a name.</p>`}
+       ${fb.user&&currentPupilObj()?`<label class="field">Pupil's first name (shown at the top and in the greeting)<input id="sname" value="${esc(currentPupilObj().name||'')}"></label>`:`<p class="counter" style="margin:0">Pupils are added after logging in. Explore mode never shows a name.</p>`}
        <label class="field">Speaking speed: <span id="ratev">${state.settings.rate.toFixed(2)}</span><input id="srate" type="range" min="0.5" max="1.2" step="0.05" value="${state.settings.rate}"></label>
        <button class="btn" data-act="savesettings">Save</button>
        <button class="btn alt" data-act="testvoice">🔊 Test voice</button>
@@ -1395,7 +1487,7 @@ function renderProgress(){
      <p class="counter">The voice comes from the device. A British English voice is used when one is installed.</p></div>
    ${syncPanelHTML()}
    <div class="panel"><h2>Start again</h2><div class="row">
-     ${c==='reset'?`<span>Clear all progress (sounds, stars, blending reviews)? Your own word lists, word changes, assessments and writing are kept.</span><button class="btn bad" data-act="resetyes">Yes, clear it</button><button class="btn alt" data-act="cancelconfirm">Cancel</button>`
+     ${c==='reset'?`<span>Clear this pupil's sounds, stars and blending reviews? Assessments, writing, word lists and other pupils are kept.</span><button class="btn bad" data-act="resetyes">Yes, clear it</button><button class="btn alt" data-act="cancelconfirm">Cancel</button>`
       :`<button class="btn alt" data-act="reset">Clear all progress</button>`}</div></div>`;
   app.innerHTML=h;
 }
@@ -1516,7 +1608,7 @@ const A = {
 
   bkdown:()=>downloadBackup(),
   bkcopy:async()=>{try{await navigator.clipboard.writeText(JSON.stringify(exportData()));toast('Backup copied. Paste it into a file or email it to yourself.');}catch(e){toast('Copying is blocked here.');}},
-  bkrestoreyes:()=>{try{importData(ui.pendingImport);state.updatedAt=Date.now();persist();ui.pendingImport=null;ui.confirm=null;toast('Backup restored');if(fb.user)cloudSave();renderProgress();}catch(e){toast(e.message);}},
+  bkrestoreyes:()=>{try{importData(ui.pendingImport);state.updatedAt=Date.now();persist();ui.pendingImport=null;ui.confirm=null;toast('Backup restored');if(fb.user){ensurePupil();fb.fullSave=true;cloudSave();}renderProgress();}catch(e){toast(e.message);}},
   account:()=>{if(fb.user)accountModal();else loginModal('', 'login');},
   loginmode:a=>loginModal('',a),
   forgotpw:async()=>{const em=(document.getElementById('lemail')||{}).value||'';const errEl=document.getElementById('loginerr');
@@ -1524,7 +1616,14 @@ const A = {
     try{await firebase.auth().sendPasswordResetEmail(em.trim());if(errEl){errEl.className='feedback ok';errEl.style.fontSize='1rem';errEl.textContent='If that email has an account, a reset link is on its way. Check the inbox and spam folder.';}}
     catch(e){if(errEl)errEl.textContent=niceErr(e);}},
   cloudsave:()=>{clearTimeout(fb.timer);cloudSave();},
-  acname:()=>{state.settings.name=document.getElementById('acname').value.trim();save();closeModal();toast('Name saved');render();},
+  pupils:()=>{if(!fb.user){loginModal('','login');return;}ui.confirm=null;pupilsModal();},
+  prename:a=>{const p=state.pupils.find(x=>x.id===a);const v=document.getElementById('pn-'+a).value.trim();p.name=v;save();render();pupilsModal();toast('Name saved');},
+  pswitch:a=>{switchPupil(a);render();closeModal();toast('Now working with '+pupilName(currentPupilObj()));},
+  pdel:a=>{ui.confirm='pdel'+a;pupilsModal();},
+  pdelno:()=>{ui.confirm=null;pupilsModal();},
+  pdelyes:a=>{const wasCur=a===state.currentPupil;state.pupils=state.pupils.filter(p=>p.id!==a);delete state.pupilStore[a];fb.deleted.add(a);fb.dirty.delete(a);
+    if(wasCur)loadPupil(state.pupils[0].id);ui.confirm=null;save();render();pupilsModal();toast('Pupil deleted');},
+
   logout:async()=>{const doWipe=true;
     if(fb.pending){clearTimeout(fb.timer);await cloudSave();}
     try{await firebase.auth().signOut();}catch(e){}
@@ -1555,7 +1654,7 @@ const A = {
     try{await navigator.clipboard.writeText(assessText(a));toast('Copied. Paste it into an email or document.');}catch(e){toast('Copying is blocked here. Select the tables and copy them instead.');}},
 
   cycsound:a=>{const cur=state.sounds[a];if(!cur)state.sounds[a]='known';else if(cur==='known')state.sounds[a]='practise';else delete state.sounds[a];save();renderProgress();},
-  savesettings:()=>{const sn=document.getElementById('sname');if(sn)state.settings.name=sn.value.trim();state.settings.rate=parseFloat(document.getElementById('srate').value)||0.85;save();toast('Settings saved');renderProgress();},
+  savesettings:()=>{const sn=document.getElementById('sname');if(sn&&currentPupilObj())currentPupilObj().name=sn.value.trim();state.settings.rate=parseFloat(document.getElementById('srate').value)||0.85;save();toast('Settings saved');renderProgress();},
   testvoice:()=>speak('Hello! Let\'s read together.','en'),
   reset:()=>{ui.confirm='reset';renderProgress();},
   resetyes:()=>{state.sounds={};state.stars={};state.blends={};state.blendSessions=[];ui.confirm=null;save();toast('Progress cleared');renderProgress();}
@@ -1569,6 +1668,7 @@ document.addEventListener('click',e=>{
 document.addEventListener('change',e=>{
   const el=e.target;
   if(el.id==='bkfile'&&el.files[0]){const fr=new FileReader();fr.onload=()=>{try{const d=JSON.parse(fr.result);if(d.app!=='sounds-and-words')throw new Error();ui.pendingImport=d;ui.confirm='restore';renderProgress();}catch(e){toast('That file is not a Sounds and Words backup');}};fr.readAsText(el.files[0]);return;}
+  if(el.id==='pupilsel'){switchPupil(el.value);render();toast('Now working with '+pupilName(currentPupilObj()));return;}
   if(el.id==='keyonly'){ui.keyOnly=el.checked;ui.quiz=ui.flash=ui.pairs=ui.lspell=null;ui.bs=null;render();return;}
   if(el.id==='nunit'){ui.nelsonUnit=el.value;ui.bs=null;renderBlending();return;} if(el.matches('input[type=checkbox][data-act]')){const fn=A[el.dataset.act];fn&&fn(el.dataset.arg,el);}
 });
