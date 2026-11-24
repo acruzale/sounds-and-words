@@ -1,0 +1,72 @@
+rules_version = '2';
+
+// Sounds and Words: Firestore security rules.
+// Paste all of this into Firebase Console > Firestore Database > Rules, then click Publish.
+//
+// progress/{uid}                       a teacher's own record (settings, last pupil). Only that teacher.
+// progress/{uid}/pupils/{id}           the old layout from before sharing. Kept as a backup. Only that teacher.
+// students/{studentId}                 one pupil. ownerId = the teacher who made it.
+//                                      editors / viewers = lists of colleagues' emails (lower case).
+// students/{studentId}/photos/{id}     photos of the pupil's handwritten work.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+
+    // Shared access is matched by email, so the email must be verified.
+    // Without this, anyone could create an email/password account using a colleague's
+    // address and see that colleague's shared pupils. Google sign-in emails are always verified.
+    function myEmail() { return request.auth.token.email.lower(); }
+    function emailVerified() { return signedIn() && request.auth.token.email_verified == true; }
+
+    function isOwner(s)  { return signedIn() && s.ownerId == request.auth.uid; }
+    function isEditor(s) { return emailVerified() && myEmail() in s.editors; }
+    function isViewer(s) { return emailVerified() && myEmail() in s.viewers; }
+    function canRead(s)  { return isOwner(s) || isEditor(s) || isViewer(s); }
+    function canEdit(s)  { return isOwner(s) || isEditor(s); }
+
+    // What a pupil record written by its owner must look like.
+    function validStudent(s) {
+      return s.ownerId == request.auth.uid
+        && s.editors is list && s.editors.size() <= 50
+        && s.viewers is list && s.viewers.size() <= 50
+        && s.json is string;
+    }
+
+    // A teacher's own record.
+    match /progress/{uid} {
+      allow read, write: if signedIn() && request.auth.uid == uid;
+      match /pupils/{pupilId} {
+        allow read, write: if signedIn() && request.auth.uid == uid;
+      }
+    }
+
+    match /students/{studentId} {
+      // Owner, editors and viewers can read the pupil.
+      allow read: if canRead(resource.data);
+
+      // Any signed-in teacher can create pupils, owned by themselves.
+      allow create: if signedIn() && validStudent(request.resource.data);
+
+      // The owner can change everything (name, language, sharing lists, progress) but cannot give the pupil away.
+      // Editors can only change the progress itself, never the name, owner or sharing lists.
+      allow update: if (isOwner(resource.data) && validStudent(request.resource.data))
+                    || (isEditor(resource.data)
+                        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['json', 'updatedAt', 'updatedBy']));
+
+      // Only the owner can delete a pupil.
+      allow delete: if isOwner(resource.data);
+
+      // Photos follow the pupil: readers can see them, owner and editors can add or remove them.
+      match /photos/{photoId} {
+        function student() { return get(/databases/$(database)/documents/students/$(studentId)).data; }
+        allow read: if canRead(student());
+        allow create, update: if canEdit(student())
+                              && request.resource.data.data is string
+                              && request.resource.data.data.size() < 1048000;
+        allow delete: if canEdit(student());
+      }
+    }
+  }
+}

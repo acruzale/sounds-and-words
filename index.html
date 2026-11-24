@@ -32,28 +32,39 @@
   color-scheme:light;
 }
 *{box-sizing:border-box}
+html{scrollbar-gutter:stable}
 html,body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--phonics);font-size:17px;line-height:1.45}
 button{font:inherit;color:inherit;cursor:pointer}
 button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
 h1,h2,h3{font-family:var(--display);font-weight:600;text-wrap:balance;margin:0}
 .wrap{max-width:1080px;margin:0 auto;padding:0 18px 60px}
 
-/* top bar */
+/* top bar: one slim sticky row; on narrow screens the tabs drop to a second, scrollable row */
 header.top{background:var(--ink);color:#fff;position:sticky;top:0;z-index:20}
-.topin{max-width:1080px;margin:0 auto;padding:10px 18px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-.brand{font-family:var(--display);font-size:1.25rem;font-weight:600;display:flex;align-items:center;gap:8px;margin-right:auto}
-.brand small{font-weight:500;opacity:.7;font-size:.85rem}
-nav.tabs{display:flex;gap:6px;flex-wrap:wrap}
-nav.tabs button{background:transparent;border:2px solid transparent;color:#fff;padding:8px 14px;border-radius:999px;font-family:var(--display);font-weight:500;font-size:1rem}
+.topin{max-width:1240px;margin:0 auto;padding:8px 18px;display:flex;align-items:center;gap:14px}
+.brand{font-family:var(--display);font-size:1.2rem;font-weight:600;display:flex;align-items:center;gap:8px;white-space:nowrap}
+nav.tabs{display:flex;gap:4px;margin-right:auto;min-width:0}
+nav.tabs button{background:transparent;border:2px solid transparent;color:#fff;padding:7px 13px;border-radius:999px;font-family:var(--display);font-weight:500;font-size:1rem;white-space:nowrap}
 nav.tabs button[aria-current="page"]{background:var(--sun);color:var(--ink)}
-.authbtn{border:2px solid rgba(255,255,255,.4);background:transparent;color:#fff;border-radius:999px;padding:7px 14px;font-family:var(--display);font-weight:500}
-.authbtn.in{background:var(--teal);border-color:var(--teal)}
-.modebar{background:var(--sun);color:var(--ink)}
-.modebar:empty{display:none}
-.modebar.pupilbar{background:#d7efe9}
-.modebar select{font:inherit;font-family:var(--display);font-weight:600;border:2px solid var(--teal);border-radius:10px;padding:4px 8px;background:#fff;color:var(--ink)}
-.modebar .in{max-width:1080px;margin:0 auto;padding:7px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:.95rem}
-.modebar button{border:0;background:var(--ink);color:#fff;border-radius:999px;padding:5px 14px;font-family:var(--display);font-weight:500}
+.who{display:flex;align-items:center;gap:8px}
+.who:empty{display:none}
+.whosel{font:inherit;font-family:var(--display);font-weight:600;font-size:.95rem;color:#fff;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.28);border-radius:999px;padding:6px 30px 6px 14px;max-width:190px;appearance:none;-webkit-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;cursor:pointer;text-overflow:ellipsis}
+.whosel:hover{border-color:rgba(255,255,255,.55)}
+.whosel option,.whosel optgroup{color:var(--ink);background:#fff}
+.whobtn{border:2px solid rgba(255,255,255,.28);background:transparent;color:#fff;border-radius:999px;padding:6px 14px;font-family:var(--display);font-weight:500;font-size:.95rem;white-space:nowrap}
+.whobtn:hover{border-color:rgba(255,255,255,.55);background:rgba(255,255,255,.08)}
+.whobtn.solid{background:var(--sun);border-color:var(--sun);color:var(--ink)}
+.whobtn.warn{border-color:var(--sun);color:var(--sun);min-width:90px}
+.whotag{font-family:var(--display);font-size:.8rem;font-weight:500;color:var(--ink);background:var(--sun);border-radius:999px;padding:3px 10px;white-space:nowrap}
+@media (max-width:1180px){
+  .topin{flex-wrap:wrap;row-gap:6px;padding:8px 14px 6px}
+  .brand{margin-right:auto}
+  .who{order:2}
+  nav.tabs{order:3;flex-basis:100%;margin:0 -14px;padding:0 14px 2px;overflow-x:auto;scrollbar-width:none}
+  nav.tabs::-webkit-scrollbar{display:none}
+}
+@media (max-width:480px){.brand .bname{display:none}.whosel{max-width:150px}}
 nav.tabs button:not([aria-current="page"]):hover{border-color:rgba(255,255,255,.35)}
 
 .pagehead{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:22px 0 12px}
@@ -172,6 +183,12 @@ nav.tabs button:not([aria-current="page"]):hover{border-color:rgba(255,255,255,.
 .vcard .stars{font-size:.85rem;color:var(--warn);min-height:1.2em}
 .vcard .row{gap:6px;margin-top:4px}
 .mini{border:0;background:var(--paper);border-radius:10px;padding:6px 10px;font-size:.9rem}
+.mini:disabled{opacity:.55;cursor:default}
+.segpeek{display:block;margin:10px auto 0;border:2px dashed var(--line);background:var(--set2);border-radius:12px;padding:6px 14px;font-family:var(--display);font-weight:500;font-size:.95rem;color:var(--ink)}
+.segpeek b{font-family:var(--phonics);font-size:1.4rem;margin-right:6px}
+.segpeek span{color:var(--muted)}
+.bconfirm{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--card);border:2px solid var(--warn);border-radius:14px;padding:10px 14px;margin:0 0 12px}
+.bconfirm p{margin:0;flex:1;min-width:220px}
 .pic.txtpic{font-family:var(--display);font-weight:600;background:var(--set2);border-radius:14px;padding:0 12px;font-size:2rem;min-width:64px;display:inline-grid;place-items:center}
 img.pic.imgpic{width:96px;height:96px;object-fit:cover;border-radius:12px}
 .pic.nopic{font-size:2rem;opacity:.5}
@@ -214,6 +231,56 @@ img.pic.imgpic{width:96px;height:96px;object-fit:cover;border-radius:12px}
 .witem .t b{font-size:1.15rem}
 .witem .t small{color:var(--muted)}
 .empty{color:var(--muted);font-style:italic}
+.vh{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;pointer-events:none}
+
+/* sharing */
+.sharetag{font-family:var(--display);font-size:.82rem;border-radius:999px;padding:2px 10px;background:#fff;border:1px solid var(--line);color:var(--ink);white-space:nowrap}
+.sharetag.view{background:#fff1cc;border-color:var(--warn)}
+.sharetag.edit{background:#dff3e7;border-color:var(--good)}
+.sharebox{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:10px 0 2px}
+
+/* Manage window: student cards */
+.slist{display:flex;flex-direction:column;gap:8px;margin:12px 0 14px}
+.scard{background:var(--paper);border:2px solid transparent;border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:8px;transition:background-color .2s ease,border-color .2s ease}
+.scard.cur{background:#d5eeea;border-color:var(--teal)}
+.srow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sacts{gap:6px}
+.sacts:empty{display:none}
+.sname{flex:1;min-width:130px;font:inherit;font-weight:700;color:var(--ink);background:#fff;border:2px solid var(--line);border-radius:10px;padding:6px 10px}
+.slang{font:inherit;color:var(--ink);background:#fff;border:2px solid var(--line);border-radius:10px;padding:6px 8px}
+input.slang{width:140px}
+.sinfo{flex:1;min-width:130px;display:flex;flex-direction:column;line-height:1.25}
+.sinfo span{color:var(--muted);font-size:.9rem}
+.sbtn{border:2px solid var(--line);background:#fff;color:var(--ink);border-radius:10px;padding:6px 12px;font-family:var(--display);font-weight:500;font-size:.95rem;min-height:38px}
+.sbtn:hover{border-color:var(--ink)}
+.scard.cur .sbtn{border-color:#a9d6cf}
+.scard.cur .sbtn:hover{border-color:var(--teal)}
+.sbtn.danger{background:var(--bad);border-color:var(--bad);color:#fff}
+.sconfirm{font-size:.95rem;flex-basis:100%}
+.savebtn{min-width:96px;transition:background-color .25s ease,border-color .25s ease,color .25s ease}
+.savebtn.dirty{background:var(--teal);border-color:var(--teal);color:#fff}
+.savebtn.saved,.scard.cur .savebtn.saved{background:var(--good);border-color:var(--good);color:#fff;animation:savedpop .45s cubic-bezier(.16,1,.3,1)}
+@keyframes savedpop{0%{transform:scale(.92)}55%{transform:scale(1.06)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.savebtn.saved{animation:none}.scard,.savebtn{transition:none}}
+.msub{font-size:1rem;margin:4px 0 0;color:var(--muted)}
+.msec{font-size:1.3rem;margin:22px 0 0;padding-top:18px;border-top:2px solid var(--line)}
+.addform{margin-top:4px}
+.sharebox h3{font-size:1rem;margin:0 0 6px}
+.sharelist{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+.sharerow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sharerow .em{flex:1;min-width:160px;overflow-wrap:anywhere}
+.sharerow select{font:inherit;border:2px solid var(--line);border-radius:8px;padding:4px 6px}
+
+/* writing photos */
+.wphotos{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start;margin:6px 0 4px}
+.wphotos figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:4px}
+.phbtn{border:0;padding:0;background:none;border-radius:10px;cursor:zoom-in}
+.phthumb{display:block;width:180px;height:180px;object-fit:cover;border-radius:10px;border:2px solid var(--line);background:var(--paper)}
+.phadd{width:180px;height:180px;border:3px dashed var(--line);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:2.2rem;cursor:pointer;color:var(--ink);background:#fff}
+.phadd span{font-family:var(--display);font-size:1rem}
+.phadd:hover,.phadd:focus-within{border-color:var(--ink)}
+.phfull{display:block;max-width:100%;max-height:78vh;margin:0 auto;border-radius:8px}
+@media print{.phadd{display:none}}
 
 /* progress */
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px}
@@ -271,7 +338,7 @@ img.pic.imgpic{width:96px;height:96px;object-fit:cover;border-radius:12px}
 @media print{
   @page{size:A4;margin:12mm}
   html,body{background:#fff !important}
-  header.top,.modebar,.toast,.overlay,.noprint,nav,button{display:none !important}
+  header.top,.toast,.overlay,.noprint,nav,button{display:none !important}
   .wrap{max-width:none;padding:0}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .printhead{display:block;border-bottom:3px solid var(--ink);padding-bottom:8px;margin-bottom:14px}
@@ -307,13 +374,14 @@ img.pic.imgpic{width:96px;height:96px;object-fit:cover;border-radius:12px}
   .mgrid{grid-template-columns:repeat(3,1fr)}
   .trow{grid-template-columns:30px 1fr 70px 50px}
   .qopt .pic{font-size:2.8rem}
+  .seg{border-radius:18px}
 }
 </style>
 </head>
 <body>
 <header class="top">
   <div class="topin">
-    <div class="brand">🔤 Sounds and Words </div>
+    <div class="brand"><span aria-hidden="true">🔤</span><span class="bname">Sounds and Words</span></div>
     <nav class="tabs" aria-label="Sections">
       <button data-act="route" data-arg="sounds">Sounds</button>
       <button data-act="route" data-arg="blending">Blending</button>
@@ -322,9 +390,8 @@ img.pic.imgpic{width:96px;height:96px;object-fit:cover;border-radius:12px}
       <button data-act="route" data-arg="assess">Assess</button>
       <button data-act="route" data-arg="progress">Progress</button>
     </nav>
-    <button id="authbtn" class="authbtn" data-act="account">🧭 Explore · not saved</button>
+    <div id="who" class="who"></div>
   </div>
-  <div id="modebar" class="modebar"></div>
 </header>
 <main class="wrap" id="app"></main>
 <div class="toast" id="toast" role="status"></div>
@@ -345,12 +412,12 @@ const SOUNDS = [
  {id:'o',g:'o',set:1,word:'orange',pic:'🍊',tip:'Short o as in "dog". Close to Spanish o, with the mouth a little more open.',es:'Como la o, corta.'},
  {id:'c',g:'c',set:1,word:'caterpillar',pic:'🐛',tip:'Hard sound like c in Spanish "casa". Never the "ce/ci" sound here.',es:'Como la c de "casa".'},
  {id:'k',g:'k',set:1,word:'kangaroo',pic:'🦘',tip:'Same sound as c, like Spanish k or the "qu" in "queso".',es:'Como la k, o "qu" en "queso".'},
- {id:'u',g:'u',set:1,word:'umbrella',pic:'☂️',tip:'Short u as in "sun": a relaxed "uh". This sound is not in Spanish, so she may say "son" or "soon" for "sun".',es:'Un sonido corto, como una "a" relajada. No existe en español.'},
+ {id:'u',g:'u',set:1,word:'umbrella',pic:'☂️',tip:'Short u as in "sun": a relaxed "uh". This sound is not in Spanish, so they may say "son" or "soon" for "sun".',es:'Un sonido corto, como una "a" relajada. No existe en español.'},
  {id:'b',g:'b',set:1,word:'boot',pic:'🥾',tip:'Lips pressed firmly together. Spanish b can go soft between vowels; English b is always firm, and b and v are two different sounds.',es:'Labios bien cerrados. ¡La b y la v son diferentes!'},
  {id:'f',g:'f',set:1,word:'flower',pic:'🌸',tip:'Same as Spanish f: fff.',es:'Igual que la f: fff.'},
  {id:'e',g:'e',set:1,word:'egg',pic:'🥚',tip:'Short e as in "bed". Very close to Spanish e.',es:'Como la e, corta.'},
  {id:'l',g:'l',set:1,word:'leg',pic:'🦵',tip:'Like Spanish l at the start of a word: lll.',es:'Como la l: lll.'},
- {id:'h',g:'h',set:1,word:'horse',pic:'🐴',tip:'A breath out, like a very soft Spanish j. Spanish h is silent, so she may drop it ("at" for "hat"). In English you hear it.',es:'¡Se pronuncia! Como una j muy suave.'},
+ {id:'h',g:'h',set:1,word:'horse',pic:'🐴',tip:'A breath out, like a very soft Spanish j. Spanish h is silent, so they may drop it ("at" for "hat"). In English you hear it.',es:'¡Se pronuncia! Como una j muy suave.'},
  {id:'sh',g:'sh',set:1,word:'snake + horse',pic:'🐍🐴',tip:'Not in Spanish. Lips pushed forward, as in "shhh, be quiet!". Often mixed up with ch ("chip" for "ship").',es:'Como cuando pides silencio: shhh.'},
  {id:'r',g:'r',set:1,word:'robot',pic:'🤖',tip:'English r: lips a little round, tongue does not touch the roof of the mouth. No tap and no roll as in Spanish r or rr.',es:'La lengua no toca arriba. No es la r española.'},
  {id:'j',g:'j',set:1,word:'jack-in-a-box',pic:'🤡',tip:'As in "jam" and "jack", like "dy". Never the Spanish jota sound.',es:'No es la j española. Suena como "dy".'},
@@ -358,7 +425,7 @@ const SOUNDS = [
  {id:'y',g:'y',set:1,word:'yak',pic:'🐃',tip:'Like Spanish y in "yo" (the soft version).',es:'Como la y de "yo".'},
  {id:'w',g:'w',set:1,word:'worm',pic:'🪱',tip:'Round lips, then open, like the "hu" in Spanish "huevo".',es:'Como "hu" en "huevo".'},
  {id:'th',g:'th',set:1,word:'tower + horse',pic:'🗼🐴',tip:'Tongue peeps out between the teeth (as in "thumb"), like z or c in Spain ("zapato", "cielo"). Latin American Spanish does not have it, so listen for t or f instead.',es:'La lengua sale un poco entre los dientes.'},
- {id:'z',g:'z',set:1,word:'zip',pic:'🤐',tip:'Buzz like a bee: zzz. Spanish z is never buzzed, so she may say s instead.',es:'Como una abeja: zzz.'},
+ {id:'z',g:'z',set:1,word:'zip',pic:'🤐',tip:'Buzz like a bee: zzz. Spanish z is never buzzed, so they may say s instead.',es:'Como una abeja: zzz.'},
  {id:'ch',g:'ch',set:1,word:'caterpillar + horse',pic:'🐛🐴',tip:'Same as Spanish ch in "chocolate".',es:'¡Igual que "ch" en "chocolate"!'},
  {id:'qu',g:'qu',set:1,word:'queen + umbrella',pic:'👸☂️',tip:'Says "kw". In Spanish "qu" is only k, but in English you hear the w.',es:'Suena "kw", no solo "k".'},
  {id:'x',g:'x',set:1,word:'exercise',pic:'🤸',tip:'Says "ks", like x in Spanish "taxi". In words it usually comes at the end, as in "box" and "fox".',es:'Como la x de "taxi".'},
@@ -401,7 +468,7 @@ const SOUND_BY_ID = Object.fromEntries(SOUNDS.map(s=>[s.id,s]));
 /* German meaning for each built-in word, keyed by English|Spanish so words with two meanings get the right one */
 const DE={"a|un / una":"ein / eine","afraid|asustado / asustada":"ängstlich","after|después":"nach / danach","after that|después de eso":"danach","almost|casi":"fast","alone|solo / sola":"allein","also|también":"auch","and|y":"und","angry|enfadado / enfadada":"wütend","ant|la hormiga":"die Ameise","apple|la manzana":"der Apfel","arm|el brazo":"der Arm","at|en":"an / bei","baby|el bebé":"das Baby","bad|malo / mala":"schlecht","badger|el tejón":"der Dachs","bag|el bolso":"die Tasche","ball|la pelota":"der Ball","banana|el plátano":"die Banane","band|el grupo de música":"die Band","bank|el banco":"die Bank","bat|el murciélago / el bate":"die Fledermaus / der Schläger","bat|el murciélago":"die Fledermaus","bath|la bañera":"die Badewanne","bay|la bahía":"die Bucht","be|ser / estar":"sein","Be quiet|Silencio":"Sei leise","beard|la barba":"der Bart","beautiful|bonito / bonita":"schön","because|porque":"weil","bed|la cama":"das Bett","bee|la abeja":"die Biene","before|antes":"vorher / bevor","beg|pedir":"betteln","bell|la campana":"die Glocke","belly|la barriga":"der Bauch","big|grande":"groß","bike|la bicicleta":"das Fahrrad","bird|el pájaro":"der Vogel","birthday|el cumpleaños":"der Geburtstag","bit|un poco":"ein bisschen","bite|morder":"beißen","black|negro":"schwarz","blame|culpar":"beschuldigen","bleed|sangrar":"bluten","blow|soplar":"blasen / pusten","blue|azul":"blau","boast|presumir":"angeben","boat|el barco":"das Boot","bog|el pantano":"der Sumpf","bone|el hueso":"der Knochen","book|el libro":"das Buch","boot|la bota":"der Stiefel","bored|aburrido / aburrida":"gelangweilt","bow|el lazo":"die Schleife","box|la caja":"die Schachtel / die Kiste","boxes|las cajas":"die Schachteln / die Kisten","boy|el niño":"der Junge","boys|los niños":"die Jungen","brain|el cerebro":"das Gehirn","bread|el pan":"das Brot","bright|brillante":"hell","broke|rompió":"zerbrach","broom|la escoba":"der Besen","brown|marrón":"braun","brush|el pincel / el cepillo":"der Pinsel / die Bürste","brush|el cepillo":"die Bürste","brushes|los pinceles / cepillos":"die Pinsel / die Bürsten","bug|el bicho":"der Käfer","bumping|chocando":"stoßend","bunk|la litera":"das Etagenbett","burger|la hamburguesa":"der Hamburger","bus|el autobús":"der Bus","buses|los autobuses":"die Busse","bushes|los arbustos":"die Büsche","but|pero":"aber","buzz|zumbar":"summen","cake|el pastel":"der Kuchen","came|vino / llegó":"kam","Can I go to the toilet?|¿Puedo ir al baño?":"Darf ich auf die Toilette gehen?","Can I have a drink?|¿Puedo beber agua?":"Darf ich etwas trinken?","Can you help me?|¿Me puedes ayudar?":"Kannst du mir helfen?","cap|la gorra":"die Mütze / die Kappe","car|el coche":"das Auto","carrot|la zanahoria":"die Karotte","case|la maleta":"der Koffer","cash|el dinero":"das Bargeld","cat|el gato":"die Katze","catch|atrapar / coger":"fangen","cats|los gatos":"die Katzen","chain|la cadena":"die Kette","chair|la silla":"der Stuhl","chat|charlar":"plaudern","cheeky|descarado / descarada":"frech","cheese|el queso":"der Käse","chew|masticar":"kauen","chick|el pollito":"das Küken","chicken|el pollo":"das Hähnchen","chief|el jefe":"der Chef / der Häuptling","chimp|el chimpancé":"der Schimpanse","chin|la barbilla":"das Kinn","chip|la patata frita":"die Pommes (eine)","chips|las patatas fritas":"die Pommes","choke|atragantarse":"sich verschlucken","chop|cortar / picar":"hacken / schneiden","church|la iglesia":"die Kirche","class|la clase":"die Klasse","classes|las clases":"die Klassen","clay|la arcilla":"der Ton","clean|limpio / limpia":"sauber","clean|limpio / limpiar":"sauber / putzen","cliff|el acantilado":"die Klippe","clock|el reloj":"die Uhr","cloth|el trapo / la tela":"das Tuch / der Stoff","cloud|la nube":"die Wolke","clown|el payaso":"der Clown","clue|la pista":"der Hinweis","coast|la costa":"die Küste","coat|el abrigo":"der Mantel","coin|la moneda":"die Münze","cold|frío / fría":"kalt","cold|tengo frío":"mir ist kalt","cold|frío":"kalt","colder|más frío":"kälter","coldest|el más frío":"am kältesten","computer|el ordenador":"der Computer","cook|cocinar":"kochen","coot|la focha (un pájaro)":"das Blässhuhn (ein Vogel)","corn|el maíz":"der Mais","cot|la cuna":"das Kinderbett","cow|la vaca":"die Kuh","crab|el cangrejo":"die Krabbe","crash|el choque":"der Unfall / der Zusammenstoß","crayon|la cera":"der Wachsmalstift","crocodile|el cocodrilo":"das Krokodil","cross|la cruz / cruzar":"das Kreuz / überqueren","cry|llorar":"weinen","crying|llorando":"weinend","cube|el cubo":"der Würfel","cuff|el puño (de la camisa)":"die Manschette","cup|la taza":"die Tasse","cut|cortar":"schneiden","cutting|cortando":"schneidend","dad|el papá":"der Papa","dance|bailar":"tanzen","day|el día":"der Tag","deep|profundo":"tief","deeper|más profundo":"tiefer","deepest|el más profundo":"am tiefsten","dew|el rocío":"der Tau","dirty|sucio / sucia":"schmutzig","dish|el plato":"der Teller / die Schüssel","ditch|la zanja":"der Graben","dive|tirarse al agua":"tauchen / springen","do|hacer":"machen / tun","doctor|el médico / la médica":"der Arzt / die Ärztin","dog|el perro":"der Hund","dogs|los perros":"die Hunde","dolphin|el delfín":"der Delfin","door|la puerta":"die Tür","dress|el vestido":"das Kleid","dresses|los vestidos":"die Kleider","drink|beber":"trinken","dripping|goteando":"tropfend","drum|el tambor":"die Trommel","dry|seco / seca":"trocken","drying|secando":"trocknend","duck|el pato":"die Ente","ear|la oreja":"das Ohr","eat|comer":"essen","egg|el huevo":"das Ei","eight|ocho":"acht","eighteen|dieciocho":"achtzehn","elephant|el elefante":"der Elefant","eleven|once":"elf","empty|vacío / vacía":"leer","eye|el ojo":"das Auge","face|la cara":"das Gesicht","family|la familia":"die Familie","fan|el abanico":"der Fächer","farm|la granja":"der Bauernhof","fast|rápido / rápida":"schnell","feed|dar de comer":"füttern","feet|los pies":"die Füße","fell|se cayó":"fiel hin","few|pocos / pocas":"wenige","fifteen|quince":"fünfzehn","fight|pelear":"kämpfen / streiten","fighting|peleando":"kämpfend","fill|llenar":"füllen","fin|la aleta":"die Flosse","finally|finalmente":"schließlich","fine|bien":"gut","finger|el dedo":"der Finger","fire|el fuego":"das Feuer","first|primero":"zuerst / erstens","fish|el pez":"der Fisch","five|cinco":"fünf","fizz|burbujear":"sprudeln","fizzy|con gas":"sprudelnd / mit Kohlensäure","flag|la bandera":"die Fahne","flake|el trocito":"das Stückchen / die Flocke","flame|la llama":"die Flamme","flash|el destello":"der Blitz","flat|plano":"flach","flow|fluir":"fließen","flower|la flor":"die Blume","fluff|la pelusa":"die Fussel","fly|volar":"fliegen","flying|volando":"fliegend","food|la comida":"das Essen","foot|el pie":"der Fuß","for example|por ejemplo":"zum Beispiel","fork|el tenedor":"die Gabel","four|cuatro":"vier","fourteen|catorce":"vierzehn","fox|el zorro":"der Fuchs","foxes|los zorros":"die Füchse","fresh|fresco":"frisch","Friday|viernes":"Freitag","friend|el amigo / la amiga":"der Freund / die Freundin","friends|los amigos":"die Freunde","frog|la rana":"der Frosch","frying|friendo":"bratend","full|lleno / llena":"voll","fun|divertido":"lustig / Spaß","funny|gracioso / graciosa":"lustig","game|el juego":"das Spiel","gate|la puerta (de la valla)":"das Tor","get|conseguir / coger":"bekommen / holen","gift|el regalo":"das Geschenk","girl|la niña":"das Mädchen","girls|las niñas":"die Mädchen","give|dar":"geben","glasses|las gafas / los vasos":"die Brille / die Gläser","gloves|los guantes":"die Handschuhe","glue|el pegamento":"der Kleber","go|ir":"gehen","goat|la cabra":"die Ziege","goes|va":"geht","gold|el oro":"das Gold","good|bueno / buena":"gut","Good morning|Buenos días":"Guten Morgen","Goodbye|Adiós":"Tschüss / Auf Wiedersehen","got|consiguió / tiene":"bekam / hat","grandad|el abuelo":"der Opa","grandma|la abuela":"die Oma","grass|la hierba":"das Gras","green|verde":"grün","grow|crecer":"wachsen","hair|el pelo":"die Haare","hand|la mano":"die Hand","happy|contento / contenta":"fröhlich","hard|duro / dura":"hart","has|tiene":"hat","hat|el sombrero":"der Hut","hatch|salir del huevo / la trampilla":"schlüpfen / die Luke","hay|el heno":"das Heu","he|él":"er","heavy|pesado / pesada":"schwer","Hello|Hola":"Hallo","help|la ayuda":"die Hilfe","hen|la gallina":"das Huhn","her (her bag)|su (de ella)":"ihr / ihre (ihre Tasche)","her (look at her)|la / a ella":"sie / ihr (schau sie an)","high|alto":"hoch","hill|la colina":"der Hügel","him|lo / a él":"ihn / ihm","his|su (de él)":"sein / seine","hit|golpear":"schlagen","home|la casa / el hogar":"das Zuhause","honey|la miel":"der Honig","hoot|ulular (el búho)":"rufen (wie eine Eule)","horse|el caballo":"das Pferd","host|el anfitrión":"der Gastgeber","hot|caliente":"heiß","hot|tengo calor":"mir ist heiß","house|la casa":"das Haus","however|sin embargo":"jedoch","huff|resoplar":"schnauben","hungry|tengo hambre":"ich habe Hunger","hutch|la conejera":"der Hasenstall","I|yo":"ich","I don't understand|No entiendo":"Ich verstehe das nicht","I feel sick|Me encuentro mal":"Mir ist schlecht","I have finished|He terminado":"Ich bin fertig","I think|creo que":"ich denke","ice cream|el helado":"das Eis","if|si":"wenn / falls","in conclusion|en conclusión":"zum Schluss","in my opinion|en mi opinión":"meiner Meinung nach","introduction|la introducción":"die Einleitung","is|es / está":"ist","it|eso (una cosa o un animal)":"es (ein Ding oder ein Tier)","its|su (de una cosa o un animal)":"sein / ihr (von einem Ding oder Tier)","jazz|el jazz":"der Jazz","jelly|la gelatina":"der Wackelpudding","jumping|saltando":"springend","June|junio":"Juni","junk|los trastos":"der Kram","kangaroo|el canguro":"das Känguru","key|la llave":"der Schlüssel","kick|dar una patada":"treten / kicken","kicked|dio una patada":"trat / kickte","kicker|el que da patadas":"der Kicker (wer tritt)","kicking|dando patadas":"tretend / kickend","kind|amable":"freundlich / nett","king|el rey":"der König","kit|el equipo":"die Ausrüstung","kite|la cometa":"der Drachen","kitten|el gatito":"das Kätzchen","lake|el lago":"der See","lamp|la lámpara":"die Lampe","land|la tierra":"das Land","large|grande":"groß","last|por último":"zuletzt","leaf|la hoja":"das Blatt","leg|la pierna":"das Bein","let|dejar":"lassen","lick|lamer":"lecken","licked|lamió":"leckte","licker|el que lame":"wer leckt","licking|lamiendo":"leckend","light|ligero / ligera":"leicht","light|la luz":"das Licht","light|ligero":"leicht","lighting|encendiendo":"anzündend","like|gustar":"mögen","Line up|Ponerse en fila":"Stellt euch auf","lion|el león":"der Löwe","lip|el labio":"die Lippe","listen|escuchar":"zuhören","live|vivir":"leben / wohnen","lizard|la lagartija":"die Eidechse","load|la carga / cargar":"die Ladung / laden","lock|el candado":"das Schloss","log|el tronco":"der Baumstamm","long|largo / larga":"lang","long|largo":"lang","longer|más largo":"länger","longest|el más largo":"am längsten","look|mirar":"schauen","lorry|el camión":"der Lastwagen","loud|ruidoso / ruidosa":"laut","luck|la suerte":"das Glück","lunch|el almuerzo":"das Mittagessen","maid|la criada":"das Dienstmädchen","mail|el correo":"die Post","man|el hombre":"der Mann","map|el mapa":"die Landkarte","match|el partido":"das Spiel","match|el partido / la cerilla":"das Spiel / das Streichholz","me|me / a mí":"mich / mir","meat|la carne":"das Fleisch","meet|conocer / quedar":"treffen","mess|el desorden":"die Unordnung","might|quizás / podría":"vielleicht / könnte","milk|la leche":"die Milch","mill|el molino":"die Mühle","Monday|lunes":"Montag","monkey|el mono":"der Affe","moo|mugir":"muhen","moon|la luna":"der Mond","most|la mayoría":"die meisten","moth|la polilla":"die Motte","mouse|el ratón":"die Maus","mouth|la boca":"der Mund","much|mucho":"viel","mum|la mamá":"die Mama","my|mi":"mein / meine","nail|la uña / el clavo":"der Fingernagel / der Nagel","neck|el cuello":"der Hals","nest|el nido":"das Nest","net|la red":"das Netz","new|nuevo / nueva":"neu","next|a continuación":"als Nächstes","night|la noche":"die Nacht","nine|nueve":"neun","nineteen|diecinueve":"neunzehn","No|No":"Nein","no|no":"nein / kein","nose|la nariz":"die Nase","not|no":"nicht","notebook|el cuaderno":"das Heft","octopus|el pulpo":"der Tintenfisch","of|de":"von","off|apagado / fuera":"aus / weg","old|viejo / vieja":"alt","one|uno":"eins","one day|un día":"eines Tages","or|o":"oder","orange|la naranja":"die Orange","orange|naranja":"orange","our|nuestro / nuestra":"unser / unsere","owl|el búho":"die Eule","paid|pagó":"bezahlte","pain|el dolor":"der Schmerz","paint|pintar":"malen","paint|la pintura":"die Farbe","paintbrush|el pincel":"der Pinsel","paper|el papel":"das Papier","path|el camino":"der Weg","paw|la pata":"die Pfote","pea|el guisante":"die Erbse","peach|el melocotón":"der Pfirsich","peck|picotear":"picken","pen|el bolígrafo":"der Kugelschreiber","pencil|el lápiz":"der Bleistift","phone|el teléfono":"das Telefon","pick|recoger":"pflücken","picked|recogió":"pflückte","picking|recogiendo":"pflückend","pie|la tarta":"der Kuchen (gefüllt)","pig|el cerdo":"das Schwein","pill|la pastilla":"die Tablette","pin|el alfiler":"die Stecknadel","pine|el pino":"die Kiefer","pink|rosa":"rosa","pip|la pepita":"der Kern","pipe|la tubería":"das Rohr","pitch|el campo (de fútbol)":"das Spielfeld","pizza|la pizza":"die Pizza","plain|sencillo / la llanura":"einfach / die Ebene","plant|la planta":"die Pflanze","plate|el plato":"der Teller","play|jugar":"spielen","Please|Por favor":"Bitte","plug|el enchufe":"der Stecker","police officer|el policía / la policía":"der Polizist / die Polizistin","porch|el porche":"die Veranda","post|el correo":"die Post","pot|la olla / la maceta":"der Topf / der Blumentopf","press|apretar / pulsar":"drücken","puff|el soplo":"der Hauch / der Puster","puffs|los soplos":"die Puster","purple|morado":"lila","quick|rápido":"schnell","quicker|más rápido":"schneller","quickest|el más rápido":"am schnellsten","quiet|silencioso / silenciosa":"leise","quiz|el concurso":"das Quiz","rabbit|el conejo":"das Kaninchen","raid|el asalto":"der Überfall","rail|la barandilla / el riel":"das Geländer / die Schiene","rain|la lluvia":"der Regen","rainbow|el arcoíris":"der Regenbogen","rake|el rastrillo":"der Rechen","rat|la rata":"die Ratte","ray|el rayo":"der Strahl","read|leer":"lesen","red|rojo":"rot","resting|descansando":"ausruhend","rice|el arroz":"der Reis","rich|rico":"reich","ring|el anillo":"der Ring","rip|romper":"zerreißen","ripe|maduro / madura":"reif","road|la carretera":"die Straße","roast|asar":"braten","rock|la roca / mecer":"der Felsen / schaukeln","roof|el tejado":"das Dach","room|la habitación":"das Zimmer","root|la raíz":"die Wurzel","rose|la rosa":"die Rose","rubbing|frotando":"reibend","ruler|la regla":"das Lineal","run|correr":"rennen","sack|el saco":"der Sack","sad|triste":"traurig","safe|seguro / segura":"sicher","said|dijo":"sagte","sail|navegar / la vela":"segeln / das Segel","same|igual":"gleich","sand|la arena":"der Sand","sandwich|el sándwich":"das Sandwich","sank|se hundió":"sank","Saturday|sábado":"Samstag","says|dice":"sagt","scared|asustado / asustada":"ängstlich","scarf|la bufanda":"der Schal","scary|que da miedo":"gruselig","school|la escuela":"die Schule","school bag|la mochila":"der Schulranzen","scissors|las tijeras":"die Schere","scoot|ir en patinete":"Roller fahren","scream|gritar":"schreien","screw|el tornillo":"die Schraube","sea|el mar":"das Meer","seats|los asientos":"die Sitze","second|segundo":"zweitens","see|ver":"sehen","seed|la semilla":"der Samen","seven|siete":"sieben","seventeen|diecisiete":"siebzehn","shark|el tiburón":"der Hai","she|ella":"sie","shed|el cobertizo":"der Schuppen","sheep|la oveja":"das Schaf","ship|el barco":"das Schiff","shirt|la camisa":"das Hemd","shoes|los zapatos":"die Schuhe","shoot|disparar / el brote":"schießen / der Trieb","shop|la tienda":"der Laden","shorts|los pantalones cortos":"die kurze Hose","show|mostrar / el espectáculo":"zeigen / die Show","shut|cerrar / cerrado":"zumachen / geschlossen","shy|tímido / tímida":"schüchtern","sick|enfermo / enferma":"krank","sing|cantar":"singen","sink|el lavabo / hundirse":"das Waschbecken / sinken","sink|el lavabo":"das Waschbecken","sit|sentarse":"sitzen","sit down|sentarse":"sich hinsetzen","site|la obra":"die Baustelle","sitting|sentado / sentándose":"sitzend","six|seis":"sechs","sixteen|dieciséis":"sechzehn","sleep|dormir":"schlafen","slow|lento / lenta":"langsam","slow|lento":"langsam","small|pequeño / pequeña":"klein","small|pequeño":"klein","smaller|más pequeño":"kleiner","smallest|el más pequeño":"am kleinsten","smell|oler":"riechen","smoke|el humo":"der Rauch","snail|el caracol":"die Schnecke","snake|la serpiente":"die Schlange","snow|la nieve":"der Schnee","snowman|el muñeco de nieve":"der Schneemann","so|así que":"also","so|así que / tan":"also / so","soap|el jabón":"die Seife","sock|el calcetín":"die Socke","socks|los calcetines":"die Socken","sofa|el sofá":"das Sofa","soft|suave":"weich","song|la canción":"das Lied","soon|pronto":"bald","Spain|España":"Spanien","spoke|habló":"sprach","spoon|la cuchara":"der Löffel","square|el cuadrado":"das Quadrat","stand up|levantarse":"aufstehen","star|la estrella":"der Stern","stew|el guiso":"der Eintopf","stone|la piedra":"der Stein","stoop|agacharse":"sich bücken","stop|¡alto! / parar":"Stopp! / anhalten","storm|la tormenta":"der Sturm / das Gewitter","straw|la pajita":"der Strohhalm","strawberry|la fresa":"die Erdbeere","stray|callejero":"streunend","strong|fuerte":"stark","such|tan / tal":"so / solch","suck|chupar":"lutschen","suddenly|de repente":"plötzlich","sun|el sol":"die Sonne","Sunday|domingo":"Sonntag","surprised|sorprendido / sorprendida":"überrascht","swim|nadar":"schwimmen","T-shirt|la camiseta":"das T-Shirt","table|la mesa":"der Tisch","tail|la cola":"der Schwanz","talk|hablar":"sprechen","talked|habló":"sprach","talker|el hablador / la habladora":"wer viel redet","talking|hablando":"sprechend","tall|alto / alta":"groß","tall|alto":"groß","taller|más alto":"größer","tallest|el más alto":"am größten","tank|el tanque":"der Panzer / der Tank","tea|el té":"der Tee","teach|enseñar":"unterrichten","teacher|el maestro / la maestra":"der Lehrer / die Lehrerin","tell|decir / contar":"sagen / erzählen","ten|diez":"zehn","tent|la tienda de campaña":"das Zelt","testing|probando":"testend","thank|dar las gracias":"danken","Thank you|Gracias":"Danke","the|el / la / los / las":"der / die / das","their|su (de ellos)":"ihr / ihre (von ihnen)","them|los / las / a ellos":"sie / ihnen","then|luego":"dann","then|luego / entonces":"dann","these|estos / estas":"diese","they|ellos / ellas":"sie (mehrere)","thin|delgado / fino":"dünn","think|pensar":"denken","third|tercero":"drittens","thirteen|trece":"dreizehn","three|tres":"drei","throw|lanzar":"werfen","Thursday|jueves":"Donnerstag","tick-tock|tictac":"tick-tack","tie|la corbata":"die Krawatte","tired|cansado / cansada":"müde","to|a / para":"zu / nach","toad|el sapo":"die Kröte","toast|la tostada":"der Toast","today|hoy":"heute","toes|los dedos del pie":"die Zehen","toilet|el váter":"die Toilette","tongue|la lengua":"die Zunge","tooth|el diente":"der Zahn","torch|la linterna":"die Taschenlampe","toy|el juguete":"das Spielzeug","train|el tren":"der Zug","trainers|las zapatillas":"die Turnschuhe","tray|la bandeja":"das Tablett","tree|el árbol":"der Baum","trousers|los pantalones":"die Hose","true|verdad":"wahr","Tuesday|martes":"Dienstag","tune|la melodía":"die Melodie","TV|la tele":"der Fernseher","twelve|doce":"zwölf","twenty|veinte":"zwanzig","two|dos":"zwei","ugly|feo / fea":"hässlich","umbrella|el paraguas":"der Regenschirm","us|nos / a nosotros":"uns","van|la furgoneta":"der Lieferwagen","walk|caminar":"gehen / laufen","walked|caminó":"ging","walking|caminando":"gehend","was|era / estaba":"war","wash|lavar":"waschen","watch|mirar / el reloj":"zuschauen / die Armbanduhr","water|el agua":"das Wasser","wave|saludar con la mano":"winken","we|nosotros / nosotras":"wir","weak|débil":"schwach","web|la telaraña":"das Spinnennetz","Wednesday|miércoles":"Mittwoch","weed|la mala hierba":"das Unkraut","wet|mojado / mojada":"nass","when|cuando":"wenn / als","Where is…?|¿Dónde está…?":"Wo ist …?","which|¿cuál?":"welche / welcher?","while|mientras":"während","white|blanco":"weiß","why|¿por qué?":"warum?","win|ganar":"gewinnen","wind|el viento":"der Wind","window|la ventana":"das Fenster","windows|las ventanas":"die Fenster","wing|el ala":"der Flügel","wink|guiñar el ojo":"zwinkern","winter|el invierno":"der Winter","wish|el deseo / desear":"der Wunsch / wünschen","wishes|los deseos":"die Wünsche","worried|preocupado / preocupada":"besorgt","write|escribir":"schreiben","yell|gritar":"brüllen","yellow|amarillo":"gelb","Yes|Sí":"Ja","you|tú":"du","your|tu":"dein / deine","zoo|el zoo":"der Zoo","zoom|ir muy rápido":"sausen"};
 const TOPIC_DE={"school": "Das Klassenzimmer", "phrases": "Nützliche Sätze", "writing": "Wörter zum Schreiben", "adjectives": "Die Adjektive", "pronouns": "Die Pronomen", "body": "Der Körper", "family": "Familie und Menschen", "food": "Essen und Trinken", "animals": "Die Tiere", "clothes": "Die Kleidung", "colours": "Die Farben", "numbers": "Die Zahlen", "days": "Die Wochentage", "home": "Zu Hause", "actions": "Die Verben", "feelings": "Die Gefühle", "weather": "Das Wetter"};
-/* pronunciation tips for German speakers: [tip for the teacher, hint in German for the pupil] */
+/* pronunciation tips for German speakers: [tip for the teacher, hint in German for the student] */
 const SOUND_DE={
  m:['Same as German m. Lips closed, hum: mmm.','Wie das deutsche m: mmm.'],
  a:['Short a as in "cat": mouth wide open, between German a and ä. German speakers often say e instead, so "bad" sounds like "bed".','Ein kurzes a, fast wie ä. Mund weit auf: „cat“.'],
@@ -479,7 +546,7 @@ const LANGS={
   other:{name:'Other language',key:'tr',hello:'Hello',tips:false,tipTitle:'',hintTitle:'',askEn:'',askBack:'',finished:'',listen:'',read:'',pairs:'',welldone:'',
       cheers:null,trys:null,myList:'My list',example:''}
 };
-/* pupils saved before languages existed have no language set: they were Spanish speakers */
+/* students saved before languages existed have no language set: they were Spanish speakers */
 function curLang(){const p=(typeof fb!=='undefined'&&fb.user)?currentPupilObj():null;if(p)return LANGS[p.lang]?p.lang:'es';const e=state.settings.exploreLang;return (LANGS[e]&&e!=='other')?e:'en';}
 function L(){const code=curLang();const o=Object.assign({},LANGS[code]);
   if(code==='other'){const p=(typeof fb!=='undefined'&&fb.user)?currentPupilObj():null;o.name=(p&&(p.langName||'').trim())||'home language';}
@@ -723,9 +790,18 @@ const state = {
   settings: Object.assign({name:'',rate:0.85,spanish:true}, store.get('settings',{}))
 };
 function persist(){store.set('updatedAt',state.updatedAt||0);store.set('sounds',state.sounds);store.set('stars',state.stars);store.set('blends',state.blends);store.set('custom',state.custom);store.set('settings',state.settings);store.set('assessments',state.assessments);store.set('blendSessions',state.blendSessions);store.set('topicEdits',state.topicEdits);store.set('writing',state.writing);store.set('draft',state.draft);
-  if(state.currentPupil)state.pupilStore[state.currentPupil]=snapshotPupil();
+  stashCurrent();
   store.set('pupils',state.pupils);store.set('currentPupil',state.currentPupil);store.set('pupilStore',state.pupilStore);}
-function save(){state.updatedAt=Date.now();if(typeof fb!=='undefined'&&fb.dirty&&state.currentPupil)fb.dirty.add(state.currentPupil);persist();scheduleSync();}
+/* a student shared "view only" can be looked at but not changed: any change is undone straight away */
+let viewOnlyToastT=0;
+function save(){
+  state.updatedAt=Date.now();
+  if(state.currentPupil&&isViewOnly()){
+    restorePupilData(state.currentPupil);
+    if(Date.now()-viewOnlyToastT>6000){viewOnlyToastT=Date.now();toast('View only: changes for this student are not saved');}
+  } else if(state.currentPupil){touchPupil(state.currentPupil);}
+  persist();scheduleSync();
+}
 
 const ui = {
   soundsMode:'chart', speed:null, speedSets:{1:true,2:false,3:false}, speedOnlyPractise:false,
@@ -874,7 +950,7 @@ function speedHTML(){
   const sp=ui.speed;
   if(!sp){
     return `<div class="panel"><h2>Speed sounds quiz</h2>
-      <p style="margin-top:0">You fill this in. Show her each sound (on screen, on your whiteboard or with your cards), she says it, and you tap ✓ or ✗. Afterwards the sound chart shows what she knows and what needs practice.</p>
+      <p style="margin-top:0">You fill this in. Show the student each sound (on screen, on your whiteboard or with your cards), they say it, and you tap ✓ or ✗. Afterwards the sound chart shows what they know and what needs practice.</p>
       <div class="opts">
         ${[1,2,3].map(n=>`<label><input type="checkbox" id="spset${n}" data-act="spset" data-arg="${n}" ${ui.speedSets[n]?'checked':''}> Set ${n}</label>`).join('')}
         <label><input type="checkbox" id="sponly" data-act="sponly" ${ui.speedOnlyPractise?'checked':''}> Only sounds that need practice</label>
@@ -897,7 +973,7 @@ function speedHTML(){
    <div class="progressbar"><i style="width:${Math.round(sp.i/sp.deck.length*100)}%"></i></div>
    <div class="flash"><div class="counter">${sp.i+1} / ${sp.deck.length}</div>
    <div class="bigg">${esc(s.g)}</div>
-   <div class="reveal" style="min-height:80px">${sp.show?`${picHTML(s.pic)}<span class="w" style="font-size:1.8rem">${esc(s.word)}</span>`:''}</div>
+   <div class="reveal" style="min-height:136px">${sp.show?`${picHTML(s.pic)}<span class="w" style="font-size:1.8rem">${esc(s.word)}</span>`:''}</div>
    <div class="row center">
      <button class="btn bad big" data-act="spans" data-arg="0">✗ Not yet</button>
      <button class="btn alt big" data-act="sphint">💡 Picture</button>
@@ -917,17 +993,25 @@ function startBlendSession(){
   const L=currentLevel();let ws=L.words;if(ui.blendMode==='spell')ws=ws.filter(w=>!w[0].includes('*'));
   ui.bs={level:L.id,unit:ui.nelsonUnit,keyOnly:!!ui.keyOnly,levelName:L.id==='nelson'?(ui.nelsonUnit&&ui.nelsonUnit!=='all'?'Nelson 1A Unit '+ui.nelsonUnit:'Nelson 1A, all units'):L.name,mode:ui.blendMode,words:shuffle(ws).slice(0,SET_SIZE),i:0,revealed:false,spell:null,stage:'cards',marks:{},notes:{},overall:'',saved:false};
 }
+/* a set with words done or a review in progress is worth keeping: ask before throwing it away */
+function blendHasWork(){const bs=ui.bs;return !!(bs&&!bs.saved&&(bs.i>0||bs.revealed||bs.stage!=='cards'||Object.keys(bs.marks).length));}
+function blendGuard(act,arg){if(!blendHasWork())return false;ui.bpending={act,arg};renderBlending();return true;}
+function blendApply(act,arg){
+  if(act==='level')ui.level=arg;else if(act==='bmode')ui.blendMode=arg;else if(act==='nunit')ui.nelsonUnit=arg;else if(act==='keyonly')ui.keyOnly=arg;
+  ui.bs=null;ui.bpending=null;renderBlending();
+}
 function renderBlending(){
   const levels=allLevels();
   if(!ui.bs||ui.bs.level!==currentLevel().id||ui.bs.mode!==ui.blendMode||(ui.bs.level==='nelson'&&(ui.bs.unit!==ui.nelsonUnit||ui.bs.keyOnly!==!!ui.keyOnly)))startBlendSession();
   const bs=ui.bs;
   let h=`<div class="pagehead"><div><h1>Fred Talk and blending</h1>
-   <p>Read: tap each sound button as she says the sound, then blend. Spell: hear the word and build it from sounds. Sets of ${SET_SIZE} words, with a private review at the end.</p></div>
+   <p>Read: tap each sound button as they say the sound, then blend. Spell: hear the word and build it from sounds. Sets of ${SET_SIZE} words, with a private review at the end.</p></div>
    <div class="seg" role="group" aria-label="Blending activity">
      <button class="${ui.blendMode==='read'?'on':''}" data-act="bmode" data-arg="read">Read words</button>
      <button class="${ui.blendMode==='spell'?'on':''}" data-act="bmode" data-arg="spell">Spell with sounds</button>
    </div></div>
    <div class="levels" role="group" aria-label="Word level">${levels.map(l=>`<button class="${l.id===currentLevel().id?'on':''}" data-act="level" data-arg="${l.id}"><b>${esc(l.name)}</b>${esc(l.sub)}</button>`).join('')}</div>
+   ${ui.bpending?`<div class="bconfirm" role="alert"><p><b>Start a new set?</b> The teacher review for this set has not been saved yet.</p>${ui.bs&&ui.bs.stage!=='review'?'<button class="btn alt" data-act="bkeepreview">Review this set first</button>':''}<button class="btn bad" data-act="bdiscardyes">Start a new set</button><button class="btn alt" data-act="bdiscardno">Keep this set</button></div>`:''}
    ${currentLevel().id==='nelson'?`<div class="row" style="margin-bottom:12px"><label class="field" for="nunit" style="flex-direction:row;align-items:center;gap:8px">Unit <select id="nunit"><option value="all">All units</option>${NELSON.filter(t=>t.words.some(w=>w.snd)).map(t=>`<option value="${t.unit}" ${String(ui.nelsonUnit)===String(t.unit)?'selected':''}>${esc(t.name)}</option>`).join('')}</select></label><label class="row" style="gap:6px"><input type="checkbox" id="keyonly" ${ui.keyOnly?'checked':''}> 🔑 Key words only</label></div>`:''}`;
   if(!bs.words.length){app.innerHTML=h+`<div class="wordstage"><p class="empty">No words for this activity at this level.</p></div>`;return;}
   const n=bs.words.length;
@@ -940,7 +1024,7 @@ function renderBlending(){
   if(bs.stage==='review'){
     const tog=(i,val)=>{const cur=bs.marks[i];return `<button class="tog ${val?'ok':'no'} ${cur===val?'on':''}" style="min-width:52px;height:44px;font-size:1.2rem" data-act="bmarkw" data-arg="${i}|${val?1:0}" aria-label="${val?'read correctly':'not yet'}">${val?'✓':'✗'}</button>`;};
     app.innerHTML=h+`<div class="panel"><h2>Teacher review: ${esc(bs.levelName)} (${bs.mode==='read'?'reading':'spelling'})</h2>
-      <p class="counter" style="margin-top:0">${bs.mode==='spell'?'Words she built right first time are ticked already. ':''}Tick each word and add a note if helpful (for example: said "d" for "t", needed help to blend).</p>
+      <p class="counter" style="margin-top:0">${bs.mode==='spell'?'Words they built right first time are ticked already. ':''}Tick each word and add a note if helpful (for example: said "d" for "t", needed help to blend).</p>
       <div class="tablewrap"><table class="sheet"><thead><tr><th>Word</th><th>Correct</th><th>Notes</th></tr></thead><tbody>
       ${bs.words.map((w,i)=>`<tr><td class="g">${esc(tokWord(toks(w[0])))}</td><td style="white-space:nowrap">${tog(i,true)} ${tog(i,false)}</td><td><input class="bnote" data-bnote="${i}" value="${esc(bs.notes[i]||'')}" aria-label="Notes for ${esc(tokWord(toks(w[0])))}" style="width:100%;font:inherit;border:2px solid var(--line);border-radius:8px;padding:6px 8px"></td></tr>`).join('')}
       </tbody></table></div>
@@ -956,7 +1040,7 @@ function renderBlending(){
     const done=bs.revealed;
     h+=bar+`<div class="wordstage"><div class="counter">Word ${bs.i+1} of ${n}</div>
       <div class="sbrow">${soundButtonsHTML(ts)}</div>
-      <div class="reveal">${done?`<div class="cheer">${picHTML(w[1])}</div><span class="w">${esc(word)}</span>${state.settings.spanish&&blendMeaning(w)?`<span class="es">${esc(blendMeaning(w))}</span>`:''}`:'<span class="counter">Say each sound, then blend them into the word</span>'}</div>
+      <div class="reveal" style="min-height:${state.settings.spanish&&blendMeaning(w)?206:176}px">${done?`<div class="cheer">${picHTML(w[1])}</div><span class="w">${esc(word)}</span>${state.settings.spanish&&blendMeaning(w)?`<span class="es">${esc(blendMeaning(w))}</span>`:''}`:'<span class="counter">Say each sound, then blend them into the word</span>'}</div>
       <div class="row center">
         ${done?`<button class="btn alt" data-act="say" data-arg="${esc(word)}">🔊 Hear it</button><button class="btn big good" data-act="bnext">${last?'Finish ✓':'Next ▶'}</button>`
         :`<button class="btn coral big" data-act="blend">Blend it! ✨</button>`}
@@ -991,7 +1075,7 @@ function renderVocab(){
   const t=ui.topic?topicById(ui.topic):null;
   if(t&&t.nelson)t.icon=t.icon;
   if(!t){
-    let h=`<div class="pagehead"><div><h1>Vocabulary</h1><p>Pick a topic. Each word has a picture and the English word${mKey()?', with its meaning in '+esc(L().name):''}. Three stars ★★★ means the pupil knows it.</p></div>
+    let h=`<div class="pagehead"><div><h1>Vocabulary</h1><p>Pick a topic. Each word has a picture and the English word${mKey()?', with its meaning in '+esc(L().name):''}. Three stars ★★★ means the student knows it.</p></div>
       ${mKey()?`<label class="row" style="gap:8px"><input type="checkbox" id="showes" data-act="toggles" ${state.settings.spanish?'checked':''}> Show ${esc(L().name)}</label>`:''}</div>
       <div class="tgrid">`;
     const tile=tp=>`<button class="topic ${tp.custom?'custom':''} ${tp.nelson?'nelson':''}" data-act="topic" data-arg="${esc(tp.id)}"><span class="ic">${esc(tp.icon)}</span><b>${esc(tp.name)}</b><span class="es">${esc(topicSub(tp))}</span><span class="meta">${tp.words.length} words${tp.nelson?` · 🔑 ${tp.words.filter(w=>w.key).length}`:''} · ${topicStars(tp)} learned</span></button>`;
@@ -1021,7 +1105,7 @@ function learnHTML(t){
   return `<div class="vgrid">${t.words.map((w,i)=>{const n=state.stars[starKey(t.id,w)]||0;
     return `<div class="vcard ${w.key?'key':''}"><div class="row center" style="gap:4px;min-height:${t.nelson?'1.4em':'0'}">${w.key?'<span class="keyw" title="Key word">🔑 key word</span>':''}${w.tricky?'<span class="tricky">tricky word</span>':''}</div>${picHTML(w.pic)}<span class="en">${esc(w.en)}</span>${state.settings.spanish&&meaning(w)?`<span class="es">${esc(meaning(w))}</span>`:''}
       <button class="stars" data-act="star" data-arg="${i}" title="Tap to change: ${n} of 3 stars" style="border:0;background:transparent;font-size:1.1rem;padding:0 4px">${stars(n)}</button>
-      <div class="row center"><button class="mini" data-act="say" data-arg="${esc(w.en)}" aria-label="Say in English">🔊 Listen</button><button class="mini" data-act="star" data-arg="${i}" aria-label="Add a star (0 to 3)">⭐ +1</button></div></div>`;}).join('')}</div>`;
+      <div class="row center"><button class="mini" data-act="say" data-arg="${esc(w.en)}" aria-label="Say in English">🔊 Listen</button><button class="mini" data-act="staradd" data-arg="${i}" ${n>=3?'disabled aria-label="3 of 3 stars"':'aria-label="Add a star"'}>${n>=3?'⭐ 3 of 3':'⭐ +1'}</button></div></div>`;}).join('')}</div>`;
 }
 function flashHTML(t){
   if(!ui.flash||ui.flash.tid!==t.id) ui.flash={tid:t.id,order:shuffle([...t.words.keys()]),i:0,show:false};
@@ -1155,7 +1239,7 @@ function renderTopicEditor(){
   /* a word you edited is stored as removed + added again; only show truly removed words here */
   const shownRemoved=e.removed.filter(en=>!e.added.some(w=>w.en.toLowerCase()===en.toLowerCase()));
   app.innerHTML=`<div class="pagehead"><div><button class="mini" data-act="closetopicedit">◀ Done</button><h1 style="margin-top:8px">Edit words: ${esc(base.name)}</h1>
-     <p>Add words, change them or take them out. Changes are saved with her progress, and in her account when you're logged in.</p></div></div>
+     <p>Add words, change them or take them out. Changes are saved with the student's progress, and in your account when you're logged in.</p></div></div>
    <div class="panel" id="wordform"><h2>${ui.editWordT!=null?'Edit word':'Add a word'}</h2>
      <div class="form">
        <label class="field">English word<input id="ten" value="${esc(ew.en||'')}" placeholder="e.g. giraffe"></label>
@@ -1199,7 +1283,7 @@ function renderAssess(){
   if(ui.viewAssess){renderAssessView();return;}
   if(!a){
     let h=`<div class="pagehead"><div><h1>Phonics assessment</h1>
-      <p>Based on your Phase 2 and Phase 3 assessment sheets. Show each card to her, tick what she gets right, and write down what she says when it's wrong. Results are saved with the date.</p></div></div>
+      <p>Based on your Phase 2 and Phase 3 assessment sheets. Show each card to the student, tick what they get right, and write down what they say when it's wrong. Results are saved with the date.</p></div></div>
       <div class="row" style="margin-bottom:18px">
         <button class="btn big" data-act="astart" data-arg="2">Start Phase 2 assessment</button>
         <button class="btn big coral" data-act="astart" data-arg="3">Start Phase 3 assessment</button>
@@ -1219,7 +1303,9 @@ function renderAssess(){
   if(a.sec==='summary'){app.innerHTML=h+summaryHTML(a,true);return;}
   const items=aItems(a.phase,a.sec);
   if(a.i>=items.length)a.i=items.length-1;
-  h+=`<div class="achips">${items.map((k,i)=>`<button class="${chipState(a,a.sec,k)} ${i===a.i?'cur':''}" data-act="ajump" data-arg="${i}">${esc(k)}</button>`).join('')}</div>`;
+  /* in segmenting the student must not see the words, so the chips are numbered */
+  const seg=a.sec==='segmenting';
+  h+=`<div class="achips">${items.map((k,i)=>`<button class="${chipState(a,a.sec,k)} ${i===a.i?'cur':''}" data-act="ajump" data-arg="${i}" ${seg?`aria-label="Word ${i+1}"`:''}>${seg?i+1:esc(k)}</button>`).join('')}</div>`;
   const key=items[a.i];
   const counter=`<div class="counter">${a.i+1} / ${items.length}</div>`;
   const tog=(field,val,cur)=>`<button class="tog ${val?'ok':'no'} ${cur===val?'on':''}" data-act="aset" data-arg="${field}|${val?1:0}" aria-label="${val?'correct':'not correct'}">${val?'✓':'✗'}</button>`;
@@ -1230,24 +1316,26 @@ function renderAssess(){
     h+=`<div class="flash">${counter}<div class="teacher">${esc(title)}</div><div class="bigg">${esc(key)}</div>
       <div class="ascore"><div class="grp"><span>Recognises (says the sound)</span><div class="row">${tog('r',true,v.r)}${tog('r',false,v.r)}</div></div>
       <div class="grp"><span>Writes it (when you say the sound)</span><div class="row">${tog('w',true,v.w)}${tog('w',false,v.w)}</div></div></div>
-      <label class="field said" for="asaid">Notes: how she said it or wrote it<input id="asaid" data-k="g" value="${esc(v.said||'')}" placeholder="e.g. said 'ee', wrote it backwards"></label>${nav}</div>`;
+      <label class="field said" for="asaid">Notes: how they said it or wrote it<input id="asaid" data-k="g" value="${esc(v.said||'')}" placeholder="e.g. said 'ee', wrote it backwards"></label>${nav}</div>`;
   } else if(a.sec==='blending'){
     const tokStr=d.blending[a.i];const v=a.b[key]||{};
-    h+=`<div class="wordstage">${counter}<div class="teacher">She sounds out and blends the word. Sounds: ${esc(tokStr)}</div>
+    h+=`<div class="wordstage">${counter}<div class="teacher">They sound out and blend the word. Sounds: ${esc(tokStr)}</div>
       <div class="sbrow">${soundButtonsHTML(toks(tokStr))}</div>
       <div class="row center">${tog('ok',true,v.ok)}${tog('ok',false,v.ok)}</div>
-      <label class="field said" for="asaid">If not correct, what did she say?<input id="asaid" data-k="b" value="${esc(v.said||'')}" placeholder="e.g. s-a-t ... 'sad'"></label>${nav}</div>`;
+      <label class="field said" for="asaid">If not correct, what did they say?<input id="asaid" data-k="b" value="${esc(v.said||'')}" placeholder="e.g. s-a-t ... 'sad'"></label>${nav}</div>`;
   } else if(a.sec==='segmenting'){
     const v=a.s[key]||{};
-    h+=`<div class="wordstage">${counter}<div class="teacher">Teacher only: the word is <b>${esc(key)}</b>. Say it (or tap 🔊); she writes it or builds it with letters.</div>
-      <div class="reveal" style="min-height:110px"><button class="btn big" data-act="say" data-arg="${esc(key)}">🔊 Say the word</button></div>
+    const shown=ui.segShow===a.phase+'|'+key;
+    h+=`<div class="wordstage">${counter}<div class="teacher">Say the word (or tap 🔊). They write it or build it with letters.</div>
+      <div class="reveal" style="min-height:110px"><button class="btn big" data-act="say" data-arg="${esc(key)}">🔊 Say the word</button>
+        <button class="segpeek" data-act="segpeek" aria-pressed="${shown}">${shown?`<b>${esc(key)}</b> <span>Hide</span>`:'Show the word (teacher only)'}</button></div>
       <div class="row center">${tog('ok',true,v.ok)}${tog('ok',false,v.ok)}</div>
-      <label class="field said" for="asaid">If not correct, what did she write?<input id="asaid" data-k="s" value="${esc(v.said||'')}" placeholder="e.g. 'bad'"></label>${nav}</div>`;
+      <label class="field said" for="asaid">If not correct, what did they write?<input id="asaid" data-k="s" value="${esc(v.said||'')}" placeholder="e.g. 'bad'"></label>${nav}</div>`;
   } else {
     const v=a.t[key]||{};
-    h+=`<div class="flash">${counter}<div class="teacher">Tricky word: she reads it straight away, without sounding out.</div><div class="bigg">${esc(key)}</div>
+    h+=`<div class="flash">${counter}<div class="teacher">Tricky word: they read it straight away, without sounding out.</div><div class="bigg">${esc(key)}</div>
       <div class="row center">${tog('ok',true,v.ok)}${tog('ok',false,v.ok)}</div>
-      <label class="field said" for="asaid">If not correct, what did she say?<input id="asaid" data-k="t" value="${esc(v.said||'')}"></label>${nav}</div>`;
+      <label class="field said" for="asaid">If not correct, what did they say?<input id="asaid" data-k="t" value="${esc(v.said||'')}"></label>${nav}</div>`;
   }
   app.innerHTML=h;
 }
@@ -1256,7 +1344,7 @@ function summaryHTML(a,editable){
   const d=ASSESS[a.phase];const s=scoreOf(a);
   const who=a.pupil||((fb.user&&currentPupilObj())?pupilName(currentPupilObj()):'');
   let h=`<div class="printhead"><h1>Phonics assessment: ${esc(d.name)}</h1>
-    <div class="printmeta"><span><b>Pupil:</b> ${who?esc(who):'<span class="blankline"></span>'}</span><span><b>Date:</b> ${today(a.date)}</span></div></div>
+    <div class="printmeta"><span><b>Student:</b> ${who?esc(who):'<span class="blankline"></span>'}</span><span><b>Date:</b> ${today(a.date)}</span></div></div>
     <div class="stats">
     <div class="stat"><div class="n">${s.rec}/${s.gTotal}</div><div class="l">graphemes recognised</div></div>
     <div class="stat"><div class="n">${s.wri}/${s.gTotal}</div><div class="l">graphemes written</div></div>
@@ -1265,12 +1353,12 @@ function summaryHTML(a,editable){
     <div class="stat"><div class="n">${s.tricky}/${s.tTotal}</div><div class="l">tricky words</div></div></div>
     <div class="sheets">`;
   d.graphemes.forEach(g=>{h+=`<div class="panel tablewrap"><h2>${esc(g.title)}</h2><table class="sheet"><thead><tr><th></th><th>Recognise</th><th>Write</th><th>Notes</th></tr></thead><tbody>${g.items.map(k=>{const v=a.g[k]||{};return `<tr><td class="g">${esc(k)}</td><td class="c">${mark(v.r)}</td><td class="c">${mark(v.w)}</td><td>${esc(v.said||'')}</td></tr>`;}).join('')}</tbody></table></div>`;});
-  const wtable=(title,keys,obj,sounds)=>`<div class="panel tablewrap"><h2>${title}</h2><table class="sheet"><thead><tr><th>Word</th>${sounds?'<th>Sounds</th>':''}<th>Correct</th><th>What the pupil said or wrote</th></tr></thead><tbody>${keys.map((k,i)=>{const v=obj[k]||{};return `<tr><td class="g">${esc(k)}</td>${sounds?`<td>${esc(sounds[i])}</td>`:''}<td class="c">${mark(v.ok)}</td><td>${esc(v.said||'')}</td></tr>`;}).join('')}</tbody></table></div>`;
+  const wtable=(title,keys,obj,sounds)=>`<div class="panel tablewrap"><h2>${title}</h2><table class="sheet"><thead><tr><th>Word</th>${sounds?'<th>Sounds</th>':''}<th>Correct</th><th>What the student said or wrote</th></tr></thead><tbody>${keys.map((k,i)=>{const v=obj[k]||{};return `<tr><td class="g">${esc(k)}</td>${sounds?`<td>${esc(sounds[i])}</td>`:''}<td class="c">${mark(v.ok)}</td><td>${esc(v.said||'')}</td></tr>`;}).join('')}</tbody></table></div>`;
   h+=wtable('Blending',aItems(a.phase,'blending'),a.b,d.blending)+wtable('Segmenting',d.segmenting,a.s)+wtable('Tricky words',d.tricky,a.t)+`</div>`;
   if(editable){
     h+=`<div class="panel"><h2>Observations</h2><label class="field" for="aobs">Notes (for example: confuses b and v, drops h, says "ee" for i)<textarea id="aobs" style="font-family:var(--phonics);font-size:1rem">${esc(a.obs)}</textarea></label>
       <p class="printonly" id="aobsprint" style="white-space:pre-wrap">${esc(a.obs)||'None written.'}</p>
-      <p class="counter">Saving also updates the Sounds tab: graphemes she recognised are marked "knows it", missed ones "needs practice".</p>
+      <p class="counter">Saving also updates the Sounds tab: graphemes they recognised are marked "knows it", missed ones "needs practice".</p>
       <div class="row noprint"><button class="btn big good" data-act="asave">Save assessment</button><button class="btn alt" data-act="aprint">🖨 Print</button><button class="btn alt" data-act="acopy">Copy results as text</button></div></div>`;
   } else {
     h+=`<div class="panel"><h2>Observations</h2><p>${a.obs?esc(a.obs).replace(/\n/g,'<br>'):'<span class="empty">None written.</span>'}</p>
@@ -1305,17 +1393,29 @@ const FIREBASE_CONFIG = {
   messagingSenderId: "502501492322",
   appId: "1:502501492322:web:058b8aa792d6425830b33b"
 };
-/* everything is per pupil, including word lists and changes to topics; only voice settings are shared */
+/* everything is per student, including word lists and changes to topics; only voice settings are shared */
 const PUPIL_KEYS=['sounds','stars','blends','assessments','blendSessions','writing','draft','custom','topicEdits'];
 const SHARED_KEYS=['settings'];
 const fb={ready:false,user:null,status:'',pending:false,busy:false,timer:null,justLoggedIn:false,dirty:new Set(),deleted:new Set(),fullSave:false};
 function blankPupil(){return {sounds:{},stars:{},blends:{},assessments:[],blendSessions:[],writing:[],draft:null,custom:[],topicEdits:{}};}
 function snapshotPupil(){const o={};PUPIL_KEYS.forEach(k=>o[k]=state[k]);return JSON.parse(JSON.stringify(o));}
+/* sharing: role is 'owner' (made this student), 'edit' (can log progress) or 'view' (can only look) */
+function myEmail(){return ((fb.user&&fb.user.email)||'').trim().toLowerCase();}
+function roleOf(p){return (p&&p.role)||'owner';}
+function isViewOnly(){return roleOf(currentPupilObj())==='view';}
+function canWrite(p){return roleOf(p)!=='view';}
+function ownedMeta(){return {role:'owner',ownerId:fb.user?fb.user.uid:'',ownerEmail:myEmail(),editors:[],viewers:[]};}
+/* copy the current student's data into pupilStore (never for view only, so pupilStore keeps the saved copy) */
+function stashCurrent(){if(state.currentPupil&&!isViewOnly())state.pupilStore[state.currentPupil]=snapshotPupil();}
+function restorePupilData(id){const d=Object.assign(blankPupil(),JSON.parse(JSON.stringify(state.pupilStore[id]||{})));PUPIL_KEYS.forEach(k=>state[k]=d[k]);}
+/* mark one student as changed, so it is written to the cloud */
+function touchPupil(id){const p=state.pupils.find(x=>x.id===id);if(!p||!canWrite(p))return;p.t=Date.now();if(fb.dirty)fb.dirty.add(id);}
 function newPupilId(){return 'p'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
 function currentPupilObj(){return state.pupils.find(p=>p.id===state.currentPupil)||null;}
-function pupilName(p){if(!p)return '';const i=state.pupils.indexOf(p);return (p.name||'').trim()||('Pupil '+(i+1));}
+function pupilName(p){if(!p)return '';const i=state.pupils.indexOf(p);return (p.name||'').trim()||('Student '+(i+1));}
 function loadPupil(id){
-  const d=Object.assign(blankPupil(),state.pupilStore[id]||{});
+  /* a copy, so changes on screen never alter the stored copy until it is stashed */
+  const d=Object.assign(blankPupil(),JSON.parse(JSON.stringify(state.pupilStore[id]||{})));
   PUPIL_KEYS.forEach(k=>state[k]=d[k]);
   ['sounds','stars','blends','topicEdits'].forEach(k=>{if(!state[k]||typeof state[k]!=='object'||Array.isArray(state[k]))state[k]={};});
   ['assessments','blendSessions','writing','custom'].forEach(k=>{if(!Array.isArray(state[k]))state[k]=[];});
@@ -1324,19 +1424,19 @@ function loadPupil(id){
 }
 function switchPupil(id){
   if(id===state.currentPupil)return;
-  if(state.currentPupil)state.pupilStore[state.currentPupil]=snapshotPupil();
+  stashCurrent();
   loadPupil(id);persist();scheduleSync();
 }
 function ensurePupil(){
   if(state.pupils.length)return;
   const id=newPupilId();
   const el=state.settings&&state.settings.exploreLang;
-  state.pupils=[{id,name:(state.settings&&state.settings.name)||'',lang:(LANGS[el]&&el!=='other')?el:'en'}];
+  state.pupils=[Object.assign({id,name:(state.settings&&state.settings.name)||'',lang:(LANGS[el]&&el!=='other')?el:'en',t:Date.now()},ownedMeta())];
   state.pupilStore[id]=snapshotPupil();state.currentPupil=id;fb.fullSave=true;
 }
-/* a whole backup or account: version 2 holds several pupils */
+/* a whole backup or account: version 2 holds several students */
 function exportData(){
-  if(state.currentPupil)state.pupilStore[state.currentPupil]=snapshotPupil();
+  stashCurrent();
   const d={app:'sounds-and-words',version:2,updatedAt:state.updatedAt||Date.now(),pupils:state.pupils,currentPupil:state.currentPupil,pupilStore:state.currentPupil?state.pupilStore:{}};
   SHARED_KEYS.forEach(k=>d[k]=state[k]);
   if(!state.currentPupil)PUPIL_KEYS.forEach(k=>d[k]=state[k]); /* explore mode: one unnamed set of progress */
@@ -1374,31 +1474,50 @@ function niceErr(e){
   if(/missing-email/.test(c))return 'Type your email first.';
   if(/too-many-requests/.test(c))return 'Too many tries. Wait a few minutes and try again.';
   if(/network-request-failed|unavailable/.test(c))return 'No internet connection. Changes stay on this computer for now.';
-  if(/permission-denied/.test(c))return 'Firebase refused access. Check the security rules in README step 4.';
+  if(/permission-denied/.test(c))return 'Firebase refused access. Check the Firestore rules (see FIREBASE-SETUP.md).';
+  if(/popup-closed-by-user|cancelled-popup-request/.test(c))return '';
+  if(/popup-blocked/.test(c))return 'The browser blocked the Google window. Allow pop-ups for this site and try again.';
+  if(/unauthorized-domain/.test(c))return 'Google sign-in is not allowed on this web address yet. Add it in Firebase under Authentication, Settings, Authorized domains.';
+  if(/account-exists-with-different-credential/.test(c))return 'This email already has an account with a password. Log in with the password instead.';
   return (e&&e.message)||'Something went wrong.';
 }
 function setCloudStatus(t){fb.status=t;const el=document.getElementById('cloudstatus');if(el)el.textContent=t;updateAuthBtn();}
-function pupilLabel(){const p=currentPupilObj();return p?pupilName(p)+"'s progress":'This account';}
+function saveProblem(){return /not right|refused|No internet|wrong|Could not/.test(fb.status||'');}
+/* the header's right-hand side: a student picker and Manage when logged in, a language picker and Log in in Explore mode */
 function updateAuthBtn(){
-  const b=document.getElementById('authbtn'), bar=document.getElementById('modebar');
-  if(!b)return;
+  const el=document.getElementById('who');
+  if(!el)return;
+  let h;
   if(fb.user){
-    const saving=/Saving|Loading/.test(fb.status), problem=/not right|refused|No internet|wrong|Could not/.test(fb.status);
-    b.textContent='👤 '+pupilLabel()+(saving?' · saving…':problem?' · not saved ⚠':' · saved ✓');
-    b.classList.add('in'); b.title='Logged in as '+(fb.user.email||'');
-    if(bar){
-      const opts=state.pupils.map(p=>`<option value="${p.id}" ${p.id===state.currentPupil?'selected':''}>${esc(pupilName(p))}</option>`).join('');
-      bar.className='modebar pupilbar';
-      bar.innerHTML=`<div class="in"><label for="pupilsel"><b>Working with:</b></label><select id="pupilsel">${opts}</select><span class="counter" style="color:var(--ink)">Home language: <b>${esc(langLabel(currentPupilObj()||{}))}</b></span><button data-act="pupils">👥 Manage pupils</button></div>`;
-    }
+    const opt=p=>`<option value="${p.id}" ${p.id===state.currentPupil?'selected':''}>${esc(pupilName(p))}</option>`;
+    const mine=state.pupils.filter(p=>roleOf(p)==='owner'), shared=state.pupils.filter(p=>roleOf(p)!=='owner');
+    const opts=shared.length?`<optgroup label="My students">${mine.map(opt).join('')}</optgroup><optgroup label="Shared with me">${shared.map(opt).join('')}</optgroup>`:mine.map(opt).join('');
+    const cp=currentPupilObj()||{};
+    const tag=roleOf(cp)==='view'?`<span class="whotag" title="Shared by ${esc(cp.ownerEmail||'a colleague')}. Changes are not saved.">View only</span>`:'';
+    /* when a save fails, the Manage button itself becomes the warning, so the header never grows */
+    const manage=saveProblem()?`<button class="whobtn warn" data-act="account" title="${esc(fb.status)}">Not saved</button>`:`<button class="whobtn" data-act="account">Manage</button>`;
+    h=`${tag}<select id="pupilsel" class="whosel" aria-label="Student">${opts}</select>${manage}`;
   } else {
-    if(bar)bar.className='modebar';
-    b.textContent='🧭 Explore · not saved'; b.classList.remove('in'); b.title='Explore mode: nothing is saved to an account';
-    if(bar)bar.innerHTML=`<div class="in"><span><b>Explore mode.</b> Try anything. Progress is not saved to a pupil's account.</span><label for="explang">Language:</label><select id="explang">${langOptions(curLang()).replace(/<option value="other"[^>]*>[^<]*<\/option>/,'').replace('English (no translations)','English')}</select><button data-act="account">🔒 Log in to a pupil's account</button></div>`;
+    h=`<select id="explang" class="whosel" aria-label="Language" title="Explore mode: try anything. Log in to keep each student's progress.">${langOptions(curLang()).replace(/<option value="other"[^>]*>[^<]*<\/option>/,'').replace('English (no translations)','English')}</select><button class="whobtn solid" data-act="account">Log in</button>`;
   }
+  /* only redraw when something changed, so an open drop-down is not closed by a background save */
+  if(el.dataset.h!==h){el.dataset.h=h;el.innerHTML=h;}
 }
+/* Firestore layout (see FIREBASE-SETUP.md):
+   progress/{uid}            the teacher's own record: settings and the student they last worked with
+   students/{pupilId}        one student: ownerId, ownerEmail, name, lang, editors[], viewers[], json (all progress), updatedAt
+   students/{pupilId}/photos/{photoId}   one photo of handwritten work, as a compressed JPEG
+   progress/{uid}/pupils/... is the old layout, from before sharing; it is copied into students once and then left alone */
 function docRef(){return firebase.firestore().collection('progress').doc(fb.user.uid);}
-function pupilRef(id){return docRef().collection('pupils').doc(id);}
+function studentsCol(){return firebase.firestore().collection('students');}
+function studentRef(id){return studentsCol().doc(id);}
+function photosCol(id){return studentRef(id).collection('photos');}
+/* shared students are found by email, and the rules only accept a verified email (Google emails always are) */
+function emailVerified(){return !!(fb.user&&fb.user.email&&fb.user.emailVerified);}
+function studentDoc(p,data,t){
+  return {ownerId:p.ownerId||fb.user.uid,ownerEmail:p.ownerEmail||myEmail(),name:p.name||'',lang:p.lang||'en',langName:p.langName||'',
+    editors:p.editors||[],viewers:p.viewers||[],json:JSON.stringify(data||blankPupil()),updatedAt:t||Date.now(),updatedBy:myEmail()};
+}
 function initCloud(){
   updateAuthBtn();
   if(!cloudConfigured())return;
@@ -1406,34 +1525,86 @@ function initCloud(){
   firebase.auth().onAuthStateChanged(async u=>{
     fb.user=u;updateAuthBtn();
     if(u){await cloudLoad(fb.justLoggedIn);fb.justLoggedIn=false;}
-    if(route==='progress')renderProgress();
+    render(); /* the first draw happened before log-in was known, so always redraw once it is */
   });
 }
-async function fetchCloud(){
-  const snap=await docRef().get();
-  if(!snap.exists)return null;
-  const main=JSON.parse(snap.data().json);
-  if(main.version!==2)return {legacy:true,data:main};
-  const ps=await docRef().collection('pupils').get();
-  const store={};ps.forEach(doc=>{try{store[doc.id]=JSON.parse(doc.data().json);}catch(e){}});
-  main.pupilStore=store;return {legacy:false,data:main};
+/* one-off move from the old layout (students inside the teacher's record) to the shared students collection */
+async function migrateOld(main){
+  let d;
+  if(main.version===2&&Array.isArray(main.pupils)){
+    const ps=await docRef().collection('pupils').get();
+    const st={};ps.forEach(doc=>{try{st[doc.id]=JSON.parse(doc.data().json);}catch(e){}});
+    d=Object.assign({},main,{pupilStore:st});
+  } else d=upgradeData(main);
+  for(const p of d.pupils||[])await studentRef(p.id).set(studentDoc(Object.assign({},p,ownedMeta()),d.pupilStore[p.id],d.updatedAt||Date.now()));
+  return {app:'sounds-and-words',version:3,updatedAt:d.updatedAt||0,currentPupil:d.currentPupil||'',settings:d.settings||{}};
 }
-/* preferCloud: right after logging in, the account's saved progress replaces anything done on this computer while logged out */
+async function fetchStudents(){
+  const rank={owner:3,edit:2,view:1}, found={};
+  const add=(snap,role)=>snap.forEach(doc=>{if(found[doc.id]&&rank[found[doc.id].role]>=rank[role])return;found[doc.id]={d:doc.data(),role};});
+  add(await studentsCol().where('ownerId','==',fb.user.uid).get(),'owner');
+  if(emailVerified()){
+    try{
+      add(await studentsCol().where('editors','array-contains',myEmail()).get(),'edit');
+      add(await studentsCol().where('viewers','array-contains',myEmail()).get(),'view');
+    }catch(e){console.warn('Could not load shared pupils',e);}
+  }
+  return found;
+}
+/* preferCloud: right after logging in, the saved copies replace anything done on this computer while logged out.
+   Otherwise each student is compared on its own: the newer copy wins. */
 async function cloudLoad(preferCloud){
   if(!fb.user||fb.busy)return;
   fb.busy=true;setCloudStatus('Loading progress…');
   try{
-    const got=await fetchCloud();
-    if(got){
-      const d=got.data;const remoteT=d.updatedAt||0, localT=state.updatedAt||0;
-      if(got.legacy){importData(d);ensurePupil();fb.fullSave=true;render();fb.busy=false;await cloudSave();return;}
-      if(preferCloud||remoteT>localT){if(remoteT!==localT||preferCloud){importData(d);render();}}
-      else if(localT>remoteT){fb.busy=false;await cloudSave();return;}
-      if(!state.pupils.length){ensurePupil();render();fb.busy=false;await cloudSave();return;}
-    } else {ensurePupil();fb.fullSave=true;render();fb.busy=false;await cloudSave();return;}
+    const snap=await docRef().get();
+    let main=snap.exists?JSON.parse(snap.data().json):null, needSave=!main, fresh=!main;
+    if(main&&main.version!==3){main=await migrateOld(main);needSave=true;fb.fullSave=true;}
+    const found=await fetchStudents();
+    stashCurrent();
+    const local={};state.pupils.forEach(p=>local[p.id]=p);
+    const pupils=[], st={}, oldCur=state.currentPupil;
+    let curChanged=false;
+    Object.keys(found).forEach(id=>{
+      const {d,role}=found[id], lp=local[id], remoteT=d.updatedAt||0, localT=(lp&&lp.t)||0;
+      let meta={id,name:d.name||'',lang:d.lang||'en',langName:d.langName||'',ownerId:d.ownerId,ownerEmail:d.ownerEmail||'',
+        editors:Array.isArray(d.editors)?d.editors:[],viewers:Array.isArray(d.viewers)?d.viewers:[],role,t:remoteT};
+      if(!preferCloud&&lp&&role!=='view'&&localT>remoteT&&state.pupilStore[id]){
+        /* changed here and not saved yet: keep this computer's copy */
+        if(role==='owner')meta=Object.assign(meta,{name:lp.name,lang:lp.lang,langName:lp.langName,editors:lp.editors||[],viewers:lp.viewers||[]});
+        meta.t=localT;st[id]=state.pupilStore[id];fb.dirty.add(id);needSave=true;
+      } else {
+        try{st[id]=JSON.parse(d.json);}catch(e){st[id]=blankPupil();}
+        if(id===oldCur&&(remoteT!==localT||!lp))curChanged=true;
+      }
+      pupils.push(meta);
+    });
+    /* students added on this computer that have not reached the cloud yet */
+    if(!preferCloud)state.pupils.forEach(p=>{if(!found[p.id]&&roleOf(p)==='owner'&&fb.dirty.has(p.id)&&!fb.deleted.has(p.id)){pupils.push(p);st[p.id]=state.pupilStore[p.id]||blankPupil();needSave=true;}});
+    const byName=(a,b)=>(a.name||'').localeCompare(b.name||'')||a.id.localeCompare(b.id);
+    const sig=l=>JSON.stringify(l.map(p=>[p.id,p.name,p.lang,p.langName,roleOf(p),(p.editors||[]).length+(p.viewers||[]).length]));
+    const before=sig(state.pupils);
+    state.pupils=pupils.filter(p=>p.role==='owner').sort(byName).concat(pupils.filter(p=>p.role!=='owner').sort(byName));
+    state.pupilStore=st;
+    if(main&&(preferCloud||(main.updatedAt||0)>(state.updatedAt||0)))state.settings=Object.assign({rate:0.85,spanish:true},main.settings||{});
+    let cur=oldCur, redraw=preferCloud||curChanged||before!==sig(state.pupils);
+    if(preferCloud&&main&&st[main.currentPupil])cur=main.currentPupil;
+    if(!st[cur])cur=state.pupils[0]?state.pupils[0].id:'';
+    if(!cur){ensurePupil();needSave=true;redraw=true;}
+    else if(cur!==oldCur||curChanged||preferCloud){loadPupil(cur);redraw=true;}
+    persist();
+    /* only redraw when something actually changed, so a note being typed keeps its focus */
+    if(redraw)render();else updateAuthBtn();
+    if(curChanged&&!preferCloud&&roleOf(currentPupilObj())!=='owner')toast('Updated with the latest changes from a colleague');
+    if(needSave){fb.busy=false;await cloudSave();return;}
     setCloudStatus('Up to date. Saved in the account.');
-  }catch(e){setCloudStatus(niceErr(e));}
+  }catch(e){console.warn(e);setCloudStatus(niceErr(e));}
   fb.busy=false;
+}
+async function deleteStudentCloud(id){
+  const ps=await photosCol(id).get();
+  for(const doc of ps.docs)await doc.ref.delete();
+  await studentRef(id).delete();
 }
 async function cloudSave(){
   if(!fb.user)return;
@@ -1442,15 +1613,20 @@ async function cloudSave(){
   fb.busy=true;setCloudStatus('Saving…');
   try{
     const d=exportData();
-    const ids=fb.fullSave?state.pupils.map(p=>p.id):[...fb.dirty,state.currentPupil].filter((x,i,a)=>x&&a.indexOf(x)===i&&state.pupils.some(p=>p.id===x));
-    /* pupils first, then the account: if a pupil write is refused, the account is left as it was */
-    for(const id of ids)await pupilRef(id).set({json:JSON.stringify(d.pupilStore[id]||blankPupil())});
-    for(const id of fb.deleted){try{await pupilRef(id).delete();}catch(e){}}
-    const main={app:d.app,version:2,updatedAt:d.updatedAt,pupils:d.pupils,currentPupil:d.currentPupil};SHARED_KEYS.forEach(k=>main[k]=d[k]);
+    const ids=(fb.fullSave?state.pupils.map(p=>p.id):[...fb.dirty,state.currentPupil])
+      .filter((x,i,a)=>x&&a.indexOf(x)===i&&canWrite(state.pupils.find(p=>p.id===x)));
+    /* students first, then the teacher's record: if a student write is refused, the record is left as it was */
+    for(const id of ids){
+      const p=state.pupils.find(x=>x.id===id), t=p.t||d.updatedAt||Date.now();p.t=t;
+      if(roleOf(p)==='owner')await studentRef(id).set(studentDoc(p,d.pupilStore[id],t));
+      else await studentRef(id).update({json:JSON.stringify(d.pupilStore[id]||blankPupil()),updatedAt:t,updatedBy:myEmail()});
+    }
+    for(const id of fb.deleted){try{await deleteStudentCloud(id);}catch(e){console.warn(e);}}
+    const main={app:d.app,version:3,updatedAt:d.updatedAt,currentPupil:d.currentPupil};SHARED_KEYS.forEach(k=>main[k]=d[k]);
     await docRef().set({json:JSON.stringify(main),updatedAt:d.updatedAt,savedAt:firebase.firestore.FieldValue.serverTimestamp()});
-    fb.dirty.clear();fb.deleted.clear();fb.fullSave=false;
+    ids.forEach(id=>fb.dirty.delete(id));fb.deleted.clear();fb.fullSave=false;
     fb.pending=false;setCloudStatus('Saved in the account at '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}));
-  }catch(e){setCloudStatus(niceErr(e));}
+  }catch(e){console.warn(e);setCloudStatus(niceErr(e));}
   fb.busy=false;
 }
 function scheduleSync(){
@@ -1469,8 +1645,10 @@ function loginModal(err,mode){
   ui.loginMode=mode||ui.loginMode||'login';
   const create=ui.loginMode==='create';
   showModal(`<div class="seg" role="group" aria-label="Log in or create account" style="margin-bottom:12px"><button class="${!create?'on':''}" data-act="loginmode" data-arg="login">Log in</button><button class="${create?'on':''}" data-act="loginmode" data-arg="create">Create account</button></div>
-    <h2>${create?'Create an account':'Log in'}</h2>
-    <p class="counter" style="margin-top:4px">${create?'Make an account for one pupil. Its progress is kept separate from every other account, and anything done in Explore mode on this computer moves into it.':'Log in to load and save progress on any computer.'}</p>
+    <h2>${create?'Create a teacher account':'Log in'}</h2>
+    <p class="counter" style="margin-top:4px">${create?'Each teacher has their own account. Your students are private to you unless you share them with a colleague. Anything done in Explore mode on this computer moves into your first student.':'Log in to load and save your students on any computer.'}</p>
+    <div class="row" style="margin-top:10px"><button class="btn alt big" data-act="google" style="width:100%;justify-content:center">Continue with Google</button></div>
+    <p class="counter" style="text-align:center;margin:8px 0 0">or with email and password</p>
     <form id="loginform" class="form" style="grid-template-columns:1fr;margin-top:10px">
       <label class="field" for="lemail">Email<input id="lemail" type="email" autocomplete="username" required></label>
       <label class="field" for="lpass">Password${create?' (at least 6 characters)':''}<input id="lpass" type="password" autocomplete="${create?'new-password':'current-password'}" minlength="6" required></label>
@@ -1481,45 +1659,111 @@ function loginModal(err,mode){
   const e=document.getElementById('lemail');e&&e.focus();
 }
 function langOptions(sel){return [['en','English (no translations)'],['es','Spanish'],['de','German'],['other','Other language']].map(([v,n])=>`<option value="${v}" ${sel===v?'selected':''}>${n}</option>`).join('');}
+function shareBoxHTML(p){
+  const rows=[...(p.editors||[]).map(e=>[e,'edit']),...(p.viewers||[]).map(e=>[e,'view'])].sort((a,b)=>a[0].localeCompare(b[0]));
+  return `<div class="sharebox">
+    <h3>Share ${esc(pupilName(p))} with colleagues</h3>
+    ${rows.length?`<div class="sharelist">${rows.map(([em,r])=>`<div class="sharerow"><span class="em">${esc(em)}</span>
+      <select data-share="${esc(p.id)}" data-email="${esc(em)}" aria-label="Access for ${esc(em)}"><option value="edit" ${r==='edit'?'selected':''}>Can edit</option><option value="view" ${r==='view'?'selected':''}>View only</option></select>
+      <button class="mini" data-act="shareremove" data-arg="${esc(p.id+'|'+em)}">Stop sharing</button></div>`).join('')}</div>`
+      :'<p class="counter" style="margin:4px 0 8px">Not shared with anyone. Only you can see this student.</p>'}
+    <form id="shareform" data-pupil="${esc(p.id)}" class="form" style="grid-template-columns:1fr 140px">
+      <label class="field" for="shareemail">Colleague's email<input id="shareemail" type="email" placeholder="name@school.org" autocomplete="off" required></label>
+      <label class="field" for="sharerole">Access<select id="sharerole"><option value="edit">Can edit</option><option value="view">View only</option></select></label>
+      <div class="row" style="gap:8px;grid-column:1/-1"><button class="btn" type="submit">Share</button><button class="btn alt" type="button" data-act="shareclose">Cancel</button></div></form>
+    <p class="counter" style="margin:8px 0 0"><b>Can edit:</b> logs progress, assessments and writing (for the student's class teacher, or someone helping with assessments). <b>View only:</b> can look but not change anything. Only you can rename, share or delete this student. Your colleague signs in with this exact email (Google, or email and password with a verified email) and sees the student next time they open the app.</p>
+  </div>`;
+}
+/* Manage: the teacher's students first (cards), then the account. The open card is tinted in the accent colour. */
 function pupilsModal(){
   const c=ui.confirm||'';
-  showModal(`<h2>Pupils</h2><p class="counter" style="margin-top:4px">Each pupil has their own progress: sounds, stars, blending, assessments, writing, their own word lists and their own changes to topics. Nothing is shared between pupils.</p>
-    <div class="wlist" style="margin:12px 0">${state.pupils.map(p=>`<div class="witem" style="flex-wrap:wrap">
-      <span style="font-size:1.4rem">${p.id===state.currentPupil?'👉':'👤'}</span>
-      <input id="pn-${p.id}" value="${esc(p.name||'')}" placeholder="${esc(pupilName(p))}" aria-label="Name" style="flex:1;min-width:120px;font:inherit;border:2px solid var(--line);border-radius:8px;padding:6px 8px">
-      <select id="pl-${p.id}" aria-label="Home language" style="font:inherit;border:2px solid var(--line);border-radius:8px;padding:5px 6px">${langOptions(LANGS[p.lang]?p.lang:'es')}</select>
-      ${p.lang==='other'?`<input id="plo-${p.id}" value="${esc(p.langName||'')}" placeholder="Which language?" aria-label="Which language" style="width:130px;font:inherit;border:2px solid var(--line);border-radius:8px;padding:6px 8px">`:''}
-      <button class="mini" data-act="prename" data-arg="${p.id}">Save</button>
-      ${p.id===state.currentPupil?'<span class="counter">working with</span>':`<button class="mini" data-act="pswitch" data-arg="${p.id}">Switch to</button>`}
-      ${state.pupils.length>1?(c==='pdel'+p.id?`<button class="mini" style="background:var(--bad);color:#fff" data-act="pdelyes" data-arg="${p.id}">Delete ${esc(pupilName(p))} and all their progress?</button><button class="mini" data-act="pdelno">Cancel</button>`:`<button class="mini" data-act="pdel" data-arg="${p.id}">Delete</button>`):''}
-    </div>`).join('')}</div>
-    <form id="addpupil" class="form" style="grid-template-columns:1fr 170px auto"><label class="field" for="newpupil">Add a pupil<input id="newpupil" placeholder="First name" required></label>
-      <label class="field" for="newlang">Home language<select id="newlang">${langOptions('en')}</select></label><button class="btn" type="submit">＋ Add pupil</button>
-      <label class="field" for="newlangname" style="grid-column:1/-1">If "Other language": which one? (translations start empty, and no pronunciation tips are shown)<input id="newlangname" placeholder="e.g. Portuguese"></label></form>
-    <p class="counter">English shows just the English words, for whole-class use. Spanish and German come with all translations and pronunciation tips. For other languages you can type translations yourself with ✎ Edit words.</p>`);
+  const prev=document.querySelector('.modal');const keepTop=prev?prev.scrollTop:0;
+  const card=p=>{
+    const own=roleOf(p)==='owner', cur=p.id===state.currentPupil;
+    const nShared=(p.editors||[]).length+(p.viewers||[]).length;
+    const confirmDel=c==='pdel'+p.id;
+    return `<div class="scard ${cur?'cur':''}" ${cur?'aria-current="true"':''}>
+      <div class="srow">
+        ${own?`<input id="pn-${p.id}" class="sname" value="${esc(p.name||'')}" placeholder="${esc(pupilName(p))}" aria-label="First name">
+        <select id="pl-${p.id}" class="slang" aria-label="Home language">${langOptions(LANGS[p.lang]?p.lang:'es')}</select>
+        ${p.lang==='other'?`<input id="plo-${p.id}" class="slang" value="${esc(p.langName||'')}" placeholder="Which language?" aria-label="Which language">`:''}`
+        :`<div class="sinfo"><b>${esc(pupilName(p))}</b><span>${esc(langLabel(p))}</span></div>
+        <span class="sharetag ${roleOf(p)}">${roleOf(p)==='view'?'View only':'Can edit'} · shared by ${esc(p.ownerEmail||'a colleague')}</span>`}
+      </div>
+      <div class="srow sacts">
+        ${own?`<button class="sbtn savebtn" data-act="prename" data-arg="${p.id}">Save</button>`:''}
+        ${cur?'':`<button class="sbtn" data-act="pswitch" data-arg="${p.id}">Switch to</button>`}
+        ${own?`<button class="sbtn" data-act="pshare" data-arg="${p.id}" aria-expanded="${ui.shareOpen===p.id}">Share${nShared?' ('+nShared+')':''}</button>`:''}
+        ${own&&state.pupils.length>1&&!confirmDel?`<button class="sbtn" data-act="pdel" data-arg="${p.id}">Delete</button>`:''}
+        ${confirmDel?`<span class="sconfirm">Delete ${esc(pupilName(p))} and all their progress${nShared?', also for the colleagues it is shared with':''}?</span><button class="sbtn danger" data-act="pdelyes" data-arg="${p.id}">Yes, delete</button><button class="sbtn" data-act="pdelno">Cancel</button>`:''}
+      </div>
+      ${own&&ui.shareOpen===p.id?shareBoxHTML(p):''}
+    </div>`;};
+  const mine=state.pupils.filter(p=>roleOf(p)==='owner'), shared=state.pupils.filter(p=>roleOf(p)!=='owner');
+  const lo=c==='logoutfail';
+  showModal(`<h2>Students</h2>
+    <p class="counter" style="margin:4px 0 0">Each student has their own progress, writing and word lists. Your students are private unless you share them.</p>
+    <div class="slist">${mine.map(card).join('')||'<p class="empty">No students yet. Add one below.</p>'}</div>
+    ${shared.length?`<h3 class="msub">Shared with me</h3><div class="slist">${shared.map(card).join('')}</div>`:''}
+    <form id="addpupil" class="form addform" style="grid-template-columns:1fr 170px auto"><label class="field" for="newpupil">Add a student<input id="newpupil" placeholder="First name" required></label>
+      <label class="field" for="newlang">Home language<select id="newlang">${langOptions('en')}</select></label><button class="btn" type="submit">Add student</button>
+      <label class="field" for="newlangname" style="grid-column:1/-1">If "Other language": which one? Translations start empty, and no pronunciation tips are shown.<input id="newlangname" placeholder="e.g. Portuguese"></label></form>
+    <p class="counter" style="margin:6px 0 0">English shows just the English words, for whole-class use. Spanish and German come with translations and pronunciation tips.</p>
+    <h2 class="msec">Account</h2>
+    <p style="margin:4px 0 2px">Logged in as <b>${esc(fb.user.email||'')}</b></p>
+    <p class="counter" id="cloudstatus" style="margin:0 0 10px">${esc(fb.status)}</p>
+    <div class="row"><button class="btn alt" data-act="cloudsave">Save now</button><button class="btn alt" data-act="refreshshared">Check for shared students</button></div>
+    ${verifyNoteHTML()}
+    ${lo?`<div class="tipbox" style="border:2px solid var(--bad);margin-top:14px"><h3 style="color:var(--bad)">The latest changes are not saved</h3>
+      <p class="counter" style="margin:0">${esc(fb.status)} If you log out now, those changes are lost from this computer.</p>
+      <div class="row" style="margin-top:10px"><button class="btn" data-act="logoutno">Stay logged in</button><button class="btn bad" data-act="logoutforce">Log out anyway</button></div></div>`
+    :`<div class="row" style="margin-top:14px;justify-content:space-between"><span class="counter" style="flex:1;min-width:200px">Logging out leaves nothing on this computer. Everything stays in the account.</span><button class="btn bad" data-act="logout">Log out</button></div>`}`);
+  const m=document.querySelector('.modal');if(m&&keepTop)m.scrollTop=keepTop;
 }
-function accountModal(){
-  showModal(`<h2>Account</h2><p>Logged in as <b>${esc(fb.user.email||'')}</b>. Working with <b>${esc(pupilName(currentPupilObj()))}</b>.</p>
-    <div class="row" style="margin:8px 0"><button class="btn alt" data-act="pupils">👥 Manage pupils (${state.pupils.length})</button></div>
-    <p class="counter" id="cloudstatus">${esc(fb.status)}</p>
-    <div class="row" style="margin:10px 0"><button class="btn" data-act="cloudsave">Save now</button></div>
-    <div class="tipbox"><h3>Log out</h3>
-      <p class="counter" style="margin:0">All pupils' progress stays safe in the account. This computer goes back to Explore mode, with nothing left on it.</p>
-      <div class="row" style="margin-top:10px"><button class="btn bad" data-act="logout">Log out</button></div></div>`);
+function accountModal(){ui.confirm=null;pupilsModal();}
+async function doLogout(){
+  try{await firebase.auth().signOut();}catch(e){}
+  importData(blankData());fb.dirty.clear();fb.deleted.clear();fb.pending=false;ui.confirm=null;
+  closeModal();toast('Logged out. Back in Explore mode.');render();
+}
+/* a short, visible confirmation on a Save button, so it never looks like nothing happened */
+function flashSaved(id){
+  const b=document.querySelector(`[data-act="prename"][data-arg="${id}"]`);if(!b)return;
+  b.classList.remove('dirty');b.classList.add('saved');b.textContent='Saved ✓';
+  setTimeout(()=>{if(b.isConnected){b.classList.remove('saved');b.textContent='Save';}},1600);
+}
+/* email accounts must verify their email before colleagues' shared students can reach them (anyone could type someone else's email when signing up) */
+function verifyNoteHTML(){
+  if(!fb.user||emailVerified())return '';
+  return `<div class="tipbox" style="border-left:5px solid var(--sun)"><h3>Verify your email to see shared students</h3>
+    <p class="counter" style="margin:0">Students that colleagues share with <b>${esc(myEmail())}</b> appear only after you confirm this email address. Your own students work as normal. Open the link we emailed you (check the spam folder too), then tap "I've verified it".</p>
+    <div class="row" style="margin-top:8px"><button class="btn alt" data-act="verifysend">Send the link again</button><button class="btn" data-act="verifycheck">I've verified it</button></div></div>`;
+}
+function addShare(pid,email,role){
+  const p=state.pupils.find(x=>x.id===pid);if(!p||roleOf(p)!=='owner')return false;
+  email=(email||'').trim().toLowerCase();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){toast('That does not look like an email address');return false;}
+  if(email===myEmail()){toast('That is your own email');return false;}
+  p.editors=(p.editors||[]).filter(x=>x!==email);p.viewers=(p.viewers||[]).filter(x=>x!==email);
+  if(role)(role==='view'?p.viewers:p.editors).push(email);
+  touchPupil(pid);persist();clearTimeout(fb.timer);fb.pending=true;cloudSave();
+  return true;
 }
 document.addEventListener('submit',async e=>{
   if(e.target.id==='addpupil'){e.preventDefault();const n=document.getElementById('newpupil').value.trim();if(!n)return;
-    if(state.currentPupil)state.pupilStore[state.currentPupil]=snapshotPupil();
+    stashCurrent();
     const lang=(document.getElementById('newlang')||{}).value||'en';const langName=lang==='other'?((document.getElementById('newlangname')||{}).value||'').trim():'';
-    const id=newPupilId();state.pupils.push({id,name:n,lang,langName});state.pupilStore[id]=blankPupil();fb.dirty.add(id);
+    const id=newPupilId();state.pupils.push(Object.assign({id,name:n,lang,langName,t:Date.now()},ownedMeta()));state.pupilStore[id]=blankPupil();fb.dirty.add(id);
     switchPupil(id);save();render();pupilsModal();toast('Added '+n+'. You are now working with '+n+'.');return;}
+  if(e.target.id==='shareform'){e.preventDefault();const pid=e.target.dataset.pupil;const em=document.getElementById('shareemail').value;const r=document.getElementById('sharerole').value;
+    if(addShare(pid,em,r)){pupilsModal();toast('Shared with '+em.trim().toLowerCase()+(r==='view'?' (view only)':' (can edit)'));}return;}
   if(e.target.id!=='loginform')return;
   e.preventDefault();
   const email=document.getElementById('lemail').value.trim(),pass=document.getElementById('lpass').value;
   const errEl=document.getElementById('loginerr');if(errEl)errEl.textContent='Logging in…';
   const create=ui.loginMode==='create';
   try{
-    if(create){fb.justLoggedIn=false;await firebase.auth().createUserWithEmailAndPassword(email,pass);closeModal();toast('Account created. Progress now saves to it.');}
+    if(create){fb.justLoggedIn=false;const cred=await firebase.auth().createUserWithEmailAndPassword(email,pass);try{await cred.user.sendEmailVerification();}catch(err){console.warn(err);}closeModal();toast('Account created. We emailed you a link to verify your address.');}
     else{fb.justLoggedIn=true;await firebase.auth().signInWithEmailAndPassword(email,pass);closeModal();toast('Logged in');}
   }
   catch(err){fb.justLoggedIn=false;if(errEl)errEl.textContent=niceErr(err);}
@@ -1535,13 +1779,13 @@ function syncPanelHTML(){
   const acct = !cloudConfigured()
     ? `<p>Log-in is not set up yet. Follow README.md to connect the free Firebase project. Until then, progress is saved only on this computer.</p>`
     : fb.user
-      ? `<p><b>Logged in</b> as ${esc(fb.user.email||'')}. Her progress saves automatically a few seconds after each change and loads the latest when you open the app.</p><p class="counter" id="cloudstatus">${esc(fb.status)}</p><div class="row"><button class="btn" data-act="cloudsave">Save now</button><button class="btn alt" data-act="account">Log out…</button></div>`
-      : `<p><b>Explore mode.</b> Nothing is saved to a pupil's account. Log in to load and save a pupil's progress.</p><div class="row"><button class="btn" data-act="account">🔒 Log in</button></div>`;
+      ? `<p><b>Logged in</b> as ${esc(fb.user.email||'')}. Progress saves automatically a few seconds after each change and loads the latest when you open the app.</p><p class="counter" id="cloudstatus">${esc(fb.status)}</p><div class="row"><button class="btn" data-act="cloudsave">Save now</button><button class="btn alt" data-act="account">Log out…</button></div>`
+      : `<p><b>Explore mode.</b> Nothing is saved to a student's account. Log in to load and save a student's progress.</p><div class="row"><button class="btn" data-act="account">🔒 Log in</button></div>`;
   return `<div class="panel"><h2>Account and backup</h2>
    <div class="sheets">
     <div class="tipbox" style="margin:0"><h3>Log-in</h3>${acct}</div>
     <div class="tipbox" style="margin:0"><h3>Backup file</h3>
-      <p>An extra copy you keep yourself, for example at the end of each term.</p>
+      <p>An extra copy you keep yourself, for example at the end of each term. Photos of writing stay in the account and are not in the backup file.</p>
       <div class="row" style="margin-top:10px"><button class="btn" data-act="bkdown">⬇ Download backup</button><button class="btn alt" data-act="bkcopy">Copy backup text</button></div>
       <label class="field" for="bkfile" style="margin-top:10px">Restore from file<input id="bkfile" type="file" accept=".json,application/json"></label>
       ${c==='restore'?`<div class="row" style="margin-top:8px"><span>Replace the current progress with this backup?</span><button class="btn bad" data-act="bkrestoreyes">Yes, restore</button><button class="btn alt" data-act="cancelconfirm">Cancel</button></div>`:''}
@@ -1553,44 +1797,101 @@ function syncPanelHTML(){
 /* ---------------- WRITING ---------------- */
 function wById(id){return state.writing.find(w=>w.id===id);}
 function wordCount(t){return (t||'').trim().split(/\s+/).filter(Boolean).length;}
-function dropEmptyWriting(){const before=state.writing.length;state.writing=state.writing.filter(w=>(w.title||'').trim()||(w.text||'').trim());if(state.writing.length!==before)save();}
+function dropEmptyWriting(){const before=state.writing.length;state.writing=state.writing.filter(w=>(w.title||'').trim()||(w.text||'').trim()||(w.notes||'').trim()||(w.photos&&w.photos.length));if(state.writing.length!==before)save();}
+/* photos of handwritten work: compressed JPEGs in students/{student}/photos (Firestore, so no Storage bucket or paid plan is needed) */
+const photoCache={};const photoLoading=new Set();
+function fileToPhoto(f){
+  return new Promise((res,rej)=>{
+    const url=URL.createObjectURL(f);const img=new Image();
+    img.onload=()=>{URL.revokeObjectURL(url);let max=1600,q=0.75,out='';
+      /* a Firestore document holds at most 1 MB, so shrink until the photo fits comfortably */
+      for(let i=0;i<7;i++){const s=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight));const c=document.createElement('canvas');c.width=Math.round(img.naturalWidth*s);c.height=Math.round(img.naturalHeight*s);
+        const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(img,0,0,c.width,c.height);out=c.toDataURL('image/jpeg',q);
+        if(out.length<800000)return res(out);max=Math.round(max*0.82);q=Math.max(0.5,q-0.05);}
+      out.length<1000000?res(out):rej(new Error('too big'));};
+    img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error('That file is not a photo this browser can read.'));};
+    img.src=url;});
+}
+function photoImg(id,cls){return `<img class="${cls}" data-ph="${esc(id)}" alt="Photo of the student's writing" ${photoCache[id]?`src="${esc(photoCache[id])}"`:''}>`;}
+/* fetch missing photos, then fill in the matching <img> tags without redrawing the page */
+async function loadPhotos(ids){
+  if(!fb.user||!state.currentPupil)return;
+  const pid=state.currentPupil;
+  for(const id of ids){
+    if(photoCache[id]||photoLoading.has(id))continue;photoLoading.add(id);
+    try{const s=await photosCol(pid).doc(id).get();photoCache[id]=s.exists?s.data().data:'';}catch(e){console.warn(e);}
+    photoLoading.delete(id);
+    document.querySelectorAll('img[data-ph="'+id+'"]').forEach(im=>{if(photoCache[id])im.src=photoCache[id];else im.replaceWith(Object.assign(document.createElement('span'),{className:'empty',textContent:'Photo not found'}));});
+  }
+}
+async function addPhotos(files){
+  const w=wById(ui.wEdit);if(!w||!fb.user||isViewOnly())return;
+  const say=t=>{const el=document.getElementById('wphotostatus');if(el)el.textContent=t;};
+  say('Saving photo…');
+  /* the student's record must exist in the cloud before photos can be added to it */
+  if(fb.pending||fb.dirty.size){clearTimeout(fb.timer);await cloudSave();}
+  let n=0;
+  for(const f of files){
+    try{
+      const data=await fileToPhoto(f);const id='ph'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+      await photosCol(state.currentPupil).doc(id).set({data,writingId:w.id,createdAt:Date.now(),by:myEmail()});
+      photoCache[id]=data;w.photos=(w.photos||[]).concat(id);n++;
+    }catch(e){console.warn(e);say(e.message==='too big'?'That photo is too large. Try taking it a little further away.':'The photo could not be saved: '+(niceErr(e)||e.message));}
+  }
+  if(n){save();if(ui.wEdit===w.id)renderWritingEditor();say(n===1?'Photo saved':n+' photos saved');toast(n===1?'Photo saved':n+' photos saved');}
+}
+function writingPhotosHTML(w,editable){
+  const ids=w.photos||[];
+  if(!ids.length&&!editable)return '';
+  return `<div class="wphotos">${ids.map(id=>`<figure>${`<button class="phbtn" data-act="phopen" data-arg="${esc(id)}" aria-label="Open photo full size">${photoImg(id,'phthumb')}</button>`}
+      ${editable?(ui.confirm==='phdel'+id?`<figcaption><button class="mini" style="background:var(--bad);color:#fff" data-act="phdelyes" data-arg="${esc(id)}">Remove this photo?</button><button class="mini" data-act="phdelno">Cancel</button></figcaption>`:`<figcaption><button class="mini" data-act="phdel" data-arg="${esc(id)}">Remove</button></figcaption>`):''}</figure>`).join('')}
+    ${editable?(fb.user?`<label class="phadd" for="wphoto">📷<span>Add photo</span><input id="wphoto" class="vh" type="file" accept="image/*" multiple></label>`
+      :`<p class="counter" style="margin:0">Log in to attach photos of the student's handwriting.</p>`):''}
+  </div>${editable?'<p class="counter" id="wphotostatus" aria-live="polite" style="margin:4px 0 0"></p>':''}`;
+}
 function renderWriting(){
-  if(ui.wEdit&&wById(ui.wEdit)){renderWritingEditor();return;}
+  if(ui.wEdit&&wById(ui.wEdit)&&!isViewOnly()){renderWritingEditor();return;}
   if(ui.wView&&wById(ui.wView)){renderWritingView();return;}
   ui.wEdit=ui.wView=null;
+  const ro=isViewOnly();
   const list=state.writing.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||'')||b.created-a.created);
-  app.innerHTML=`<div class="pagehead"><div><h1>Writing</h1><p>Type up what she wrote or said in your writing activities. Each piece has a title, a date and her text, and saves as you type.</p></div>
-    <button class="btn big" data-act="wnew">＋ New writing</button></div>
+  app.innerHTML=`<div class="pagehead"><div><h1>Writing</h1><p>Keep the student's writing from your activities: take a photo of the handwritten page, type up what they wrote (useful when the handwriting is hard to read), or both. Everything saves as you go.</p></div>
+    ${ro?'':'<button class="btn big" data-act="wnew">＋ New writing</button>'}</div>
     ${list.length?`<div class="wlist2">${list.map(w=>`<button class="wentry" data-act="wview" data-arg="${w.id}"><b>${esc(w.title||'Untitled')}</b>
-      <span class="meta">${today(w.date||new Date(w.created).toISOString())} · ${wordCount(w.text)} words</span>
+      <span class="meta">${today(w.date||new Date(w.created).toISOString())} · ${wordCount(w.text)} words${(w.photos||[]).length?' · 📷 '+w.photos.length:''}</span>
       <span class="prev">${esc((w.text||'').slice(0,220))}</span></button>`).join('')}</div>`
-    :`<div class="panel"><p class="empty" style="margin:0">No writing saved yet. Tap "New writing" to type up her first piece.</p></div>`}`;
+    :`<div class="panel"><p class="empty" style="margin:0">No writing saved yet.${ro?'':' Tap "New writing" to add the first piece.'}</p></div>`}`;
 }
 function renderWritingEditor(){
   const w=wById(ui.wEdit);
-  app.innerHTML=`<div class="pagehead"><div><button class="mini" data-act="wdone">◀ Done</button><h1 style="margin-top:8px">${w.text||w.title?'Edit writing':'New writing'}</h1></div>
+  app.innerHTML=`<div class="pagehead"><div><button class="mini" data-act="wdone">◀ Done</button><h1 style="margin-top:8px">${w.text||w.title||(w.photos||[]).length?'Edit writing':'New writing'}</h1></div>
     <span class="counter" id="wsaved">Saved automatically</span></div>
     <div class="panel">
       <div class="form" style="grid-template-columns:1fr 200px">
         <label class="field" for="wtitle">Title<input id="wtitle" class="titlebox" value="${esc(w.title||'')}" placeholder="e.g. My weekend"></label>
         <label class="field" for="wdate">Date<input id="wdate" type="date" value="${esc((w.date||'').slice(0,10))}"></label>
       </div>
-      <label class="field" for="wtext" style="margin-top:12px">Her writing<textarea id="wtext" class="writebox" placeholder="Type what she wrote or said, exactly as she wrote it…">${esc(w.text||'')}</textarea></label>
+      <div class="field" style="margin-top:12px"><span>Photos of the handwritten work (optional)</span>${writingPhotosHTML(w,true)}</div>
+      <label class="field" for="wtext" style="margin-top:12px">Transcription: what the student wrote (optional)<textarea id="wtext" class="writebox" placeholder="Type what the student wrote or said, exactly as they wrote it…">${esc(w.text||'')}</textarea></label>
       <div class="row" style="justify-content:space-between;margin-top:8px"><span class="counter" id="wcount">${wordCount(w.text)} words</span></div>
-      <label class="field" for="wnotes" style="margin-top:12px">Your notes (optional, for example: what help she had, spellings to practise)<textarea id="wnotes" style="min-height:80px;font-family:var(--phonics);font-size:1rem">${esc(w.notes||'')}</textarea></label>
+      <label class="field" for="wnotes" style="margin-top:12px">Your notes (optional, for example: what help they had, spellings to practise)<textarea id="wnotes" style="min-height:80px;font-family:var(--phonics);font-size:1rem">${esc(w.notes||'')}</textarea></label>
       <div class="row" style="margin-top:12px"><button class="btn good big" data-act="wdone">Done ✓</button></div>
     </div>`;
-  const t=document.getElementById(w.title?'wtext':'wtitle');t&&t.focus();
+  loadPhotos(w.photos||[]);
+  const t=document.getElementById(w.title?'wtext':'wtitle');t&&t.focus({preventScroll:true});
 }
 function renderWritingView(){
-  const w=wById(ui.wView); const c=ui.confirm==='wdel';
+  const w=wById(ui.wView); const c=ui.confirm==='wdel'; const ro=isViewOnly();
   app.innerHTML=`<div class="pagehead"><div><button class="mini" data-act="wback">◀ All writing</button>
-      <h1 style="margin-top:8px">${esc(w.title||'Untitled')}</h1><p>${today(w.date||new Date(w.created).toISOString())} · ${wordCount(w.text)} words</p></div>
-    <div class="row"><button class="btn" data-act="wedit" data-arg="${w.id}">✎ Edit</button><button class="btn alt" data-act="wcopy">Copy text</button><button class="btn alt" data-act="say" data-arg="${esc(w.text||'')}">🔊 Read aloud</button></div></div>
-    <div class="readtext">${esc(w.text||'')||'<span class="empty">No text yet.</span>'}</div>
+      <h1 style="margin-top:8px">${esc(w.title||'Untitled')}</h1><p>${today(w.date||new Date(w.created).toISOString())} · ${wordCount(w.text)} words${(w.photos||[]).length?' · 📷 '+w.photos.length:''}</p></div>
+    <div class="row">${ro?'':`<button class="btn" data-act="wedit" data-arg="${w.id}">✎ Edit</button>`}${w.text||w.title?'<button class="btn alt" data-act="wcopy">Copy text</button>':''}${w.text?`<button class="btn alt" data-act="say" data-arg="${esc(w.text||'')}">🔊 Read aloud</button>`:''}</div></div>
+    ${writingPhotosHTML(w,false)}
+    ${w.text||!(w.photos||[]).length?`<div class="readtext">${esc(w.text||'')||'<span class="empty">No transcription yet.</span>'}</div>`:''}
     ${w.notes?`<div class="panel" style="margin-top:14px"><h2>Your notes</h2><p style="white-space:pre-wrap;margin:0">${esc(w.notes)}</p></div>`:''}
-    <div class="row" style="margin-top:16px">${c?`<span>Delete this piece of writing?</span><button class="btn bad" data-act="wdelyes">Yes, delete</button><button class="btn alt" data-act="cancelconfirm">Cancel</button>`:`<button class="mini" data-act="wdel">Delete</button>`}</div>`;
+    ${ro?'':`<div class="row" style="margin-top:16px">${c?`<span>Delete this piece of writing${(w.photos||[]).length?' and its photos':''}?</span><button class="btn bad" data-act="wdelyes">Yes, delete</button><button class="btn alt" data-act="cancelconfirm">Cancel</button>`:`<button class="mini" data-act="wdel">Delete</button>`}</div>`}`;
+  loadPhotos(w.photos||[]);
 }
+function deletePhotosCloud(ids){if(!fb.user||!state.currentPupil)return;const pid=state.currentPupil;ids.forEach(id=>{delete photoCache[id];photosCol(pid).doc(id).delete().catch(e=>console.warn(e));});}
 
 /* ---------------- PROGRESS ---------------- */
 function renderProgress(){
@@ -1619,7 +1920,7 @@ function renderProgress(){
    <div class="panel"><h2>Vocabulary by topic</h2>${allTopics().map(t=>{const s=topicStars(t);return `<div class="trow"><span>${t.icon}</span><span>${esc(t.name)}</span><div class="bar" style="margin:0"><i style="width:${t.words.length?s/t.words.length*100:0}%"></i></div><span class="n">${s}/${t.words.length}</span></div>`;}).join('')}</div>
    <div class="panel"><h2>Settings</h2>
      <div class="form">
-       ${fb.user&&currentPupilObj()?`<label class="field">Pupil's first name (shown at the top and in the greeting)<input id="sname" value="${esc(currentPupilObj().name||'')}"></label>`:`<p class="counter" style="margin:0">Pupils are added after logging in. Explore mode never shows a name.</p>`}
+       ${fb.user&&currentPupilObj()&&roleOf(currentPupilObj())==='owner'?`<label class="field">Student's first name (shown at the top and in the greeting)<input id="sname" value="${esc(currentPupilObj().name||'')}"></label>`:`<p class="counter" style="margin:0">Students are added after logging in. Explore mode never shows a name.</p>`}
        <label class="field">Speaking speed: <span id="ratev">${state.settings.rate.toFixed(2)}</span><input id="srate" type="range" min="0.5" max="1.2" step="0.05" value="${state.settings.rate}"></label>
        <button class="btn" data-act="savesettings">Save</button>
        <button class="btn alt" data-act="testvoice">🔊 Test voice</button>
@@ -1627,7 +1928,7 @@ function renderProgress(){
      <p class="counter">The voice comes from the device. A British English voice is used when one is installed.</p></div>
    ${syncPanelHTML()}
    <div class="panel"><h2>Start again</h2><div class="row">
-     ${c==='reset'?`<span>Clear this pupil's sounds, stars and blending reviews? Assessments, writing, word lists and other pupils are kept.</span><button class="btn bad" data-act="resetyes">Yes, clear it</button><button class="btn alt" data-act="cancelconfirm">Cancel</button>`
+     ${c==='reset'?`<span>Clear this student's sounds, stars and blending reviews? Assessments, writing, word lists and other students are kept.</span><button class="btn bad" data-act="resetyes">Yes, clear it</button><button class="btn alt" data-act="cancelconfirm">Cancel</button>`
       :`<button class="btn alt" data-act="reset">Clear all progress</button>`}</div></div>`;
   app.innerHTML=h;
 }
@@ -1660,13 +1961,16 @@ const A = {
   spagain:()=>startSpeed(ui.speed.deck),
   spmissed:()=>startSpeed(ui.speed.deck.filter(id=>ui.speed.res[id]===false)),
   spclose:()=>{ui.speed=null;renderSounds();},
-  bmode:a=>{ui.blendMode=a;ui.bs=null;renderBlending();},
-  level:a=>{ui.level=a;ui.bs=null;renderBlending();},
+  bmode:a=>{if(a===ui.blendMode||blendGuard('bmode',a))return;blendApply('bmode',a);},
+  level:a=>{if(a===ui.level||blendGuard('level',a))return;blendApply('level',a);},
+  bdiscardyes:()=>{const p=ui.bpending||{};ui.bpending=null;if(p.act==='bnewset'){ui.bs=null;renderBlending();}else blendApply(p.act,p.arg);},
+  bdiscardno:()=>{ui.bpending=null;renderBlending();},
+  bkeepreview:()=>{ui.bpending=null;ui.bs.stage='review';renderBlending();},
   sb:(a,el)=>{const sp=el.closest('.split');if(el.classList.contains('split-part')&&sp){const on=!el.classList.contains('lit');sp.querySelectorAll('.split-part').forEach(b=>b.classList.toggle('lit',on));}else el.classList.toggle('lit');},
   blend:()=>{const bs=ui.bs;bs.revealed=true;renderBlending();speak(tokWord(toks(bs.words[bs.i][0])));},
   bnext:()=>{const bs=ui.bs;if(bs.i>=bs.words.length-1){bs.stage='end';}else{bs.i++;bs.revealed=false;bs.spell=null;}renderBlending();},
   bprev:()=>{const bs=ui.bs;if(bs.i>0){bs.i--;bs.revealed=false;bs.spell=null;}renderBlending();},
-  bnewset:()=>{ui.bs=null;renderBlending();},
+  bnewset:()=>{if(blendGuard('bnewset'))return;ui.bs=null;renderBlending();},
   breview:()=>{ui.bs.stage='review';renderBlending();},
   bendback:()=>{const o=document.getElementById('boverall');if(o)ui.bs.overall=o.value;ui.bs.stage='end';renderBlending();},
   bmarkw:a=>{const [i,v]=a.split('|');const bs=ui.bs;const val=v==='1';bs.marks[i]=bs.marks[i]===val?undefined:val;const o=document.getElementById('boverall');if(o)bs.overall=o.value;renderBlending();},
@@ -1683,6 +1987,8 @@ const A = {
   topics:()=>{ui.topic=null;ui.editTopic=null;renderVocab();},
   vmode:a=>{ui.vmode=a;ui.quiz=ui.flash=ui.pairs=ui.lspell=null;renderVocab();},
   star:a=>{const t=topicById(ui.topic);const w=t.words[+a];const k=starKey(t.id,w);state.stars[k]=((state.stars[k]||0)+1)%4;save();renderVocab();},
+  /* the +1 button stops at 3 stars; only tapping the stars themselves goes back round to 0 */
+  staradd:a=>{const t=topicById(ui.topic);const w=t.words[+a];const k=starKey(t.id,w);if((state.stars[k]||0)>=3)return;state.stars[k]=(state.stars[k]||0)+1;save();renderVocab();},
   fshow:()=>{ui.flash.show=true;const t=topicById(ui.topic);if(ui.flashDir!=='es')speak(t.words[ui.flash.order[ui.flash.i%ui.flash.order.length]].en);renderVocab();},
   fdir:a=>{ui.flashDir=a;if(ui.flash)ui.flash.show=false;renderVocab();},
   fans:a=>{const t=topicById(ui.topic);const w=t.words[ui.flash.order[ui.flash.i%ui.flash.order.length]];addStar(t,w,a==='1'?1:-1);ui.flash.i++;ui.flash.show=false;renderVocab();},
@@ -1718,13 +2024,17 @@ const A = {
   dellist:()=>{ui.confirm='dellist';renderEditor();},
   dellistyes:()=>{state.custom=state.custom.filter(x=>x.id!==ui.editing);ui.editing=null;ui.topic=null;ui.confirm=null;save();renderVocab();},
   cancelconfirm:()=>{ui.confirm=null;ui.pendingImport=null;render();},
-  wnew:()=>{const d=new Date();const id='w'+Date.now();state.writing.push({id,title:'',text:'',notes:'',date:d.toISOString().slice(0,10),created:Date.now()});ui.wEdit=id;ui.wView=null;renderWriting();},
-  wedit:a=>{ui.wEdit=a;ui.wView=null;ui.confirm=null;renderWriting();},
+  wnew:()=>{if(isViewOnly())return;const d=new Date();const id='w'+Date.now();state.writing.push({id,title:'',text:'',notes:'',date:d.toISOString().slice(0,10),created:Date.now()});ui.wEdit=id;ui.wView=null;renderWriting();},
+  wedit:a=>{if(isViewOnly())return;ui.wEdit=a;ui.wView=null;ui.confirm=null;renderWriting();},
   wview:a=>{ui.wView=a;ui.wEdit=null;renderWriting();window.scrollTo(0,0);},
   wdone:()=>{const id=ui.wEdit;ui.wEdit=null;dropEmptyWriting();ui.wView=wById(id)?id:null;save();renderWriting();},
   wback:()=>{ui.wView=null;ui.confirm=null;renderWriting();},
   wdel:()=>{ui.confirm='wdel';renderWriting();},
-  wdelyes:()=>{state.writing=state.writing.filter(w=>w.id!==ui.wView);ui.wView=null;ui.confirm=null;save();toast('Writing deleted');renderWriting();},
+  wdelyes:()=>{if(isViewOnly())return;const old=wById(ui.wView);if(old&&old.photos)deletePhotosCloud(old.photos);state.writing=state.writing.filter(w=>w.id!==ui.wView);ui.wView=null;ui.confirm=null;save();toast('Writing deleted');renderWriting();},
+  phopen:a=>{if(!photoCache[a])return;showModal(`<img class="phfull" src="${esc(photoCache[a])}" alt="Photo of the student's writing"><div class="row" style="margin-top:10px"><button class="btn alt" data-act="closemodal">Close</button></div>`);},
+  phdel:a=>{ui.confirm='phdel'+a;renderWritingEditor();},
+  phdelno:()=>{ui.confirm=null;renderWritingEditor();},
+  phdelyes:a=>{const w=wById(ui.wEdit);if(!w||isViewOnly())return;w.photos=(w.photos||[]).filter(x=>x!==a);deletePhotosCloud([a]);ui.confirm=null;save();renderWritingEditor();toast('Photo removed');},
   wcopy:async()=>{const w=wById(ui.wView);try{await navigator.clipboard.writeText((w.title?w.title+'\n\n':'')+(w.text||''));toast('Copied');}catch(e){toast('Copying is blocked here. Select the text and copy it instead.');}},
 
   edittopic:a=>{ui.editTopic=a;ui.editWordT=null;ui.confirm=null;renderVocab();window.scrollTo(0,0);},
@@ -1758,20 +2068,35 @@ const A = {
     catch(e){if(errEl)errEl.textContent=niceErr(e);}},
   cloudsave:()=>{clearTimeout(fb.timer);cloudSave();},
   pupils:()=>{if(!fb.user){loginModal('','login');return;}ui.confirm=null;pupilsModal();},
-  prename:a=>{const p=state.pupils.find(x=>x.id===a);const v=document.getElementById('pn-'+a).value.trim();p.name=v;const ls=document.getElementById('pl-'+a);if(ls)p.lang=ls.value;const lo=document.getElementById('plo-'+a);if(lo)p.langName=lo.value.trim();save();render();pupilsModal();toast('Saved');},
+  prename:a=>{const p=state.pupils.find(x=>x.id===a);if(!p||roleOf(p)!=='owner')return;const v=document.getElementById('pn-'+a).value.trim();p.name=v;const ls=document.getElementById('pl-'+a);if(ls)p.lang=ls.value;const lo=document.getElementById('plo-'+a);if(lo)p.langName=lo.value.trim();touchPupil(a);save();render();pupilsModal();flashSaved(a);},
+  shareclose:()=>{ui.shareOpen=null;pupilsModal();},
+  logoutno:()=>{ui.confirm=null;pupilsModal();},
+  logoutforce:()=>doLogout(),
   pswitch:a=>{switchPupil(a);render();closeModal();toast('Now working with '+pupilName(currentPupilObj()));},
+  pshare:a=>{ui.shareOpen=ui.shareOpen===a?null:a;ui.confirm=null;pupilsModal();const f=document.getElementById('shareemail');f&&f.focus();},
+  shareremove:a=>{const i=a.indexOf('|');const pid=a.slice(0,i),em=a.slice(i+1);if(addShare(pid,em,null)){pupilsModal();toast('Stopped sharing with '+em);}},
+  google:async()=>{const errEl=document.getElementById('loginerr');fb.justLoggedIn=true;
+    try{await firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());closeModal();toast('Logged in');}
+    catch(err){fb.justLoggedIn=false;if(errEl)errEl.textContent=niceErr(err);}},
+  verifysend:async()=>{try{await fb.user.sendEmailVerification();toast('Link sent to '+myEmail());}catch(e){toast(niceErr(e));}},
+  verifycheck:async()=>{try{await fb.user.reload();fb.user=firebase.auth().currentUser;await fb.user.getIdToken(true);}catch(e){toast(niceErr(e));return;}
+    if(!emailVerified()){toast('Not verified yet. Open the link in the email first.');return;}
+    closeModal();toast('Email verified. Looking for shared students…');await cloudLoad(false);},
+  refreshshared:async()=>{if(fb.pending){clearTimeout(fb.timer);await cloudSave();}await cloudLoad(false);const el=document.getElementById('cloudstatus');if(el)el.textContent=fb.status;toast(state.pupils.filter(p=>roleOf(p)!=='owner').length+' students shared with you');},
   pdel:a=>{ui.confirm='pdel'+a;pupilsModal();},
   pdelno:()=>{ui.confirm=null;pupilsModal();},
-  pdelyes:a=>{const wasCur=a===state.currentPupil;state.pupils=state.pupils.filter(p=>p.id!==a);delete state.pupilStore[a];fb.deleted.add(a);fb.dirty.delete(a);
-    if(wasCur)loadPupil(state.pupils[0].id);ui.confirm=null;save();render();pupilsModal();toast('Pupil deleted');},
+  pdelyes:a=>{const p=state.pupils.find(x=>x.id===a);if(!p||roleOf(p)!=='owner')return;const wasCur=a===state.currentPupil;state.pupils=state.pupils.filter(p=>p.id!==a);delete state.pupilStore[a];fb.deleted.add(a);fb.dirty.delete(a);
+    if(wasCur)loadPupil(state.pupils[0].id);ui.confirm=null;save();render();pupilsModal();toast('Student deleted');},
 
-  logout:async()=>{const doWipe=true;
-    if(fb.pending){clearTimeout(fb.timer);await cloudSave();}
-    try{await firebase.auth().signOut();}catch(e){}
-    if(doWipe){importData(blankData());}
-    closeModal();toast('Logged out. Back in Explore mode.');render();},
+  /* log-out wipes this computer, so it only goes ahead once the latest changes are safely in the account */
+  logout:async()=>{
+    for(let i=0;i<40&&fb.busy;i++)await new Promise(r=>setTimeout(r,250)); /* a save already running */
+    if(fb.pending||fb.dirty.size||fb.deleted.size){clearTimeout(fb.timer);await cloudSave();}
+    if(fb.pending||saveProblem()){ui.confirm='logoutfail';pupilsModal();return;}
+    doLogout();},
 
   astart:a=>{state.draft=newDraft(+a);save();renderAssess();},
+  segpeek:()=>{const d=state.draft;const k=d.phase+'|'+aItems(d.phase,d.sec)[d.i];ui.segShow=ui.segShow===k?null:k;renderAssess();},
   asec:a=>{state.draft.sec=a;state.draft.i=0;save();renderAssess();},
   ajump:a=>{state.draft.i=+a;save();renderAssess();},
   aset:a=>{const d=state.draft;const [f,v]=a.split('|');const key=aItems(d.phase,d.sec)[d.i];const val=v==='1';
@@ -1818,13 +2143,17 @@ document.addEventListener('change',e=>{
   const el=e.target;
   if(el.tagName==='SELECT'||el.type==='checkbox'){const y=window.scrollY;requestAnimationFrame(()=>window.scrollTo(0,y));}
   if(el.id==='bkfile'&&el.files[0]){const fr=new FileReader();fr.onload=()=>{try{const d=JSON.parse(fr.result);if(d.app!=='sounds-and-words')throw new Error();ui.pendingImport=d;ui.confirm='restore';renderProgress();}catch(e){toast('That file is not a Sounds and Words backup');}};fr.readAsText(el.files[0]);return;}
-  if(el.id&&el.id.startsWith('pl-')&&!el.id.startsWith('pl--')){const p=state.pupils.find(x=>x.id===el.id.slice(3));if(p){p.lang=el.value;save();render();pupilsModal();toast(pupilName(p)+': '+langLabel(p));}return;}
+  if(el.id&&el.id.startsWith('pl-')&&!el.id.startsWith('pl--')){const p=state.pupils.find(x=>x.id===el.id.slice(3));if(p&&roleOf(p)==='owner'){p.lang=el.value;touchPupil(p.id);save();render();pupilsModal();flashSaved(p.id);}return;}
+  if(el.dataset&&el.dataset.share){if(addShare(el.dataset.share,el.dataset.email,el.value)){pupilsModal();toast(el.dataset.email+(el.value==='view'?': view only':': can edit'));}return;}
+  if(el.id==='wphoto'&&el.files&&el.files.length){addPhotos([...el.files]);el.value='';return;}
   if(el.id==='explang'){state.settings.exploreLang=el.value;persist();render();return;}
   if(el.id==='pupilsel'){switchPupil(el.value);render();toast('Now working with '+pupilName(currentPupilObj()));return;}
+  if(el.id==='keyonly'&&route==='blending'&&blendGuard('keyonly',el.checked))return;
+  if(el.id==='nunit'&&blendGuard('nunit',el.value))return;
   if(el.id==='keyonly'){ui.keyOnly=el.checked;ui.quiz=ui.flash=ui.pairs=ui.lspell=null;ui.bs=null;render();return;}
   if(el.id==='nunit'){ui.nelsonUnit=el.value;ui.bs=null;renderBlending();return;} if(el.matches('input[type=checkbox][data-act]')){const fn=A[el.dataset.act];fn&&fn(el.dataset.arg,el);}
 });
-document.addEventListener('input',e=>{const wid=e.target.id;if((wid==='wtitle'||wid==='wtext'||wid==='wnotes'||wid==='wdate')&&ui.wEdit){const w=wById(ui.wEdit);if(w){w[{wtitle:'title',wtext:'text',wnotes:'notes',wdate:'date'}[wid]]=e.target.value;save();if(wid==='wtext'){const c=document.getElementById('wcount');if(c)c.textContent=wordCount(w.text)+' words';}const sv=document.getElementById('wsaved');if(sv)sv.textContent=fb.user?'Saved · syncing to her account':'Saved on this computer';}return;}if(e.target.dataset&&e.target.dataset.bnote!=null&&ui.bs){ui.bs.notes[e.target.dataset.bnote]=e.target.value;return;}if(e.target.id==='boverall'&&ui.bs){ui.bs.overall=e.target.value;return;}if(e.target.id==='asaid'&&state.draft){const d=state.draft;const key=aItems(d.phase,d.sec)[d.i];const o=d[e.target.dataset.k];o[key]=o[key]||{};o[key].said=e.target.value;save();return;}if(e.target.id==='aobs'&&state.draft){state.draft.obs=e.target.value;save();return;}if(e.target.id==='srate'){const v=document.getElementById('ratev');if(v)v.textContent=parseFloat(e.target.value).toFixed(2);}});
+document.addEventListener('input',e=>{const wid=e.target.id;if(/^(pn|plo)-/.test(wid||'')){const b=document.querySelector(`[data-act="prename"][data-arg="${wid.replace(/^(pn|plo)-/,'')}"]`);if(b){b.classList.remove('saved');b.classList.add('dirty');b.textContent='Save';}return;}if((wid==='wtitle'||wid==='wtext'||wid==='wnotes'||wid==='wdate')&&ui.wEdit){const w=wById(ui.wEdit);if(w){w[{wtitle:'title',wtext:'text',wnotes:'notes',wdate:'date'}[wid]]=e.target.value;save();if(wid==='wtext'){const c=document.getElementById('wcount');if(c)c.textContent=wordCount(w.text)+' words';}const sv=document.getElementById('wsaved');if(sv)sv.textContent=fb.user?'Saved · syncing to your account':'Saved on this computer';}return;}if(e.target.dataset&&e.target.dataset.bnote!=null&&ui.bs){ui.bs.notes[e.target.dataset.bnote]=e.target.value;return;}if(e.target.id==='boverall'&&ui.bs){ui.bs.overall=e.target.value;return;}if(e.target.id==='asaid'&&state.draft){const d=state.draft;const key=aItems(d.phase,d.sec)[d.i];const o=d[e.target.dataset.k];o[key]=o[key]||{};o[key].said=e.target.value;save();return;}if(e.target.id==='aobs'&&state.draft){state.draft.obs=e.target.value;save();return;}if(e.target.id==='srate'){const v=document.getElementById('ratev');if(v)v.textContent=parseFloat(e.target.value).toFixed(2);}});
 
 readHash(); render(); initCloud();
 </script>
