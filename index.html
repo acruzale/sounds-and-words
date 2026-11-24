@@ -84,6 +84,8 @@ nav.tabs button:not([aria-current="page"]):hover{border-color:rgba(255,255,255,.
 .btn.bad{background:var(--bad)}
 .btn.big{font-size:1.2rem;padding:14px 22px;border-radius:16px}
 .btn:disabled{opacity:.45;cursor:default}
+.btn.saved{background:var(--good);animation:savedpop .45s cubic-bezier(.16,1,.3,1)}
+@media (prefers-reduced-motion:reduce){.btn.saved{animation:none}}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .center{justify-content:center}
 
@@ -554,7 +556,7 @@ function L(){const code=curLang();const o=Object.assign({},LANGS[code]);
 function mKey(){return L().key;}
 function meaning(w){const k=mKey();return (k&&w&&w[k])||'';}
 function blendMeaning(w){const i={es:2,de:3,tr:4}[mKey()];return i?(w[i]||''):'';}
-function topicSub(tp){if(tp.custom)return L().myList;if(tp.nelson)return 'Nelson 1A';const c=curLang();return c==='es'?tp.es:c==='de'?(TOPIC_DE[tp.id]||''):'';}
+function topicSub(tp){if(tp.custom){const k=mKey();return (k&&(tp[k]||'').trim())||L().myList;}if(tp.nelson)return 'Nelson 1A';const c=curLang();return c==='es'?tp.es:c==='de'?(TOPIC_DE[tp.id]||''):'';}
 function cheer(){const i=Math.floor(Math.random()*EN_CHEERS.length);const l=L();return EN_CHEERS[i]+(l.cheers?' '+l.cheers[i]:'');}
 function tryAgain(){const i=Math.floor(Math.random()*EN_TRYS.length);const l=L();return EN_TRYS[i]+(l.trys?' '+l.trys[i]:'');}
 function withL(en,k){const v=L()[k];return en+(v?' '+v:'');}
@@ -869,7 +871,7 @@ function soundButtonsHTML(ts){
 }
 
 /* custom words as levels/topics */
-function customTopics(){return state.custom.map(c=>({id:c.id,name:c.name,es:'Mi lista',icon:'📘',custom:true,words:c.words}));}
+function customTopics(){return state.custom.map(c=>({id:c.id,name:c.name,es:c.es||'',de:c.de||'',tr:c.tr||'',icon:'📘',custom:true,words:c.words}));}
 function applyEdits(t){const e=(state.topicEdits||{})[t.id];if(!e)return t;const rem=new Set((e.removed||[]).map(x=>x.toLowerCase()));
   return {...t,edited:true,words:t.words.filter(w=>!rem.has(w.en.toLowerCase())).concat((e.added||[]).map(w=>({...w,added:true})))};}
 function baseTopic(id){return TOPICS.concat(NELSON).find(t=>t.id===id);}
@@ -1202,7 +1204,8 @@ function renderEditor(){
   const ew = ui.editWord!=null && c.words[ui.editWord] ? c.words[ui.editWord] : {};
   app.innerHTML=`<div class="pagehead"><div><button class="mini" data-act="closeedit">◀ Done</button><h1 style="margin-top:8px">Edit my list</h1>
     <p>Add words from Nelson Spelling 1A or from class. Pictures can be an emoji or a photo (for example, a photo of the picture in the book).</p></div></div>
-   <div class="panel"><div class="form"><label class="field">List name<input id="lname" value="${esc(c.name)}" placeholder="e.g. Nelson Unit 1"></label>
+   <div class="panel"><div class="form"><label class="field">List name<input id="lname" value="${esc(c.name)}" placeholder="e.g. Christmas"></label>
+     ${mKey()?`<label class="field">List name in ${esc(L().name)}<input id="lname2" value="${esc(c[mKey()]||'')}" placeholder="${esc(L().myList)}"></label>`:''}
      <button class="btn" data-act="savename">Save name</button></div></div>
    <div class="panel" id="wordform"><h2>${ui.editWord!=null?'Edit word':'Add a word'}</h2>
      <div class="form">
@@ -1726,6 +1729,9 @@ async function doLogout(){
   importData(blankData());fb.dirty.clear();fb.deleted.clear();fb.pending=false;ui.confirm=null;
   closeModal();toast('Logged out. Back in Explore mode.');render();
 }
+/* a short, visible confirmation on any Save button that stays on screen */
+function flashBtn(b,label){if(!b)return;const old=b.dataset.label||b.textContent;b.dataset.label=old;b.classList.add('saved');b.textContent=label||'Saved ✓';
+  clearTimeout(b._t);b._t=setTimeout(()=>{if(b.isConnected){b.classList.remove('saved');b.textContent=old;}},1600);}
 /* a short, visible confirmation on a Save button, so it never looks like nothing happened */
 function flashSaved(id){
   const b=document.querySelector(`[data-act="prename"][data-arg="${id}"]`);if(!b)return;
@@ -2006,7 +2012,8 @@ const A = {
   newlist:()=>{const id='c'+Date.now();state.custom.push({id,name:'My list '+(state.custom.length+1),words:[]});save();ui.editing=id;ui.editWord=null;ui.confirm=null;renderVocab();},
   editlist:a=>{ui.editing=a;ui.editWord=null;ui.confirm=null;renderVocab();},
   closeedit:()=>{ui.editing=null;ui.quiz=ui.flash=ui.pairs=ui.lspell=null;renderVocab();},
-  savename:()=>{const c=state.custom.find(x=>x.id===ui.editing);const v=document.getElementById('lname').value.trim();if(v){c.name=v;save();toast('Name saved');}},
+  savename:(a,el)=>{const c=state.custom.find(x=>x.id===ui.editing);const v=document.getElementById('lname').value.trim();if(!v){toast('Type a name for the list first');return;}
+    c.name=v;const t=document.getElementById('lname2');if(t&&mKey())c[mKey()]=t.value.trim();save();flashBtn(el);},
   addword:async()=>{const c=state.custom.find(x=>x.id===ui.editing);const en=document.getElementById('wen').value.trim();if(!en){toast('Type the English word first');return;}
     const es=(document.getElementById('wes')||{value:''}).value.trim();let pic=document.getElementById('wpic').value.trim();const snd=document.getElementById('wsnd').value.trim().replace(/\s+/g,'');
     const editing=ui.editWord!=null&&c.words[ui.editWord];
